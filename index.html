@@ -3,55 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Корпоративный Справочник</title>
+    <title>Корпоративный справочник</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>📞 Корпоративный Справочник</h1>
-            <button id="addContactBtn" class="btn add-btn">Добавить</button>
+            <h1>📞 Корпоративный справочник</h1>
+            <a href="admin.html" class="admin-link" title="Вход для администратора">⚙️</a>
         </header>
-
-        <!-- Поле поиска (если есть) -->
-        <input type="text" id="searchInput" placeholder="Поиск по ФИО, должности или организации..." class="search-input">
-
-        <div id="contactsList" class="contacts-grid">
-            <p class="loading">⏳ Загрузка контактов...</p>
+        
+        <input type="text" id="searchInput" placeholder="Поиск по ФИО, должности или отделу..." class="search-input">
+        
+        <div id="directoryContainer" class="directory-container">
+            <p class="loading">Загрузка справочника...</p>
         </div>
     </div>
-
-    <!-- Модальное окно для добавления контакта -->
-    <div id="contactModal" class="modal">
-        <div class="modal-content">
-            <h2>Добавить новый контакт</h2>
-            <form id="contactForm">
-                <label for="fullName">ФИО</label>
-                <input type="text" id="fullName" required>
-
-                <label for="position">Должность</label>
-                <input type="text" id="position">
-
-                <label for="organization">Организация</label>
-                <input type="text" id="organization">
-
-                <label for="city">Населённый пункт</label>
-                <input type="text" id="city">
-
-                <label for="phone">Телефон</label>
-                <input type="tel" id="phone">
-
-                <label for="email">Email</label>
-                <input type="email" id="email">
-
-                <div class="modal-actions">
-                    <button type="button" id="cancelModalBtn" class="btn cancel-btn">Отмена</button>
-                    <button type="submit" class="btn save-btn">Сохранить</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
+    
     <script src="script.js"></script>
 </body>
 </html>

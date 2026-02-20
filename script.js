@@ -1,128 +1,103 @@
-// Основной массив для хранения контактов
-let contacts = [];
-
-// Загружаем контакты из localStorage при запуске
-function loadContacts() {
-    const storedContacts = localStorage.getItem('contacts');
-    if (storedContacts) {
-        contacts = JSON.parse(storedContacts);
-    } else {
-        // Несколько контактов для примера, если список пуст
-        contacts = [
-            { fullName: 'Иван Иванов', position: 'Менеджер', organization: 'ООО "Ромашка"', city: 'Москва', phone: '+7 (123) 456-78-90', email: 'ivan@example.com' },
-            { fullName: 'Петр Петров', position: 'Разработчик', organization: 'АО "ТехноПрогресс"', city: 'Санкт-Петербург', phone: '+7 (987) 654-32-10', email: 'petr@example.com' },
-        ];
+// Загружаем данные из data.json
+async function loadDirectory() {
+    try {
+        const response = await fetch('data.json');
+        const data = await response.json();
+        displayDirectory(data);
+    } catch (error) {
+        document.getElementById('directoryContainer').innerHTML = 
+            '<p class="loading">Ошибка загрузки справочника</p>';
     }
-    displayContacts(contacts);
 }
 
-// Сохраняем контакты в localStorage
-function saveContacts() {
-    localStorage.setItem('contacts', JSON.stringify(contacts));
-}
-
-// Отображаем контакты на странице
-function displayContacts(contactsToDisplay) {
-    const list = document.getElementById('contactsList');
-    if (!contactsToDisplay || contactsToDisplay.length === 0) {
-        list.innerHTML = '<p class="loading">Контакты не найдены</p>';
-        return;
-    }
-
+// Отображаем справочник
+function displayDirectory(data) {
+    const container = document.getElementById('directoryContainer');
     let html = '';
-    contactsToDisplay.forEach(contact => {
+    
+    data.departments.forEach((dept, index) => {
         html += `
-            <div class="contact-card">
-                <h3>${escapeHTML(contact.fullName)}</h3>
-                <div class="position">${escapeHTML(contact.position) || ''}</div>
-                <div class="organization">${escapeHTML(contact.organization) || ''}</div>
-                <div class="city">📍 ${escapeHTML(contact.city) || ''}</div>
-                <div class="phone">📞 ${escapeHTML(contact.phone) || ''}</div>
-                <div class="email">✉️ <a href="mailto:${escapeHTML(contact.email)}">${escapeHTML(contact.email) || ''}</a></div>
+            <div class="department" data-department-index="${index}">
+                <div class="department-header" onclick="toggleDepartment(${index})">
+                    <h2>${escapeHTML(dept.name)}</h2>
+                    <span class="toggle-icon" id="toggle-${index}">▼</span>
+                </div>
+                <div class="contacts-list" id="dept-${index}">
+                    ${renderContacts(dept.contacts)}
+                </div>
             </div>
         `;
     });
-    list.innerHTML = html;
+    
+    container.innerHTML = html;
 }
 
-// Простая защита от XSS (если кто-то введет HTML-код)
+// Отображаем контакты отдела
+function renderContacts(contacts) {
+    if (!contacts || contacts.length === 0) {
+        return '<p>Нет контактов</p>';
+    }
+    
+    return contacts.map(contact => `
+        <div class="contact-card">
+            <div class="name">${escapeHTML(contact.name || '')}</div>
+            <div class="position">${escapeHTML(contact.position || '')}</div>
+            <div class="phone">📞 ${escapeHTML(contact.phone || '')}</div>
+        </div>
+    `).join('');
+}
+
+// Сворачиваем/разворачиваем отдел
+function toggleDepartment(index) {
+    const list = document.getElementById(`dept-${index}`);
+    const toggle = document.getElementById(`toggle-${index}`);
+    
+    if (list.style.display === 'none') {
+        list.style.display = 'grid';
+        toggle.textContent = '▼';
+    } else {
+        list.style.display = 'none';
+        toggle.textContent = '▶';
+    }
+}
+
+// Поиск по справочнику
+document.getElementById('searchInput').addEventListener('input', function(e) {
+    const searchTerm = e.target.value.toLowerCase();
+    const departments = document.querySelectorAll('.department');
+    
+    departments.forEach(dept => {
+        const cards = dept.querySelectorAll('.contact-card');
+        let hasVisibleContacts = false;
+        
+        cards.forEach(card => {
+            const text = card.textContent.toLowerCase();
+            if (text.includes(searchTerm)) {
+                card.style.display = 'block';
+                hasVisibleContacts = true;
+            } else {
+                card.style.display = 'none';
+            }
+        });
+        
+        // Показываем отдел, если есть видимые контакты
+        if (hasVisibleContacts || searchTerm === '') {
+            dept.style.display = 'block';
+        } else {
+            dept.style.display = 'none';
+        }
+    });
+});
+
+// Защита от XSS
 function escapeHTML(str) {
     if (!str) return '';
-    return String(str).replace(/[&<>"]/g, function(match) {
-        if (match === '&') return '&amp;';
-        if (match === '<') return '&lt;';
-        if (match === '>') return '&gt;';
-        if (match === '"') return '&quot;';
-        return match;
-    });
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
 }
 
-// Функция для фильтрации контактов при поиске
-function filterContacts(searchTerm) {
-    if (!searchTerm) {
-        displayContacts(contacts);
-        return;
-    }
-    const term = searchTerm.toLowerCase();
-    const filtered = contacts.filter(contact => {
-        return contact.fullName.toLowerCase().includes(term) ||
-               (contact.position && contact.position.toLowerCase().includes(term)) ||
-               (contact.organization && contact.organization.toLowerCase().includes(term));
-    });
-    displayContacts(filtered);
-}
-
-// --- Обработчики событий (когда страница загружена) ---
-document.addEventListener('DOMContentLoaded', function() {
-    loadContacts();
-
-    const modal = document.getElementById('contactModal');
-    const addBtn = document.getElementById('addContactBtn');
-    const cancelBtn = document.getElementById('cancelModalBtn');
-    const form = document.getElementById('contactForm');
-    const searchInput = document.getElementById('searchInput');
-
-    // Открыть модальное окно
-    addBtn.onclick = function() {
-        modal.style.display = 'block';
-        form.reset(); // Очистить форму
-    };
-
-    // Закрыть модальное окно (по кнопке Отмена)
-    cancelBtn.onclick = function() {
-        modal.style.display = 'none';
-    };
-
-    // Закрыть модальное окно (клик вне окна)
-    window.onclick = function(event) {
-        if (event.target === modal) {
-            modal.style.display = 'none';
-        }
-    };
-
-    // Обработка отправки формы (сохранение нового контакта)
-    form.onsubmit = function(e) {
-        e.preventDefault(); // Остановить перезагрузку страницы
-
-        const newContact = {
-            fullName: document.getElementById('fullName').value,
-            position: document.getElementById('position').value,
-            organization: document.getElementById('organization').value,
-            city: document.getElementById('city').value,
-            phone: document.getElementById('phone').value,
-            email: document.getElementById('email').value,
-        };
-
-        contacts.push(newContact);
-        saveContacts();
-        displayContacts(contacts); // Показать все контакты, включая новый
-        modal.style.display = 'none'; // Закрыть окно
-    };
-
-    // Обработка поиска
-    if (searchInput) {
-        searchInput.addEventListener('input', function() {
-            filterContacts(this.value);
-        });
-    }
-});
+// Загружаем справочник при открытии страницы
+loadDirectory();
