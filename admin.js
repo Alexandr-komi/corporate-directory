@@ -11,7 +11,6 @@ document.getElementById('loginBtn').addEventListener('click', async function() {
     githubToken = token;
     
     try {
-        // Загружаем текущие данные из репозитория
         const response = await fetch('https://api.github.com/repos/Alexandr-komi/corporate-directory/contents/data.json', {
             headers: {
                 'Authorization': `token ${token}`,
@@ -64,6 +63,7 @@ function renderEditor() {
     
     editor.innerHTML = html;
 }
+
 function renderContactsEditor(deptIndex) {
     const contacts = currentData.departments[deptIndex].contacts || [];
     let html = '';
@@ -149,7 +149,6 @@ document.getElementById('saveToGithubBtn').addEventListener('click', async funct
     statusEl.textContent = 'Сохранение...';
     
     try {
-        // Получаем текущий файл с GitHub, чтобы узнать его SHA
         const response = await fetch('https://api.github.com/repos/Alexandr-komi/corporate-directory/contents/data.json', {
             headers: {
                 'Authorization': `token ${githubToken}`,
@@ -160,8 +159,7 @@ document.getElementById('saveToGithubBtn').addEventListener('click', async funct
         const fileData = await response.json();
         const sha = fileData.sha;
         
-        // Сохраняем изменения
-        const content = btoa(JSON.stringify(currentData, null, 2));
+        const content = btoa(unescape(encodeURIComponent(JSON.stringify(currentData, null, 2))));
         
         const saveResponse = await fetch('https://api.github.com/repos/Alexandr-komi/corporate-directory/contents/data.json', {
             method: 'PUT',
@@ -195,7 +193,8 @@ function escapeHTML(str) {
         .replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;');
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
 }
 
 function showError(msg) {
