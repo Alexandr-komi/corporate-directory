@@ -1,220 +1,121 @@
-let departments = [];
-let githubToken = '';
-let fileSha = '';
+let data = {departments: []};
+let token = '';
+let sha = '';
 
-document.getElementById('loginBtn').addEventListener('click', async function() {
-    const token = document.getElementById('tokenInput').value;
-    if (!token) {
-        document.getElementById('loginError').textContent = 'Введите токен';
-        return;
-    }
-    
-    githubToken = token;
-    
-    try {
-        const response = await fetch('https://api.github.com/repos/Alexandr-komi/corporate-directory/contents/data.json', {
-            headers: { 'Authorization': 'token ' + token }
-        });
-        
-        if (response.status === 404) {
-            // Файла нет - создаём пустую структуру
-            departments = [];
-            document.getElementById('loginSection').style.display = 'none';
-            document.getElementById('adminSection').style.display = 'block';
-            renderEditor();
-            return;
-        }
-        
-        if (!response.ok) {
-            throw new Error('Ошибка доступа. Проверьте токен.');
-        }
-        
-        const data = await response.json();
-        fileSha = data.sha;
-        const content = atob(data.content);
-        const jsonData = JSON.parse(content);
-        departments = jsonData.departments || [];
-        
-        document.getElementById('loginSection').style.display = 'none';
-        document.getElementById('adminSection').style.display = 'block';
-        renderEditor();
-        
-    } catch (error) {
-        document.getElementById('loginError').textContent = error.message;
-    }
-});
+function login() {
+    token = document.getElementById('token').value;
+    if(!token) return;
+    load();
+}
 
-function renderEditor() {
-    const editor = document.getElementById('departmentsEditor');
+async function load() {
+    let r = await fetch('https://api.github.com/repos/Alexandr-komi/corporate-directory/contents/data.json', {
+        headers: {'Authorization': 'token '+token}
+    });
+    if(r.status == 404) { render(); return; }
+    let d = await r.json();
+    sha = d.sha;
+    let content = decodeURIComponent(escape(atob(d.content)));
+    data = JSON.parse(content);
+    render();
+}
+
+function render() {
     let html = '';
-    
-    for (let i = 0; i < departments.length; i++) {
-        const dept = departments[i];
-        
-        html += `<div class="department-editor" data-index="${i}">`;
-        html += `<div class="department-title">`;
-        html += `<input type="text" value="${escapeHTML(dept.name || '')}" placeholder="Название отдела" onchange="updateDepartmentName(${i}, this.value)">`;
-        html += `<button class="btn move-btn" onclick="moveDepartment(${i}, 'up')" ${i === 0 ? 'disabled' : ''}>↑</button>`;
-        html += `<button class="btn move-btn" onclick="moveDepartment(${i}, 'down')" ${i === departments.length - 1 ? 'disabled' : ''}>↓</button>`;
-        html += `<button class="btn delete-btn" onclick="deleteDepartment(${i})">×</button>`;
+    for(let i=0; i<data.departments.length; i++) {
+        let d = data.departments[i];
+        html += `<div class="dept">`;
+        html += `<input id="dept_${i}" value="${(d.name||'').replace(/"/g, '&quot;')}" placeholder="Название отдела">`;
+        html += `<button onclick="moveUp(${i})">↑</button>`;
+        html += `<button onclick="moveDown(${i})">↓</button>`;
+        html += `<button onclick="delDept(${i})">Удалить</button>`;
+        if(d.contacts) for(let j=0; j<d.contacts.length; j++) {
+            let c = d.contacts[j];
+            html += `<div class="contact">`;
+            html += `<input id="name_${i}_${j}" value="${(c.name||'').replace(/"/g, '&quot;')}" placeholder="ФИО">`;
+            html += `<input id="pos_${i}_${j}" value="${(c.position||'').replace(/"/g, '&quot;')}" placeholder="Должность">`;
+            html += `<input id="phone_${i}_${j}" value="${(c.phone||'').replace(/"/g, '&quot;')}" placeholder="Телефон">`;
+            html += `<input id="email_${i}_${j}" value="${(c.email||'').replace(/"/g, '&quot;')}" placeholder="Email">`;
+            html += `<button onclick="delContact(${i},${j})">×</button>`;
+            html += `</div>`;
+        }
+        html += `<button onclick="addContact(${i})">+ Контакт</button>`;
         html += `</div>`;
-        html += `<div class="contacts-editor">`;
-        
-        if (dept.contacts && dept.contacts.length > 0) {
-            for (let j = 0; j < dept.contacts.length; j++) {
-                const c = dept.contacts[j];
-                html += `<div class="contact-editor">`;
-                html += `<input type="text" value="${escapeHTML(c.name || '')}" placeholder="ФИО" onchange="updateContact(${i}, ${j}, 'name', this.value)">`;
-                html += `<input type="text" value="${escapeHTML(c.position || '')}" placeholder="Должность" onchange="updateContact(${i}, ${j}, 'position', this.value)">`;
-                html += `<input type="text" value="${escapeHTML(c.phone || '')}" placeholder="Телефон" onchange="updateContact(${i}, ${j}, 'phone', this.value)">`;
-                html += `<input type="email" value="${escapeHTML(c.email || '')}" placeholder="Email" onchange="updateContact(${i}, ${j}, 'email', this.value)">`;
-                html += `<button class="btn delete-btn" onclick="deleteContact(${i}, ${j})">×</button>`;
-                html += `</div>`;
+    }
+    document.getElementById('editor').innerHTML = html;
+}
+
+function addDept() {
+    data.departments.push({name:'Новый отдел',contacts:[]});
+    render();
+}
+
+function addContact(i) {
+    if(!data.departments[i].contacts) data.departments[i].contacts=[];
+    data.departments[i].contacts.push({name:'',position:'',phone:'',email:''});
+    render();
+}
+
+function delContact(i,j) {
+    data.departments[i].contacts.splice(j,1);
+    render();
+}
+
+function delDept(i) {
+    data.departments.splice(i,1);
+    render();
+}
+
+function moveUp(i) {
+    if(i>0) {
+        let t = data.departments[i];
+        data.departments[i] = data.departments[i-1];
+        data.departments[i-1] = t;
+        render();
+    }
+}
+
+function moveDown(i) {
+    if(i<data.departments.length-1) {
+        let t = data.departments[i];
+        data.departments[i] = data.departments[i+1];
+        data.departments[i+1] = t;
+        render();
+    }
+}
+
+async function save() {
+    for(let i=0; i<data.departments.length; i++) {
+        let inp = document.getElementById(`dept_${i}`);
+        if(inp) data.departments[i].name = inp.value;
+        if(data.departments[i].contacts) {
+            for(let j=0; j<data.departments[i].contacts.length; j++) {
+                let n = document.getElementById(`name_${i}_${j}`);
+                let p = document.getElementById(`pos_${i}_${j}`);
+                let ph = document.getElementById(`phone_${i}_${j}`);
+                let e = document.getElementById(`email_${i}_${j}`);
+                if(n) data.departments[i].contacts[j].name = n.value;
+                if(p) data.departments[i].contacts[j].position = p.value;
+                if(ph) data.departments[i].contacts[j].phone = ph.value;
+                if(e) data.departments[i].contacts[j].email = e.value;
             }
         }
-        
-        html += `</div>`;
-        html += `<button class="btn add-contact-btn" onclick="addContact(${i})">+ Добавить контакт</button>`;
-        html += `</div>`;
     }
-    
-    editor.innerHTML = html;
-}
-
-function updateDepartmentName(index, newName) {
-    departments[index].name = newName;
-}
-
-function updateContact(deptIndex, contactIndex, field, value) {
-    if (!departments[deptIndex].contacts) {
-        departments[deptIndex].contacts = [];
-    }
-    if (!departments[deptIndex].contacts[contactIndex]) {
-        departments[deptIndex].contacts[contactIndex] = {};
-    }
-    departments[deptIndex].contacts[contactIndex][field] = value;
-}
-
-function deleteContact(deptIndex, contactIndex) {
-    if (confirm('Удалить контакт?')) {
-        departments[deptIndex].contacts.splice(contactIndex, 1);
-        renderEditor();
-    }
-}
-
-function addContact(deptIndex) {
-    if (!departments[deptIndex].contacts) {
-        departments[deptIndex].contacts = [];
-    }
-    departments[deptIndex].contacts.push({
-        name: '',
-        position: '',
-        phone: '',
-        email: ''
+    document.getElementById('status').innerText = 'Сохранение...';
+    let json = JSON.stringify(data, null, 2);
+    let content = btoa(unescape(encodeURIComponent(json)));
+    let body = {message: 'update', content: content};
+    if(sha) body.sha = sha;
+    let r = await fetch('https://api.github.com/repos/Alexandr-komi/corporate-directory/contents/data.json', {
+        method: 'PUT',
+        headers: {'Authorization': 'token '+token, 'Content-Type': 'application/json'},
+        body: JSON.stringify(body)
     });
-    renderEditor();
-}
-
-document.getElementById('addDepartmentBtn').addEventListener('click', function() {
-    departments.push({
-        name: 'Новый отдел',
-        contacts: []
-    });
-    renderEditor();
-});
-
-function moveDepartment(index, direction) {
-    const newIndex = direction === 'up' ? index - 1 : index + 1;
-    if (newIndex < 0 || newIndex >= departments.length) return;
-    
-    const dept = departments[index];
-    departments.splice(index, 1);
-    departments.splice(newIndex, 0, dept);
-    renderEditor();
-}
-
-function deleteDepartment(index) {
-    if (confirm('Удалить отдел?')) {
-        departments.splice(index, 1);
-        renderEditor();
+    if(r.ok) {
+        document.getElementById('status').innerText = '✅ Сохранено!';
+        let d = await r.json();
+        sha = d.content.sha;
+    } else {
+        document.getElementById('status').innerText = '❌ Ошибка';
     }
-}
-
-document.getElementById('saveToGithubBtn').addEventListener('click', async function() {
-    const statusEl = document.getElementById('saveStatus');
-    statusEl.textContent = 'Сохранение...';
-    
-    try {
-        // Собираем свежие данные из полей ввода
-        for (let i = 0; i < departments.length; i++) {
-            let nameInput = document.querySelector(`.department-editor[data-index="${i}"] .department-title input`);
-            if (nameInput) departments[i].name = nameInput.value;
-            
-            if (departments[i].contacts) {
-                let contactEditors = document.querySelectorAll(`.department-editor[data-index="${i}"] .contact-editor`);
-                contactEditors.forEach((editor, j) => {
-                    let inputs = editor.querySelectorAll('input');
-                    if (inputs.length >= 4) {
-                        departments[i].contacts[j].name = inputs[0].value;
-                        departments[i].contacts[j].position = inputs[1].value;
-                        departments[i].contacts[j].phone = inputs[2].value;
-                        departments[i].contacts[j].email = inputs[3].value;
-                    }
-                });
-            }
-        }
-        
-        const dataToSave = { departments: departments };
-        
-        // ПРАВИЛЬНОЕ кодирование русских букв
-        const jsonString = JSON.stringify(dataToSave, null, 2);
-        const utf8Bytes = new TextEncoder().encode(jsonString);
-        let binary = '';
-        utf8Bytes.forEach(byte => { binary += String.fromCharCode(byte); });
-        const content = btoa(binary);
-        
-        let url = 'https://api.github.com/repos/Alexandr-komi/corporate-directory/contents/data.json';
-        let body = {
-            message: 'Обновление справочника',
-            content: content
-        };
-        
-        if (fileSha) {
-            body.sha = fileSha;
-        }
-        
-        const response = await fetch(url, {
-            method: 'PUT',
-            headers: {
-                'Authorization': 'token ' + githubToken,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(body)
-        });
-        
-        if (response.ok) {
-            statusEl.textContent = '✅ Сохранено!';
-            const data = await response.json();
-            fileSha = data.content.sha;
-            setTimeout(() => { statusEl.textContent = ''; }, 3000);
-        } else {
-            const errorData = await response.json();
-            console.error('Ошибка GitHub:', errorData);
-            throw new Error('Ошибка сохранения: ' + (errorData.message || 'неизвестная ошибка'));
-        }
-        
-    } catch (error) {
-        console.error(error);
-        statusEl.textContent = '❌ Ошибка сохранения';
-    }
-});
-
-function escapeHTML(str) {
-    if (!str) return '';
-    return String(str)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#039;');
 }
