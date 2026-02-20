@@ -17,7 +17,6 @@ document.getElementById('loginBtn').addEventListener('click', async function() {
         });
         
         if (response.status === 404) {
-            // Файла нет - создаём пустую структуру
             departments = [];
             document.getElementById('loginSection').style.display = 'none';
             document.getElementById('adminSection').style.display = 'block';
@@ -142,10 +141,9 @@ function deleteDepartment(index) {
 
 document.getElementById('saveToGithubBtn').addEventListener('click', async function() {
     const statusEl = document.getElementById('saveStatus');
-    statusEl.textContent = 'Сохранение...';
+    statusEl.textContent = '⏳ Сохранение...';
     
     try {
-        // Собираем свежие данные из полей ввода
         for (let i = 0; i < departments.length; i++) {
             let nameInput = document.querySelector(`.department-editor[data-index="${i}"] .department-title input`);
             if (nameInput) departments[i].name = nameInput.value;
@@ -166,17 +164,14 @@ document.getElementById('saveToGithubBtn').addEventListener('click', async funct
         
         const dataToSave = { departments: departments };
         
-        // ПРАВИЛЬНОЕ кодирование русских букв
+        // САМЫЙ НАДЁЖНЫЙ СПОСОБ КОДИРОВАНИЯ
         const jsonString = JSON.stringify(dataToSave, null, 2);
-        const utf8Bytes = new TextEncoder().encode(jsonString);
-        let binary = '';
-        utf8Bytes.forEach(byte => { binary += String.fromCharCode(byte); });
-        const content = btoa(binary);
+        const base64 = btoa(unescape(encodeURIComponent(jsonString)));
         
         let url = 'https://api.github.com/repos/Alexandr-komi/corporate-directory/contents/data.json';
         let body = {
             message: 'Обновление справочника',
-            content: content
+            content: base64
         };
         
         if (fileSha) {
@@ -198,14 +193,12 @@ document.getElementById('saveToGithubBtn').addEventListener('click', async funct
             fileSha = data.content.sha;
             setTimeout(() => { statusEl.textContent = ''; }, 3000);
         } else {
-            const errorData = await response.json();
-            console.error('Ошибка GitHub:', errorData);
-            throw new Error('Ошибка сохранения: ' + (errorData.message || 'неизвестная ошибка'));
+            throw new Error('Ошибка сохранения');
         }
         
     } catch (error) {
         console.error(error);
-        statusEl.textContent = '❌ Ошибка сохранения';
+        statusEl.textContent = '❌ Ошибка';
     }
 });
 
