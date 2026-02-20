@@ -1,3 +1,15 @@
 {
-  "departments": []
+  "departments": [
+    {
+      "name": "Новый отдел",
+      "contacts": [
+        {
+          "name": "укауцуцквыавыа",
+          "position": "ывыв",
+          "phone": "",
+          "email": ""
+        }
+      ]
+    }
+  ]
 }
