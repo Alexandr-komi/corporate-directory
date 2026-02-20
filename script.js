@@ -10,7 +10,7 @@ async function loadDirectory() {
     }
 }
 
-// Отображаем справочник
+// Отображаем справочник (ВСЕ ОТДЕЛЫ СВЕРНУТЫ)
 function displayDirectory(data) {
     const container = document.getElementById('directoryContainer');
     let html = '';
@@ -20,9 +20,9 @@ function displayDirectory(data) {
             <div class="department" data-department-index="${index}">
                 <div class="department-header" onclick="toggleDepartment(${index})">
                     <h2>${escapeHTML(dept.name)}</h2>
-                    <span class="toggle-icon" id="toggle-${index}">▼</span>
+                    <span class="toggle-icon" id="toggle-${index}">▶</span>
                 </div>
-                <div class="contacts-list" id="dept-${index}">
+                <div class="contacts-list" id="dept-${index}" style="display: none;">
                     ${renderContacts(dept.contacts)}
                 </div>
             </div>
@@ -96,7 +96,8 @@ function escapeHTML(str) {
         .replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;');
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
 }
 
 // Загружаем справочник при открытии страницы
