@@ -32,19 +32,27 @@ function displayDirectory(data) {
     container.innerHTML = html;
 }
 
-// Отображаем контакты отдела
+// Отображаем контакты отдела (ТЕПЕРЬ С EMAIL)
 function renderContacts(contacts) {
     if (!contacts || contacts.length === 0) {
         return '<p>Нет контактов</p>';
     }
     
-    return contacts.map(contact => `
-        <div class="contact-card">
-            <div class="name">${escapeHTML(contact.name || '')}</div>
-            <div class="position">${escapeHTML(contact.position || '')}</div>
-            <div class="phone">📞 ${escapeHTML(contact.phone || '')}</div>
-        </div>
-    `).join('');
+    return contacts.map(contact => {
+        let emailHtml = '';
+        if (contact.email) {
+            emailHtml = `<div class="email">✉️ <a href="mailto:${escapeHTML(contact.email)}">${escapeHTML(contact.email)}</a></div>`;
+        }
+        
+        return `
+            <div class="contact-card">
+                <div class="name">${escapeHTML(contact.name || '')}</div>
+                <div class="position">${escapeHTML(contact.position || '')}</div>
+                <div class="phone">📞 ${escapeHTML(contact.phone || '')}</div>
+                ${emailHtml}
+            </div>
+        `;
+    }).join('');
 }
 
 // Сворачиваем/разворачиваем отдел
