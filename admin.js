@@ -32,7 +32,8 @@ document.getElementById('loginBtn').addEventListener('click', async function() {
         const data = await response.json();
         fileSha = data.sha;
         const content = atob(data.content);
-        departments = JSON.parse(content).departments || [];
+        const jsonData = JSON.parse(content);
+        departments = jsonData.departments || [];
         
         document.getElementById('loginSection').style.display = 'none';
         document.getElementById('adminSection').style.display = 'block';
@@ -144,9 +145,33 @@ document.getElementById('saveToGithubBtn').addEventListener('click', async funct
     statusEl.textContent = 'Сохранение...';
     
     try {
+        // Собираем свежие данные из полей ввода
+        for (let i = 0; i < departments.length; i++) {
+            let nameInput = document.querySelector(`.department-editor[data-index="${i}"] .department-title input`);
+            if (nameInput) departments[i].name = nameInput.value;
+            
+            if (departments[i].contacts) {
+                let contactEditors = document.querySelectorAll(`.department-editor[data-index="${i}"] .contact-editor`);
+                contactEditors.forEach((editor, j) => {
+                    let inputs = editor.querySelectorAll('input');
+                    if (inputs.length >= 4) {
+                        departments[i].contacts[j].name = inputs[0].value;
+                        departments[i].contacts[j].position = inputs[1].value;
+                        departments[i].contacts[j].phone = inputs[2].value;
+                        departments[i].contacts[j].email = inputs[3].value;
+                    }
+                });
+            }
+        }
+        
         const dataToSave = { departments: departments };
+        
+        // ПРАВИЛЬНОЕ кодирование русских букв
         const jsonString = JSON.stringify(dataToSave, null, 2);
-        const content = btoa(unescape(encodeURIComponent(jsonString)));
+        const utf8Bytes = new TextEncoder().encode(jsonString);
+        let binary = '';
+        utf8Bytes.forEach(byte => { binary += String.fromCharCode(byte); });
+        const content = btoa(binary);
         
         let url = 'https://api.github.com/repos/Alexandr-komi/corporate-directory/contents/data.json';
         let body = {
@@ -173,10 +198,13 @@ document.getElementById('saveToGithubBtn').addEventListener('click', async funct
             fileSha = data.content.sha;
             setTimeout(() => { statusEl.textContent = ''; }, 3000);
         } else {
-            throw new Error('Ошибка сохранения');
+            const errorData = await response.json();
+            console.error('Ошибка GitHub:', errorData);
+            throw new Error('Ошибка сохранения: ' + (errorData.message || 'неизвестная ошибка'));
         }
         
     } catch (error) {
+        console.error(error);
         statusEl.textContent = '❌ Ошибка сохранения';
     }
 });
