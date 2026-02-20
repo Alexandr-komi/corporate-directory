@@ -1,4 +1,4 @@
-let currentData = null;
+let departments = [];
 let githubToken = '';
 let fileSha = '';
 
@@ -13,10 +13,17 @@ document.getElementById('loginBtn').addEventListener('click', async function() {
     
     try {
         const response = await fetch('https://api.github.com/repos/Alexandr-komi/corporate-directory/contents/data.json', {
-            headers: {
-                'Authorization': 'token ' + token
-            }
+            headers: { 'Authorization': 'token ' + token }
         });
+        
+        if (response.status === 404) {
+            // Файла нет - создаём пустую структуру
+            departments = [];
+            document.getElementById('loginSection').style.display = 'none';
+            document.getElementById('adminSection').style.display = 'block';
+            renderEditor();
+            return;
+        }
         
         if (!response.ok) {
             throw new Error('Ошибка доступа. Проверьте токен.');
@@ -25,11 +32,10 @@ document.getElementById('loginBtn').addEventListener('click', async function() {
         const data = await response.json();
         fileSha = data.sha;
         const content = atob(data.content);
-        currentData = JSON.parse(content);
+        departments = JSON.parse(content).departments || [];
         
         document.getElementById('loginSection').style.display = 'none';
         document.getElementById('adminSection').style.display = 'block';
-        
         renderEditor();
         
     } catch (error) {
@@ -41,82 +47,65 @@ function renderEditor() {
     const editor = document.getElementById('departmentsEditor');
     let html = '';
     
-    for (let i = 0; i < currentData.departments.length; i++) {
-        const dept = currentData.departments[i];
-        html += `
-            <div class="department-editor" data-index="${i}">
-                <div class="department-title">
-                    <input type="text" value="${escapeHTML(dept.name)}" 
-                           placeholder="Название отдела" 
-                           onchange="updateDepartmentName(${i}, this.value)">
-                    <button class="btn move-btn" onclick="moveDepartment(${i}, 'up')" 
-                            ${i === 0 ? 'disabled' : ''}>↑</button>
-                    <button class="btn move-btn" onclick="moveDepartment(${i}, 'down')"
-                            ${i === currentData.departments.length - 1 ? 'disabled' : ''}>↓</button>
-                    <button class="btn delete-btn" onclick="deleteDepartment(${i})">×</button>
-                </div>
-                <div class="contacts-editor" id="contacts-${i}">
-        `;
+    for (let i = 0; i < departments.length; i++) {
+        const dept = departments[i];
+        
+        html += `<div class="department-editor" data-index="${i}">`;
+        html += `<div class="department-title">`;
+        html += `<input type="text" value="${escapeHTML(dept.name || '')}" placeholder="Название отдела" onchange="updateDepartmentName(${i}, this.value)">`;
+        html += `<button class="btn move-btn" onclick="moveDepartment(${i}, 'up')" ${i === 0 ? 'disabled' : ''}>↑</button>`;
+        html += `<button class="btn move-btn" onclick="moveDepartment(${i}, 'down')" ${i === departments.length - 1 ? 'disabled' : ''}>↓</button>`;
+        html += `<button class="btn delete-btn" onclick="deleteDepartment(${i})">×</button>`;
+        html += `</div>`;
+        html += `<div class="contacts-editor">`;
         
         if (dept.contacts && dept.contacts.length > 0) {
             for (let j = 0; j < dept.contacts.length; j++) {
                 const c = dept.contacts[j];
-                html += `
-                    <div class="contact-editor">
-                        <input type="text" value="${escapeHTML(c.name || '')}" 
-                               placeholder="ФИО" style="width: 200px;"
-                               onchange="updateContact(${i}, ${j}, 'name', this.value)">
-                        <input type="text" value="${escapeHTML(c.position || '')}" 
-                               placeholder="Должность" style="width: 200px;"
-                               onchange="updateContact(${i}, ${j}, 'position', this.value)">
-                        <input type="text" value="${escapeHTML(c.phone || '')}" 
-                               placeholder="Телефон" style="width: 150px;"
-                               onchange="updateContact(${i}, ${j}, 'phone', this.value)">
-                        <input type="email" value="${escapeHTML(c.email || '')}" 
-                               placeholder="Email" style="width: 200px;"
-                               onchange="updateContact(${i}, ${j}, 'email', this.value)">
-                        <button class="btn delete-btn" onclick="deleteContact(${i}, ${j})">×</button>
-                    </div>
-                `;
+                html += `<div class="contact-editor">`;
+                html += `<input type="text" value="${escapeHTML(c.name || '')}" placeholder="ФИО" onchange="updateContact(${i}, ${j}, 'name', this.value)">`;
+                html += `<input type="text" value="${escapeHTML(c.position || '')}" placeholder="Должность" onchange="updateContact(${i}, ${j}, 'position', this.value)">`;
+                html += `<input type="text" value="${escapeHTML(c.phone || '')}" placeholder="Телефон" onchange="updateContact(${i}, ${j}, 'phone', this.value)">`;
+                html += `<input type="email" value="${escapeHTML(c.email || '')}" placeholder="Email" onchange="updateContact(${i}, ${j}, 'email', this.value)">`;
+                html += `<button class="btn delete-btn" onclick="deleteContact(${i}, ${j})">×</button>`;
+                html += `</div>`;
             }
         }
         
-        html += `
-                </div>
-                <button class="btn add-contact-btn" onclick="addContact(${i})">+ Добавить контакт</button>
-            </div>
-        `;
+        html += `</div>`;
+        html += `<button class="btn add-contact-btn" onclick="addContact(${i})">+ Добавить контакт</button>`;
+        html += `</div>`;
     }
     
     editor.innerHTML = html;
 }
 
 function updateDepartmentName(index, newName) {
-    currentData.departments[index].name = newName;
+    departments[index].name = newName;
 }
 
 function updateContact(deptIndex, contactIndex, field, value) {
-    if (!currentData.departments[deptIndex].contacts) {
-        currentData.departments[deptIndex].contacts = [];
+    if (!departments[deptIndex].contacts) {
+        departments[deptIndex].contacts = [];
     }
-    if (!currentData.departments[deptIndex].contacts[contactIndex]) {
-        currentData.departments[deptIndex].contacts[contactIndex] = {};
+    if (!departments[deptIndex].contacts[contactIndex]) {
+        departments[deptIndex].contacts[contactIndex] = {};
     }
-    currentData.departments[deptIndex].contacts[contactIndex][field] = value;
+    departments[deptIndex].contacts[contactIndex][field] = value;
 }
 
 function deleteContact(deptIndex, contactIndex) {
     if (confirm('Удалить контакт?')) {
-        currentData.departments[deptIndex].contacts.splice(contactIndex, 1);
+        departments[deptIndex].contacts.splice(contactIndex, 1);
         renderEditor();
     }
 }
 
 function addContact(deptIndex) {
-    if (!currentData.departments[deptIndex].contacts) {
-        currentData.departments[deptIndex].contacts = [];
+    if (!departments[deptIndex].contacts) {
+        departments[deptIndex].contacts = [];
     }
-    currentData.departments[deptIndex].contacts.push({
+    departments[deptIndex].contacts.push({
         name: '',
         position: '',
         phone: '',
@@ -125,69 +114,57 @@ function addContact(deptIndex) {
     renderEditor();
 }
 
-function moveDepartment(index, direction) {
-    let newIndex = direction === 'up' ? index - 1 : index + 1;
-    if (newIndex < 0 || newIndex >= currentData.departments.length) return;
-    
-    let dept = currentData.departments[index];
-    currentData.departments.splice(index, 1);
-    currentData.departments.splice(newIndex, 0, dept);
-    renderEditor();
-}
-
-function deleteDepartment(index) {
-    if (confirm('Удалить отдел?')) {
-        currentData.departments.splice(index, 1);
-        renderEditor();
-    }
-}
-
 document.getElementById('addDepartmentBtn').addEventListener('click', function() {
-    currentData.departments.push({
+    departments.push({
         name: 'Новый отдел',
         contacts: []
     });
     renderEditor();
 });
 
+function moveDepartment(index, direction) {
+    const newIndex = direction === 'up' ? index - 1 : index + 1;
+    if (newIndex < 0 || newIndex >= departments.length) return;
+    
+    const dept = departments[index];
+    departments.splice(index, 1);
+    departments.splice(newIndex, 0, dept);
+    renderEditor();
+}
+
+function deleteDepartment(index) {
+    if (confirm('Удалить отдел?')) {
+        departments.splice(index, 1);
+        renderEditor();
+    }
+}
+
 document.getElementById('saveToGithubBtn').addEventListener('click', async function() {
     const statusEl = document.getElementById('saveStatus');
     statusEl.textContent = 'Сохранение...';
     
     try {
-        // Собираем данные из полей ввода (на случай если что-то не сохранилось через onchange)
-        for (let i = 0; i < currentData.departments.length; i++) {
-            let nameInput = document.querySelector(`.department-editor[data-index="${i}"] .department-title input`);
-            if (nameInput) currentData.departments[i].name = nameInput.value;
-            
-            if (currentData.departments[i].contacts) {
-                let contactEditors = document.querySelectorAll(`.department-editor[data-index="${i}"] .contact-editor`);
-                contactEditors.forEach((editor, j) => {
-                    let inputs = editor.querySelectorAll('input');
-                    if (inputs.length >= 4) {
-                        currentData.departments[i].contacts[j].name = inputs[0].value;
-                        currentData.departments[i].contacts[j].position = inputs[1].value;
-                        currentData.departments[i].contacts[j].phone = inputs[2].value;
-                        currentData.departments[i].contacts[j].email = inputs[3].value;
-                    }
-                });
-            }
-        }
-        
-        const jsonString = JSON.stringify(currentData, null, 2);
+        const dataToSave = { departments: departments };
+        const jsonString = JSON.stringify(dataToSave, null, 2);
         const content = btoa(unescape(encodeURIComponent(jsonString)));
         
-        const response = await fetch('https://api.github.com/repos/Alexandr-komi/corporate-directory/contents/data.json', {
+        let url = 'https://api.github.com/repos/Alexandr-komi/corporate-directory/contents/data.json';
+        let body = {
+            message: 'Обновление справочника',
+            content: content
+        };
+        
+        if (fileSha) {
+            body.sha = fileSha;
+        }
+        
+        const response = await fetch(url, {
             method: 'PUT',
             headers: {
                 'Authorization': 'token ' + githubToken,
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({
-                message: 'Обновление справочника через админку',
-                content: content,
-                sha: fileSha
-            })
+            body: JSON.stringify(body)
         });
         
         if (response.ok) {
