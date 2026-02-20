@@ -1,24 +1,13 @@
 {
   "departments": [
     {
-      "name": "Сельские поселения Корткеросского района",
+      "name": "Ð¡ÐµÐ»ÑÑÐºÐ¸Ðµ Ð¿Ð¾ÑÐµÐ»ÐµÐ½Ð¸Ñ ÐÐ¾ÑÑÐºÐµÑÐ¾ÑÑÐºÐ¾Ð³Ð¾ ÑÐ°Ð¹Ð¾Ð½Ð°",
       "contacts": [
         {
-          "name": "Разманов",
+          "name": "Ð Ð°Ð·Ð¼Ð°Ð½Ð¾Ð²",
           "position": "",
           "phone": "",
           "email": "kortkeros@kortkeros.rkomi.ru"
-        }
-      ]
-    },
-    {
-      "name": "it-отдел",
-      "contacts": [
-        {
-          "name": "Бутиков Александр Васильевич",
-          "position": "Главный эксперт",
-          "phone": "9-22-14",
-          "email": "a.v.butikov@kortkeros.rkomi.ru"
         }
       ]
     }
