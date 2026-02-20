@@ -9,22 +9,26 @@
 <body>
     <div class="container">
         <header>
-            <h1>Управление справочником</h1>
-            <a href="index.html">← На главную</a>
+            <h1>⚙️ Управление справочником</h1>
+            <a href="index.html" class="admin-link">← К справочнику</a>
         </header>
         
         <div id="loginSection">
-            <h3>Вход</h3>
-            <input type="password" id="tokenInput" placeholder="Токен GitHub">
-            <button id="loginBtn">Войти</button>
-            <p id="loginError" style="color:red"></p>
+            <h2>Вход для администратора</h2>
+            <p>Введите GitHub токен с правами на запись в репозиторий</p>
+            <input type="password" id="tokenInput" placeholder="ghp_..." class="token-input">
+            <button id="loginBtn" class="btn save-btn">Войти</button>
+            <div id="loginError" class="error-message"></div>
         </div>
         
-        <div id="adminSection" style="display:none">
-            <button id="loadDataBtn">Загрузить данные</button>
-            <button id="saveDataBtn">Сохранить в GitHub</button>
-            <span id="saveStatus"></span>
-            <div id="editor"></div>
+        <div id="adminSection" style="display: none;">
+            <div class="admin-toolbar">
+                <button id="addDepartmentBtn" class="btn add-btn">➕ Добавить отдел</button>
+                <button id="saveToGithubBtn" class="btn save-btn">💾 Сохранить в GitHub</button>
+                <span id="saveStatus" class="save-status"></span>
+            </div>
+            
+            <div id="departmentsEditor" class="departments-editor"></div>
         </div>
     </div>
     
