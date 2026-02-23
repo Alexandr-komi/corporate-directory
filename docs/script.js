@@ -37,9 +37,9 @@ function displayContacts(data) {
         const section = document.createElement('div');
         section.className = 'district-section';
         
-        // Убрали вывод district-title полностью!
-        
-        const settlementsHtml = data.settlements.map(settlement => `
+        const settlementsHtml = data.settlements.map(settlement => {
+            // Формируем карточку с адресом, если он есть
+            return `
             <div class="settlement-card">
                 <div class="settlement-header">
                     <h3>${settlement.name}</h3>
@@ -48,12 +48,17 @@ function displayContacts(data) {
                 <div class="settlement-body">
                     <div class="info-row">
                         <span class="label">👤 Глава:</span>
-                        <span class="value">${settlement.head}</span>
+                        <span class="value"><strong>${settlement.head}</strong></span>
                     </div>
                     ${settlement.position ? `
                     <div class="info-row">
                         <span class="label">📋 Должность:</span>
                         <span class="value">${settlement.position}</span>
+                    </div>` : ''}
+                    ${settlement.address ? `
+                    <div class="info-row">
+                        <span class="label">🏢 Адрес:</span>
+                        <span class="value">${settlement.address}</span>
                     </div>` : ''}
                     <div class="info-row">
                         <span class="label">📞 Телефон:</span>
@@ -70,7 +75,7 @@ function displayContacts(data) {
                     </div>` : ''}
                 </div>
             </div>
-        `).join('');
+        `}).join('');
         
         section.innerHTML = `
             <div class="settlements-grid">
@@ -95,12 +100,17 @@ function displayContacts(data) {
                     <div class="settlement-body">
                         <div class="info-row">
                             <span class="label">👤 Глава:</span>
-                            <span class="value">${settlement.head}</span>
+                            <span class="value"><strong>${settlement.head}</strong></span>
                         </div>
                         ${settlement.position ? `
                         <div class="info-row">
                             <span class="label">📋 Должность:</span>
                             <span class="value">${settlement.position}</span>
+                        </div>` : ''}
+                        ${settlement.address ? `
+                        <div class="info-row">
+                            <span class="label">🏢 Адрес:</span>
+                            <span class="value">${settlement.address}</span>
                         </div>` : ''}
                         <div class="info-row">
                             <span class="label">📞 Телефон:</span>
@@ -147,7 +157,8 @@ function filterContacts() {
         const filteredSettlements = allData.settlements.filter(settlement => 
             settlement.name.toLowerCase().includes(searchText) ||
             settlement.head.toLowerCase().includes(searchText) ||
-            (settlement.position && settlement.position.toLowerCase().includes(searchText))
+            (settlement.position && settlement.position.toLowerCase().includes(searchText)) ||
+            (settlement.address && settlement.address.toLowerCase().includes(searchText))
         );
         
         const filteredData = {
@@ -166,6 +177,7 @@ function filterContacts() {
                 settlement.name.toLowerCase().includes(searchText) ||
                 settlement.head.toLowerCase().includes(searchText) ||
                 (settlement.position && settlement.position.toLowerCase().includes(searchText)) ||
+                (settlement.address && settlement.address.toLowerCase().includes(searchText)) ||
                 district.district.toLowerCase().includes(searchText)
             )
         })).filter(district => district.settlements.length > 0);
