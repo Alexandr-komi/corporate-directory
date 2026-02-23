@@ -83,15 +83,6 @@ header h1 {
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
 
-.district-title {
-    color: #1e3c72;
-    font-size: 22px;
-    margin-bottom: 20px;
-    padding-bottom: 12px;
-    border-bottom: 2px solid #e9ecef;
-    font-weight: 600;
-}
-
 .settlements-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
@@ -158,6 +149,12 @@ header h1 {
 .info-row .value {
     color: #2c3e50;
     flex: 1;
+}
+
+/* Жирный шрифт для ФИО глав */
+.info-row .value strong {
+    font-weight: 700;
+    color: #1e3c72;
 }
 
 .info-row .value a {
