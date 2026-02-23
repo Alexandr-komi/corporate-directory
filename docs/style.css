@@ -118,13 +118,29 @@ header h1 {
     font-weight: 600;
 }
 
-.settlement-type {
-    background: #e7f5ff;
-    color: #1e3c72;
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 12px;
+/* Кнопка копирования */
+.copy-btn {
+    background: #4dabf7;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 4px;
     font-weight: 500;
+}
+
+.copy-btn:hover {
+    background: #1e3c72;
+    transform: scale(1.02);
+}
+
+.copy-btn:active {
+    transform: scale(0.98);
 }
 
 .settlement-body {
@@ -198,6 +214,30 @@ header h1 {
     margin-left: 5px;
 }
 
+/* Уведомление о копировании */
+.copy-notification {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: #1e3c72;
+    color: white;
+    padding: 14px 28px;
+    border-radius: 50px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    font-size: 15px;
+    font-weight: 500;
+    z-index: 1000;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.3s ease;
+    pointer-events: none;
+}
+
+.copy-notification.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
 /* Для мобильных устройств */
 @media (max-width: 768px) {
     .container {
@@ -236,6 +276,24 @@ header h1 {
     
     .info-row .label {
         min-width: auto;
+    }
+    
+    .settlement-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .copy-btn {
+        align-self: flex-end;
+    }
+    
+    .copy-notification {
+        bottom: 20px;
+        right: 20px;
+        left: 20px;
+        text-align: center;
+        border-radius: 40px;
     }
 }
 

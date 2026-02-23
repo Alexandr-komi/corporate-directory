@@ -26,6 +26,53 @@ async function loadContacts() {
     }
 }
 
+// Функция копирования данных в буфер обмена
+function copyContactData(settlement) {
+    // Формируем текст для копирования
+    let textToCopy = `${settlement.name}\n`;
+    textToCopy += `Глава: ${settlement.head}\n`;
+    if (settlement.position) textToCopy += `Должность: ${settlement.position}\n`;
+    if (settlement.address) textToCopy += `Адрес: ${settlement.address}\n`;
+    textToCopy += `Телефон: ${settlement.phone}\n`;
+    textToCopy += `Email: ${settlement.email}`;
+    if (settlement.note) textToCopy += `\nПримечание: ${settlement.note}`;
+    
+    // Копируем в буфер обмена
+    navigator.clipboard.writeText(textToCopy).then(() => {
+        // Показываем всплывающее уведомление
+        showNotification('✅ Данные скопированы!');
+    }).catch(err => {
+        console.error('Ошибка копирования:', err);
+        alert('Не удалось скопировать данные');
+    });
+}
+
+// Функция показа уведомления
+function showNotification(message) {
+    // Проверяем, есть ли уже уведомление
+    let notification = document.querySelector('.copy-notification');
+    if (notification) {
+        notification.remove();
+    }
+    
+    // Создаём новое уведомление
+    notification = document.createElement('div');
+    notification.className = 'copy-notification';
+    notification.textContent = message;
+    document.body.appendChild(notification);
+    
+    // Показываем и скрываем через 2 секунды
+    setTimeout(() => {
+        notification.classList.add('show');
+        setTimeout(() => {
+            notification.classList.remove('show');
+            setTimeout(() => {
+                notification.remove();
+            }, 300);
+        }, 2000);
+    }, 100);
+}
+
 function displayContacts(data) {
     const directory = document.getElementById('directory');
     if (!directory) return;
@@ -42,7 +89,9 @@ function displayContacts(data) {
             <div class="settlement-card">
                 <div class="settlement-header">
                     <h3>${settlement.name}</h3>
-                    <span class="settlement-type">${settlement.type || 'село'}</span>
+                    <button class="copy-btn" onclick='copyContactData(${JSON.stringify(settlement).replace(/'/g, "&apos;")})'>
+                        📋 Копировать
+                    </button>
                 </div>
                 <div class="settlement-body">
                     <div class="info-row">
@@ -53,6 +102,11 @@ function displayContacts(data) {
                     <div class="info-row">
                         <span class="label">📋 Должность:</span>
                         <span class="value">${settlement.position}</span>
+                    </div>` : ''}
+                    ${settlement.address ? `
+                    <div class="info-row">
+                        <span class="label">🏢 Адрес:</span>
+                        <span class="value">${settlement.address}</span>
                     </div>` : ''}
                     <div class="info-row">
                         <span class="label">📞 Телефон:</span>
@@ -66,11 +120,6 @@ function displayContacts(data) {
                     <div class="info-row note">
                         <span class="label">📌 Примечание:</span>
                         <span class="value">${settlement.note}</span>
-                    </div>` : ''}
-                    ${settlement.address ? `
-                    <div class="info-row">
-                        <span class="label">🏢 Адрес:</span>
-                        <span class="value">${settlement.address}</span>
                     </div>` : ''}
                 </div>
             </div>
@@ -95,7 +144,9 @@ function displayContacts(data) {
                 <div class="settlement-card">
                     <div class="settlement-header">
                         <h3>${settlement.name}</h3>
-                        <span class="settlement-type">${settlement.type || 'село'}</span>
+                        <button class="copy-btn" onclick='copyContactData(${JSON.stringify(settlement).replace(/'/g, "&apos;")})'>
+                            📋 Копировать
+                        </button>
                     </div>
                     <div class="settlement-body">
                         <div class="info-row">
@@ -106,6 +157,11 @@ function displayContacts(data) {
                         <div class="info-row">
                             <span class="label">📋 Должность:</span>
                             <span class="value">${settlement.position}</span>
+                        </div>` : ''}
+                        ${settlement.address ? `
+                        <div class="info-row">
+                            <span class="label">🏢 Адрес:</span>
+                            <span class="value">${settlement.address}</span>
                         </div>` : ''}
                         <div class="info-row">
                             <span class="label">📞 Телефон:</span>
@@ -119,11 +175,6 @@ function displayContacts(data) {
                         <div class="info-row note">
                             <span class="label">📌 Примечание:</span>
                             <span class="value">${settlement.note}</span>
-                        </div>` : ''}
-                        ${settlement.address ? `
-                        <div class="info-row">
-                            <span class="label">🏢 Адрес:</span>
-                            <span class="value">${settlement.address}</span>
                         </div>` : ''}
                     </div>
                 </div>
@@ -158,7 +209,9 @@ function filterContacts() {
             settlement.name.toLowerCase().includes(searchText) ||
             settlement.head.toLowerCase().includes(searchText) ||
             (settlement.position && settlement.position.toLowerCase().includes(searchText)) ||
-            (settlement.address && settlement.address.toLowerCase().includes(searchText))
+            (settlement.address && settlement.address.toLowerCase().includes(searchText)) ||
+            (settlement.phone && settlement.phone.toLowerCase().includes(searchText)) ||
+            (settlement.email && settlement.email.toLowerCase().includes(searchText))
         );
         
         const filteredData = {
@@ -178,6 +231,8 @@ function filterContacts() {
                 settlement.head.toLowerCase().includes(searchText) ||
                 (settlement.position && settlement.position.toLowerCase().includes(searchText)) ||
                 (settlement.address && settlement.address.toLowerCase().includes(searchText)) ||
+                (settlement.phone && settlement.phone.toLowerCase().includes(searchText)) ||
+                (settlement.email && settlement.email.toLowerCase().includes(searchText)) ||
                 district.district.toLowerCase().includes(searchText)
             )
         })).filter(district => district.settlements.length > 0);
