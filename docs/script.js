@@ -5,7 +5,7 @@ if (searchInput) {
     searchInput.addEventListener('input', filterContacts);
 }
 
-let allData = null; // Будем хранить загруженные данные
+let allData = null;
 
 async function loadContacts() {
     const loading = document.getElementById('loading');
@@ -36,6 +36,8 @@ function displayContacts(data) {
     if (data && data.district && data.settlements) {
         const section = document.createElement('div');
         section.className = 'district-section';
+        
+        // Убрали вывод district-title полностью!
         
         const settlementsHtml = data.settlements.map(settlement => `
             <div class="settlement-card">
@@ -71,7 +73,6 @@ function displayContacts(data) {
         `).join('');
         
         section.innerHTML = `
-            <h2 class="district-title">${data.district}</h2>
             <div class="settlements-grid">
                 ${settlementsHtml}
             </div>
