@@ -1,0 +1,134 @@
+[
+  {
+    "district": "Корткеросский район",
+    "settlements": [
+      {
+        "name": "Корткерос",
+        "head": "Разманов Андрей Владимирович",
+        "phone": "89068822275",
+        "email": "kortkeros@kortkeros.rkomi.ru",
+        "position": "Руководитель администрации"
+      },
+      {
+        "name": "Позтыкерес",
+        "head": "Пузыревская Анжела Юрьевна",
+        "phone": "89129625929",
+        "email": "poztikeres@kortkeros.rkomi.ru",
+        "position": "Глава поселения"
+      },
+      {
+        "name": "Вомын",
+        "head": "Моторина Наталья Евгеньевна",
+        "phone": "89087186296",
+        "email": "vomyn@kortkeros.rkomi.ru",
+        "position": "Глава поселения"
+      },
+      {
+        "name": "Пезмег",
+        "head": "Торопов Александр Александрович",
+        "phone": "89121566355",
+        "email": "pezmeg@kortkeros.rkomi.ru",
+        "position": "Глава поселения"
+      },
+      {
+        "name": "Намск",
+        "head": "Забоева Светлана Валентиновна",
+        "phone": "89048622544",
+        "email": "namsk@kortkeros.rkomi.ru",
+        "position": "Глава поселения"
+      },
+      {
+        "name": "Мордино",
+        "head": "Шарикадзе Олеся Михайловна",
+        "phone": "89087198064",
+        "email": "mordino@kortkeros.rkomi.ru",
+        "position": "Глава поселения"
+      },
+      {
+        "name": "Подтыбок",
+        "head": "Михайлова Елена Ивановна",
+        "phone": "89042745774",
+        "email": "podtybok@kortkeros.rkomi.ru",
+        "position": "Глава поселения"
+      },
+      {
+        "name": "Сторожевск",
+        "head": "Канева Ольга Валерьевна",
+        "phone": "89083298042",
+        "email": "storozhevsk@kortkeros.rkomi.ru",
+        "position": "Глава поселения"
+      },
+      {
+        "name": "Нившера",
+        "head": "Изъюрова Нина Степановна",
+        "phone": "89042087603",
+        "email": "nivshera@kortkeros.rkomi.ru",
+        "position": "Глава поселения",
+        "note": "Зам."
+      },
+      {
+        "name": "Маджа",
+        "head": "Ястребова Галина Владимировна",
+        "phone": "89087149079",
+        "email": "madja@kortkeros.rkomi.ru",
+        "position": "Глава поселения"
+      },
+      {
+        "name": "Небдино",
+        "head": "Савин Валерий Владимирович",
+        "phone": "89225856722",
+        "email": "nebdino@kortkeros.rkomi.ru",
+        "position": "Глава поселения"
+      },
+      {
+        "name": "Керес",
+        "head": "Королева Елена Васильевна",
+        "phone": "89041038668",
+        "email": "keres@kortkeros.rkomi.ru",
+        "position": "Глава поселения"
+      },
+      {
+        "name": "Приозерный",
+        "head": "Богадевич Софья Николаевна",
+        "phone": "89042746029",
+        "email": "priozernyi@kortkeros.rkomi.ru",
+        "position": "Глава поселения"
+      },
+      {
+        "name": "Большелуг",
+        "head": "Мишарин Евгений Николаевич",
+        "phone": "89045674043, 89956084043",
+        "email": "bolshelug@kortkeros.rkomi.ru",
+        "position": "Глава поселения"
+      },
+      {
+        "name": "Богородск",
+        "head": "Шевкаленко Светлана Александровна",
+        "phone": "89042080638",
+        "email": "bogorodsk@kortkeros.rkomi.ru",
+        "position": "ВРИО Главы поселения"
+      },
+      {
+        "name": "Подъельск",
+        "head": "Цывунин Андрей Александрович",
+        "phone": "89041018175",
+        "email": "podyelsk@kortkeros.rkomi.ru",
+        "position": "Глава поселения"
+      },
+      {
+        "name": "Додзь",
+        "head": "Арихина Елена Александровна",
+        "phone": "89042013172",
+        "email": "dodz@kortkeros.rkomi.ru",
+        "position": "Глава поселения"
+      },
+      {
+        "name": "Усть-Лэкчим",
+        "head": "Меникова Алена Михайловна",
+        "phone": "89042097136",
+        "email": "ust_lekchim@kortkeros.rkomi.ru",
+        "position": "Глава поселения"
+      }
+    ]
+  }
+]
