@@ -38,7 +38,6 @@ function displayContacts(data) {
         section.className = 'district-section';
         
         const settlementsHtml = data.settlements.map(settlement => {
-            // Формируем карточку с адресом, если он есть
             return `
             <div class="settlement-card">
                 <div class="settlement-header">
@@ -55,11 +54,6 @@ function displayContacts(data) {
                         <span class="label">📋 Должность:</span>
                         <span class="value">${settlement.position}</span>
                     </div>` : ''}
-                    ${settlement.address ? `
-                    <div class="info-row">
-                        <span class="label">🏢 Адрес:</span>
-                        <span class="value">${settlement.address}</span>
-                    </div>` : ''}
                     <div class="info-row">
                         <span class="label">📞 Телефон:</span>
                         <span class="value"><a href="tel:${settlement.phone.replace(/[^0-9+]/g, '')}">${settlement.phone}</a></span>
@@ -72,6 +66,11 @@ function displayContacts(data) {
                     <div class="info-row note">
                         <span class="label">📌 Примечание:</span>
                         <span class="value">${settlement.note}</span>
+                    </div>` : ''}
+                    ${settlement.address ? `
+                    <div class="info-row">
+                        <span class="label">🏢 Адрес:</span>
+                        <span class="value">${settlement.address}</span>
                     </div>` : ''}
                 </div>
             </div>
@@ -91,7 +90,8 @@ function displayContacts(data) {
             const section = document.createElement('div');
             section.className = 'district-section';
             
-            const settlementsHtml = districtData.settlements.map(settlement => `
+            const settlementsHtml = districtData.settlements.map(settlement => {
+                return `
                 <div class="settlement-card">
                     <div class="settlement-header">
                         <h3>${settlement.name}</h3>
@@ -107,11 +107,6 @@ function displayContacts(data) {
                             <span class="label">📋 Должность:</span>
                             <span class="value">${settlement.position}</span>
                         </div>` : ''}
-                        ${settlement.address ? `
-                        <div class="info-row">
-                            <span class="label">🏢 Адрес:</span>
-                            <span class="value">${settlement.address}</span>
-                        </div>` : ''}
                         <div class="info-row">
                             <span class="label">📞 Телефон:</span>
                             <span class="value"><a href="tel:${settlement.phone.replace(/[^0-9+]/g, '')}">${settlement.phone}</a></span>
@@ -125,9 +120,14 @@ function displayContacts(data) {
                             <span class="label">📌 Примечание:</span>
                             <span class="value">${settlement.note}</span>
                         </div>` : ''}
+                        ${settlement.address ? `
+                        <div class="info-row">
+                            <span class="label">🏢 Адрес:</span>
+                            <span class="value">${settlement.address}</span>
+                        </div>` : ''}
                     </div>
                 </div>
-            `).join('');
+            `}).join('');
             
             section.innerHTML = `
                 <h2 class="district-title">${districtData.district}</h2>
