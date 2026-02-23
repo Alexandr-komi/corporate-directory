@@ -1,9 +1,97 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+    background: #f8f9fa;
+    color: #2c3e50;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding: 20px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.header-left h1 {
+    font-size: 28px;
+    color: #1e3c72;
+    margin-bottom: 5px;
+}
+
+.header-left h2 {
+    font-size: 18px;
+    color: #6c757d;
+    font-weight: 400;
+}
+
+.search-box {
+    flex: 1;
+    max-width: 400px;
+    margin-left: 30px;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 12px 20px;
+    border: 2px solid #e9ecef;
+    border-radius: 30px;
+    font-size: 15px;
+    transition: all 0.3s;
+    background: white;
+}
+
+.search-box input:focus {
+    outline: none;
+    border-color: #4dabf7;
+    box-shadow: 0 0 0 3px rgba(77, 171, 247, 0.1);
+}
+
+.loading {
+    text-align: center;
+    padding: 60px;
+    font-size: 18px;
+    color: #868e96;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.directory {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.district-section {
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
 .district-title {
-    color: #1b5e20;
-    font-size: 24px;
+    color: #1e3c72;
+    font-size: 22px;
     margin-bottom: 20px;
-    padding-bottom: 10px;
-    border-bottom: 3px solid #4caf50;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #e9ecef;
+    font-weight: 600;
 }
 
 .settlements-grid {
@@ -13,17 +101,17 @@
 }
 
 .settlement-card {
-    background: #f9fff9;
-    border-radius: 12px;
+    background: #f8f9fa;
+    border-radius: 10px;
     padding: 20px;
-    border: 1px solid #c8e6c9;
-    transition: all 0.3s;
+    border: 1px solid #e9ecef;
+    transition: all 0.2s;
 }
 
 .settlement-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 12px rgba(46, 125, 50, 0.15);
-    border-color: #2e7d32;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    border-color: #4dabf7;
 }
 
 .settlement-header {
@@ -32,59 +120,69 @@
     align-items: center;
     margin-bottom: 15px;
     padding-bottom: 10px;
-    border-bottom: 1px dashed #a5d6a7;
+    border-bottom: 1px solid #dee2e6;
 }
 
 .settlement-header h3 {
-    color: #1b5e20;
-    font-size: 20px;
+    color: #1e3c72;
+    font-size: 18px;
+    font-weight: 600;
 }
 
 .settlement-type {
-    background: #e8f5e9;
-    color: #2e7d32;
+    background: #e7f5ff;
+    color: #1e3c72;
     padding: 4px 10px;
     border-radius: 20px;
     font-size: 12px;
-    font-weight: bold;
+    font-weight: 500;
 }
 
 .settlement-body {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 10px;
 }
 
 .info-row {
     display: flex;
-    line-height: 1.5;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 14px;
 }
 
-.label {
-    min-width: 90px;
-    color: #558b2f;
+.info-row .label {
+    min-width: 70px;
+    color: #6c757d;
     font-weight: 500;
 }
 
-.value {
-    color: #2c3e2c;
+.info-row .value {
+    color: #2c3e50;
     flex: 1;
 }
 
-.value a {
-    color: #1e88e5;
+.info-row .value a {
+    color: #4dabf7;
     text-decoration: none;
+    transition: color 0.2s;
 }
 
-.value a:hover {
+.info-row .value a:hover {
+    color: #1e3c72;
     text-decoration: underline;
 }
 
 .note {
-    background: #fff3e0;
-    padding: 8px;
+    background: #fff9db;
+    padding: 10px 12px;
     border-radius: 6px;
     margin-top: 8px;
+    border-left: 3px solid #fab005;
+}
+
+.stats {
+    margin-top: 30px;
 }
 
 .stats-panel {
@@ -94,21 +192,140 @@
     display: flex;
     gap: 30px;
     justify-content: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    color: #6c757d;
+}
+
+.stats-panel strong {
+    color: #1e3c72;
+    font-size: 18px;
+    margin-left: 5px;
+}
+
+/* Модальное окно (если понадобится) */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    backdrop-filter: blur(4px);
+}
+
+.modal-content {
+    background-color: white;
+    margin: 50px auto;
+    padding: 30px;
+    border-radius: 16px;
+    max-width: 500px;
+    position: relative;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+}
+
+.close {
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    font-size: 28px;
+    cursor: pointer;
+    color: #adb5bd;
+    transition: color 0.2s;
+}
+
+.close:hover {
+    color: #495057;
+}
+
+.modal h2 {
+    color: #1e3c72;
+    margin-bottom: 25px;
+    font-size: 22px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #495057;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px 14px;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #4dabf7;
+    box-shadow: 0 0 0 3px rgba(77, 171, 247, 0.1);
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
     margin-top: 30px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.form-actions button {
+    padding: 10px 24px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.form-actions button[type="submit"] {
+    background: #4dabf7;
+    color: white;
+}
+
+.form-actions button[type="submit"]:hover {
+    background: #1e3c72;
+}
+
+#cancelBtn {
+    background: #e9ecef;
+    color: #495057;
+}
+
+#cancelBtn:hover {
+    background: #dee2e6;
 }
 
 @media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+    
+    .search-box {
+        margin-left: 0;
+        max-width: 100%;
+    }
+    
     .settlements-grid {
         grid-template-columns: 1fr;
     }
     
-    .info-row {
+    .stats-panel {
         flex-direction: column;
-        gap: 4px;
-    }
-    
-    .label {
-        min-width: auto;
+        gap: 10px;
+        text-align: center;
     }
 }
