@@ -32,9 +32,9 @@ function copyContactData(settlement) {
     let textToCopy = `${settlement.name}\n`;
     textToCopy += `Глава: ${settlement.head}\n`;
     if (settlement.position) textToCopy += `Должность: ${settlement.position}\n`;
-    if (settlement.address) textToCopy += `Адрес: ${settlement.address}\n`;
     textToCopy += `Телефон: ${settlement.phone}\n`;
     textToCopy += `Email: ${settlement.email}`;
+    if (settlement.address) textToCopy += `\nАдрес: ${settlement.address}`;
     if (settlement.note) textToCopy += `\nПримечание: ${settlement.note}`;
     
     // Копируем в буфер обмена
@@ -103,11 +103,6 @@ function displayContacts(data) {
                         <span class="label">📋 Должность:</span>
                         <span class="value">${settlement.position}</span>
                     </div>` : ''}
-                    ${settlement.address ? `
-                    <div class="info-row">
-                        <span class="label">🏢 Адрес:</span>
-                        <span class="value">${settlement.address}</span>
-                    </div>` : ''}
                     <div class="info-row">
                         <span class="label">📞 Телефон:</span>
                         <span class="value"><a href="tel:${settlement.phone.replace(/[^0-9+]/g, '')}">${settlement.phone}</a></span>
@@ -116,6 +111,11 @@ function displayContacts(data) {
                         <span class="label">✉️ Email:</span>
                         <span class="value"><a href="mailto:${settlement.email}">${settlement.email}</a></span>
                     </div>
+                    ${settlement.address ? `
+                    <div class="info-row">
+                        <span class="label">🏢 Адрес:</span>
+                        <span class="value">${settlement.address}</span>
+                    </div>` : ''}
                     ${settlement.note ? `
                     <div class="info-row note">
                         <span class="label">📌 Примечание:</span>
@@ -158,11 +158,6 @@ function displayContacts(data) {
                             <span class="label">📋 Должность:</span>
                             <span class="value">${settlement.position}</span>
                         </div>` : ''}
-                        ${settlement.address ? `
-                        <div class="info-row">
-                            <span class="label">🏢 Адрес:</span>
-                            <span class="value">${settlement.address}</span>
-                        </div>` : ''}
                         <div class="info-row">
                             <span class="label">📞 Телефон:</span>
                             <span class="value"><a href="tel:${settlement.phone.replace(/[^0-9+]/g, '')}">${settlement.phone}</a></span>
@@ -171,6 +166,11 @@ function displayContacts(data) {
                             <span class="label">✉️ Email:</span>
                             <span class="value"><a href="mailto:${settlement.email}">${settlement.email}</a></span>
                         </div>
+                        ${settlement.address ? `
+                        <div class="info-row">
+                            <span class="label">🏢 Адрес:</span>
+                            <span class="value">${settlement.address}</span>
+                        </div>` : ''}
                         ${settlement.note ? `
                         <div class="info-row note">
                             <span class="label">📌 Примечание:</span>
