@@ -1,58 +1,57 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Корпоративный Справочник</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <div class="container">
-        <h1>📞 Корпоративный Справочник</h1>
-        <button id="showFormBtn" class="add-main-btn">➕ Добавить контакт</button>
-
-        <div id="loading" class="loading" style="display: none;">⏳ Загрузка контактов...</div>
-        <div id="contactList" class="contact-list"></div>
+<!-- Модальное окно для формы (обновленная версия) -->
+<div id="modal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <span id="closeModalBtn" class="close-btn">&times;</span>
+        <h2 id="formTitle">➕ Добавить новый контакт</h2>
+        <form id="contactForm">
+            <div class="form-group">
+                <label for="fullname">ФИО:</label>
+                <input type="text" id="fullname" name="fullname" required>
+            </div>
+            <div class="form-group">
+                <label for="position">Должность:</label>
+                <input type="text" id="position" name="position">
+            </div>
+            
+            <!-- НОВОЕ: Выпадающий список для организации -->
+            <div class="form-group">
+                <label for="organization">Организация:</label>
+                <select id="organization" name="organization">
+                    <option value="">-- Выберите организацию --</option>
+                    <option value="Администрация">Администрация</option>
+                    <option value="Управление культуры">Управление культуры</option>
+                    <option value="Спорт">Спорт</option>
+                </select>
+            </div>
+            
+            <!-- НОВОЕ: Выпадающий список для отдела -->
+            <div class="form-group">
+                <label for="department">Отдел:</label>
+                <select id="department" name="department">
+                    <option value="">-- Выберите отдел --</option>
+                    <option value="Опека">Опека</option>
+                    <option value="орготдел">орготдел</option>
+                    <option value="управление имущества">управление имущества</option>
+                    <option value="закупки">закупки</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="city">Населённый пункт:</label>
+                <input type="text" id="city" name="city">
+            </div>
+            <div class="form-group">
+                <label for="phone">Телефон:</label>
+                <input type="tel" id="phone" name="phone">
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email">
+            </div>
+            <div class="form-actions">
+                <button type="button" id="cancelBtn" class="cancel-btn">Отмена</button>
+                <button type="submit" class="save-btn">Сохранить</button>
+            </div>
+        </form>
     </div>
-
-    <!-- Модальное окно для формы -->
-    <div id="modal" class="modal" style="display: none;">
-        <div class="modal-content">
-            <span id="closeModalBtn" class="close-btn">&times;</span>
-            <h2 id="formTitle">➕ Добавить новый контакт</h2>
-            <form id="contactForm">
-                <div class="form-group">
-                    <label for="fullname">ФИО:</label>
-                    <input type="text" id="fullname" name="fullname" required>
-                </div>
-                <div class="form-group">
-                    <label for="position">Должность:</label>
-                    <input type="text" id="position" name="position">
-                </div>
-                <div class="form-group">
-                    <label for="organization">Организация:</label>
-                    <input type="text" id="organization" name="organization">
-                </div>
-                <div class="form-group">
-                    <label for="city">Населённый пункт:</label>
-                    <input type="text" id="city" name="city">
-                </div>
-                <div class="form-group">
-                    <label for="phone">Телефон:</label>
-                    <input type="tel" id="phone" name="phone">
-                </div>
-                <div class="form-group">
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" name="email">
-                </div>
-                <div class="form-actions">
-                    <button type="button" id="cancelBtn" class="cancel-btn">Отмена</button>
-                    <button type="submit" class="save-btn">Сохранить</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <script src="script.js"></script>
-</body>
-</html>
+</div>
