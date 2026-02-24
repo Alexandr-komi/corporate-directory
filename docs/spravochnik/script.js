@@ -22,10 +22,28 @@ function loadContacts() {
             if (stored) {
                 contacts = JSON.parse(stored);
             } else {
-                // Начальные данные для примера
+                // Начальные данные для примера (обновленные с отделами)
                 contacts = [
-                    { id: Date.now() + 1, fullname: 'Иванов Иван Иванович', position: 'Генеральный директор', organization: 'ООО "Ромашка"', city: 'Москва', phone: '+7 (495) 123-45-67', email: 'i.ivanov@example.com' },
-                    { id: Date.now() + 2, fullname: 'Петрова Мария Сергеевна', position: 'Главный бухгалтер', organization: 'АО "ТехноПром"', city: 'Санкт-Петербург', phone: '+7 (812) 765-43-21', email: 'm.petrova@example.com' }
+                    { 
+                        id: Date.now() + 1, 
+                        fullname: 'Иванов Иван Иванович', 
+                        position: 'Генеральный директор', 
+                        organization: 'Администрация', 
+                        department: 'орготдел',
+                        city: 'Москва', 
+                        phone: '+7 (495) 123-45-67', 
+                        email: 'i.ivanov@example.com' 
+                    },
+                    { 
+                        id: Date.now() + 2, 
+                        fullname: 'Петрова Мария Сергеевна', 
+                        position: 'Главный бухгалтер', 
+                        organization: 'Управление культуры', 
+                        department: 'Опека',
+                        city: 'Санкт-Петербург', 
+                        phone: '+7 (812) 765-43-21', 
+                        email: 'm.petrova@example.com' 
+                    }
                 ];
                 saveContacts();
             }
@@ -59,6 +77,7 @@ function renderContacts() {
             <div class="contact-name">${escapeHtml(contact.fullname)}</div>
             <div class="contact-detail"><strong>Должность:</strong> <span>${escapeHtml(contact.position || '—')}</span></div>
             <div class="contact-detail"><strong>Организация:</strong> <span>${escapeHtml(contact.organization || '—')}</span></div>
+            <div class="contact-detail"><strong>Отдел:</strong> <span>${escapeHtml(contact.department || '—')}</span></div>
             <div class="contact-detail"><strong>Нас. пункт:</strong> <span>${escapeHtml(contact.city || '—')}</span></div>
             <div class="contact-detail"><strong>Телефон:</strong> <span>${escapeHtml(contact.phone || '—')}</span></div>
             <div class="contact-detail"><strong>Email:</strong> <span>${escapeHtml(contact.email || '—')}</span></div>
@@ -105,10 +124,11 @@ contactForm.addEventListener('submit', (e) => {
 
     const formData = new FormData(contactForm);
     const newContact = {
-        id: Date.now(), // Простой способ получить уникальный id
+        id: Date.now(),
         fullname: formData.get('fullname').trim(),
         position: formData.get('position').trim(),
         organization: formData.get('organization').trim(),
+        department: formData.get('department').trim(), // Новое поле
         city: formData.get('city').trim(),
         phone: formData.get('phone').trim(),
         email: formData.get('email').trim()
