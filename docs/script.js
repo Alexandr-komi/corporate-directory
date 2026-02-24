@@ -34,12 +34,13 @@ function copyContactData(settlement) {
     if (settlement.position) textToCopy += `Должность: ${settlement.position}\n`;
     textToCopy += `Телефон: ${settlement.phone}\n`;
     textToCopy += `Email: ${settlement.email}`;
+    if (settlement.website) textToCopy += `\nСайт: ${settlement.website}`;
+    if (settlement.max) textToCopy += `\nКанал MAX: ${settlement.max}`;
     if (settlement.address) textToCopy += `\nАдрес: ${settlement.address}`;
     if (settlement.note) textToCopy += `\nПримечание: ${settlement.note}`;
     
     // Копируем в буфер обмена
     navigator.clipboard.writeText(textToCopy).then(() => {
-        // Показываем всплывающее уведомление
         showNotification('✅ Данные скопированы!');
     }).catch(err => {
         console.error('Ошибка копирования:', err);
@@ -49,19 +50,16 @@ function copyContactData(settlement) {
 
 // Функция показа уведомления
 function showNotification(message) {
-    // Проверяем, есть ли уже уведомление
     let notification = document.querySelector('.copy-notification');
     if (notification) {
         notification.remove();
     }
     
-    // Создаём новое уведомление
     notification = document.createElement('div');
     notification.className = 'copy-notification';
     notification.textContent = message;
     document.body.appendChild(notification);
     
-    // Показываем и скрываем через 2 секунды
     setTimeout(() => {
         notification.classList.add('show');
         setTimeout(() => {
@@ -79,7 +77,6 @@ function displayContacts(data) {
     
     directory.innerHTML = '';
     
-    // Если data - объект с одним районом
     if (data && data.district && data.settlements) {
         const section = document.createElement('div');
         section.className = 'district-section';
@@ -111,6 +108,19 @@ function displayContacts(data) {
                         <span class="label">✉️ Email:</span>
                         <span class="value"><a href="mailto:${settlement.email}">${settlement.email}</a></span>
                     </div>
+                    ${settlement.website ? `
+                    <div class="info-row">
+                        <span class="label">🌐 Сайт:</span>
+                        <span class="value"><a href="${settlement.website}" target="_blank" rel="noopener noreferrer">официальный сайт</a></span>
+                    </div>` : ''}
+                    ${settlement.max ? `
+                    <div class="info-row">
+                        <span class="label">📱 Канал MAX:</span>
+                        <span class="value">${settlement.max.includes('http') ? 
+                            `<a href="${settlement.max}" target="_blank" rel="noopener noreferrer">страница поселения</a>` : 
+                            settlement.max}
+                        </span>
+                    </div>` : ''}
                     ${settlement.address ? `
                     <div class="info-row">
                         <span class="label">🏢 Адрес:</span>
@@ -133,7 +143,6 @@ function displayContacts(data) {
         
         directory.appendChild(section);
     }
-    // Если data - массив районов (на будущее)
     else if (Array.isArray(data)) {
         data.forEach(districtData => {
             const section = document.createElement('div');
@@ -166,6 +175,19 @@ function displayContacts(data) {
                             <span class="label">✉️ Email:</span>
                             <span class="value"><a href="mailto:${settlement.email}">${settlement.email}</a></span>
                         </div>
+                        ${settlement.website ? `
+                        <div class="info-row">
+                            <span class="label">🌐 Сайт:</span>
+                            <span class="value"><a href="${settlement.website}" target="_blank" rel="noopener noreferrer">официальный сайт</a></span>
+                        </div>` : ''}
+                        ${settlement.max ? `
+                        <div class="info-row">
+                            <span class="label">📱 Канал MAX:</span>
+                            <span class="value">${settlement.max.includes('http') ? 
+                                `<a href="${settlement.max}" target="_blank" rel="noopener noreferrer">страница поселения</a>` : 
+                                settlement.max}
+                            </span>
+                        </div>` : ''}
                         ${settlement.address ? `
                         <div class="info-row">
                             <span class="label">🏢 Адрес:</span>
@@ -203,7 +225,6 @@ function filterContacts() {
         return;
     }
     
-    // Фильтрация для объекта с одним районом
     if (allData.district && allData.settlements) {
         const filteredSettlements = allData.settlements.filter(settlement => 
             settlement.name.toLowerCase().includes(searchText) ||
@@ -211,7 +232,9 @@ function filterContacts() {
             (settlement.position && settlement.position.toLowerCase().includes(searchText)) ||
             (settlement.address && settlement.address.toLowerCase().includes(searchText)) ||
             (settlement.phone && settlement.phone.toLowerCase().includes(searchText)) ||
-            (settlement.email && settlement.email.toLowerCase().includes(searchText))
+            (settlement.email && settlement.email.toLowerCase().includes(searchText)) ||
+            (settlement.website && settlement.website.toLowerCase().includes(searchText)) ||
+            (settlement.max && settlement.max.toLowerCase().includes(searchText))
         );
         
         const filteredData = {
@@ -222,7 +245,6 @@ function filterContacts() {
         displayContacts(filteredData);
         updateStats(filteredData);
     }
-    // Фильтрация для массива районов
     else if (Array.isArray(allData)) {
         const filtered = allData.map(district => ({
             ...district,
@@ -233,6 +255,8 @@ function filterContacts() {
                 (settlement.address && settlement.address.toLowerCase().includes(searchText)) ||
                 (settlement.phone && settlement.phone.toLowerCase().includes(searchText)) ||
                 (settlement.email && settlement.email.toLowerCase().includes(searchText)) ||
+                (settlement.website && settlement.website.toLowerCase().includes(searchText)) ||
+                (settlement.max && settlement.max.toLowerCase().includes(searchText)) ||
                 district.district.toLowerCase().includes(searchText)
             )
         })).filter(district => district.settlements.length > 0);
@@ -246,7 +270,6 @@ function updateStats(data) {
     const stats = document.getElementById('stats');
     if (!stats) return;
     
-    // Если data - объект с одним районом
     if (data && data.district && data.settlements) {
         stats.innerHTML = `
             <div class="stats-panel">
@@ -255,7 +278,6 @@ function updateStats(data) {
             </div>
         `;
     }
-    // Если data - массив районов
     else if (Array.isArray(data)) {
         const totalSettlements = data.reduce((sum, district) => 
             sum + (district.settlements?.length || 0), 0);
