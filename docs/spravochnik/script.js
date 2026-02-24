@@ -1,6 +1,18 @@
 // Хранилище данных
-const STORAGE_KEY = 'corporate_directory_contacts';
+const STORAGE_KEY = 'admin_contacts';
 let contacts = [];
+
+// Константа организации (одна на весь справочник)
+const ORGANIZATION = 'Администрация Корткеросского района';
+
+// Список отделов
+const DEPARTMENTS = [
+    'Руководство',
+    'Орготдел',
+    'IT-отдел',
+    'УКС',
+    'Жилполитика'
+];
 
 // Элементы DOM
 const directoryContainer = document.getElementById('directoryContainer');
@@ -13,9 +25,8 @@ const contactForm = document.getElementById('contactForm');
 const formTitle = document.getElementById('formTitle');
 const editId = document.getElementById('editId');
 
-// Состояние свернуто/развернуто
-let expandedOrgs = new Set();
-let expandedDepts = new Map(); // ключ: "орг-депт"
+// Состояние свернуто/развернуто для отделов
+let expandedDepts = new Set();
 
 // Загрузка данных
 function loadContacts() {
@@ -31,29 +42,26 @@ function loadContacts() {
                     { 
                         id: Date.now() + 1, 
                         fullname: 'Иванов Иван Иванович', 
-                        position: 'Генеральный директор', 
-                        organization: 'Администрация', 
-                        department: 'Орготдел',
-                        phone: '+7 (495) 123-45-67', 
-                        email: 'i.ivanov@example.com' 
+                        position: 'Глава района', 
+                        department: 'Руководство',
+                        phone: '+7 (821) 212-34-56', 
+                        email: 'i.ivanov@kortkeros.ru' 
                     },
                     { 
                         id: Date.now() + 2, 
                         fullname: 'Петрова Мария Сергеевна', 
-                        position: 'Главный бухгалтер', 
-                        organization: 'Управление Культуры', 
-                        department: 'Опека',
-                        phone: '+7 (812) 765-43-21', 
-                        email: 'm.petrova@example.com' 
+                        position: 'Начальник отдела', 
+                        department: 'Орготдел',
+                        phone: '+7 (821) 212-34-57', 
+                        email: 'm.petrova@kortkeros.ru' 
                     },
                     { 
                         id: Date.now() + 3, 
                         fullname: 'Сидоров Петр Николаевич', 
-                        position: 'Начальник отдела', 
-                        organization: 'Администрация', 
-                        department: 'Управление Имущества',
-                        phone: '+7 (495) 111-22-33', 
-                        email: 'p.sidorov@example.com' 
+                        position: 'Системный администратор', 
+                        department: 'IT-отдел',
+                        phone: '+7 (821) 212-34-58', 
+                        email: 'p.sidorov@kortkeros.ru' 
                     }
                 ];
                 saveContacts();
@@ -91,35 +99,13 @@ function escapeHtml(unsafe) {
         .replace(/'/g, '&#039;');
 }
 
-// Получить уникальные организации
-function getOrganizations() {
-    const orgs = new Set();
-    contacts.forEach(c => {
-        if (c.organization) orgs.add(c.organization);
-    });
-    return Array.from(orgs).sort();
-}
-
-// Получить отделы для организации
-function getDepartments(organization) {
-    const depts = new Set();
-    contacts.forEach(c => {
-        if (c.organization === organization && c.department) {
-            depts.add(c.department);
-        }
-    });
-    return Array.from(depts).sort();
-}
-
 // Получить сотрудников отдела
-function getEmployees(organization, department) {
-    return contacts.filter(c => 
-        c.organization === organization && 
-        c.department === department
-    ).sort((a, b) => a.fullname.localeCompare(b.fullname));
+function getEmployeesByDepartment(department) {
+    return contacts.filter(c => c.department === department)
+        .sort((a, b) => a.fullname.localeCompare(b.fullname));
 }
 
-// Рендер всего справочника
+// Рендер справочника
 function renderDirectory() {
     if (!directoryContainer) return;
     
@@ -128,114 +114,69 @@ function renderDirectory() {
         return;
     }
 
-    const organizations = getOrganizations();
     let html = '<div class="directory-container">';
 
-    organizations.forEach(org => {
-        const isOrgExpanded = expandedOrgs.has(org);
-        const orgIcon = isOrgExpanded ? '▼' : '▶';
+    DEPARTMENTS.forEach(dept => {
+        const isExpanded = expandedDepts.has(dept);
+        const icon = isExpanded ? '▼' : '▶';
+        const employees = getEmployeesByDepartment(dept);
         
-        html += '<div class="organization-item">';
-        html += `<div class="org-header ${!isOrgExpanded ? 'collapsed' : ''}" data-org="${escapeHtml(org)}">`;
-        html += `<span>🏢 ${escapeHtml(org)}</span>`;
-        html += `<span class="toggle-icon">${orgIcon}</span>`;
+        html += '<div class="department-section">';
+        html += `<div class="dept-header ${!isExpanded ? 'collapsed' : ''}" data-dept="${escapeHtml(dept)}">`;
+        html += `<span>📁 ${escapeHtml(dept)} (${employees.length})</span>`;
+        html += `<span class="toggle-icon">${icon}</span>`;
         html += '</div>';
 
-        if (isOrgExpanded) {
-            const departments = getDepartments(org);
-            html += '<div class="departments-container">';
+        if (isExpanded) {
+            html += '<div class="employees-container">';
             
-            if (departments.length === 0) {
-                html += '<p class="empty-message">Нет отделов</p>';
+            if (employees.length === 0) {
+                html += '<p class="empty-message">Нет сотрудников в отделе</p>';
             } else {
-                departments.forEach(dept => {
-                    const deptKey = org + '|' + dept;
-                    const isDeptExpanded = expandedDepts.has(deptKey);
-                    const deptIcon = isDeptExpanded ? '▼' : '▶';
-                    
-                    html += '<div class="department-item">';
-                    html += `<div class="dept-header ${!isDeptExpanded ? 'collapsed' : ''}" data-org="${escapeHtml(org)}" data-dept="${escapeHtml(dept)}">`;
-                    html += `<span>📁 ${escapeHtml(dept)}</span>`;
-                    html += `<span class="toggle-icon">${deptIcon}</span>`;
+                employees.forEach(emp => {
+                    html += '<div class="employee-card" data-id="' + emp.id + '">';
+                    html += '<div class="employee-actions">';
+                    html += `<button class="edit-btn" onclick="editContact(${emp.id})">✏️ Ред</button>`;
+                    html += `<button class="delete-btn" onclick="deleteContact(${emp.id})">🗑️ Уд</button>`;
                     html += '</div>';
-
-                    if (isDeptExpanded) {
-                        const employees = getEmployees(org, dept);
-                        html += '<div class="employees-container">';
-                        
-                        if (employees.length === 0) {
-                            html += '<p class="empty-message">Нет сотрудников</p>';
-                        } else {
-                            employees.forEach(emp => {
-                                html += '<div class="employee-card" data-id="' + emp.id + '">';
-                                html += '<div class="employee-actions">';
-                                html += `<button class="edit-btn" onclick="editContact(${emp.id})">✏️</button>`;
-                                html += `<button class="delete-btn" onclick="deleteContact(${emp.id})">🗑️</button>`;
-                                html += '</div>';
-                                html += '<div class="employee-name">' + escapeHtml(emp.fullname) + '</div>';
-                                html += '<div class="employee-position">' + escapeHtml(emp.position || '—') + '</div>';
-                                html += '<div class="employee-contact"><strong>📞</strong> ' + escapeHtml(emp.phone || '—') + '</div>';
-                                html += '<div class="employee-contact"><strong>✉️</strong> ' + escapeHtml(emp.email || '—') + '</div>';
-                                html += '</div>';
-                            });
-                        }
-                        
-                        html += '</div>'; // закрываем employees-container
-                    }
-                    
-                    html += '</div>'; // закрываем department-item
+                    html += '<div class="employee-name">' + escapeHtml(emp.fullname) + '</div>';
+                    html += '<div class="employee-position">' + escapeHtml(emp.position || 'Должность не указана') + '</div>';
+                    html += '<div class="employee-contact"><strong>📞</strong> ' + escapeHtml(emp.phone || '—') + '</div>';
+                    html += '<div class="employee-contact"><strong>✉️</strong> ' + escapeHtml(emp.email || '—') + '</div>';
+                    html += '</div>';
                 });
             }
             
-            html += '</div>'; // закрываем departments-container
+            html += '</div>'; // закрываем employees-container
         }
         
-        html += '</div>'; // закрываем organization-item
+        html += '</div>'; // закрываем department-section
     });
 
     html += '</div>';
     directoryContainer.innerHTML = html;
 }
 
-// Обработчики кликов на организацию/отдел
+// Обработчик кликов на отделы
 document.addEventListener('click', function(e) {
-    // Клик по организации
-    const orgHeader = e.target.closest('.org-header');
-    if (orgHeader) {
-        const org = orgHeader.dataset.org;
-        if (expandedOrgs.has(org)) {
-            expandedOrgs.delete(org);
-        } else {
-            expandedOrgs.add(org);
-        }
-        renderDirectory();
-        return;
-    }
-
-    // Клик по отделу
     const deptHeader = e.target.closest('.dept-header');
     if (deptHeader) {
-        const org = deptHeader.dataset.org;
         const dept = deptHeader.dataset.dept;
-        const deptKey = org + '|' + dept;
-        
-        if (expandedDepts.has(deptKey)) {
-            expandedDepts.delete(deptKey);
+        if (expandedDepts.has(dept)) {
+            expandedDepts.delete(dept);
         } else {
-            expandedDepts.add(deptKey);
+            expandedDepts.add(dept);
         }
         renderDirectory();
-        return;
     }
 });
 
-// Функции для кнопок (должны быть в глобальной области видимости)
+// Функции для кнопок
 window.editContact = function(id) {
     const contact = contacts.find(c => c.id === id);
     if (contact) {
         document.getElementById('fullname').value = contact.fullname || '';
         document.getElementById('position').value = contact.position || '';
-        document.getElementById('organization').value = contact.organization || '';
         document.getElementById('department').value = contact.department || '';
         document.getElementById('phone').value = contact.phone || '';
         document.getElementById('email').value = contact.email || '';
@@ -300,18 +241,12 @@ if (contactForm) {
         const id = editId.value ? parseInt(editId.value) : Date.now();
         const fullname = document.getElementById('fullname').value.trim();
         const position = document.getElementById('position').value.trim();
-        const organization = document.getElementById('organization').value;
         const department = document.getElementById('department').value;
         const phone = document.getElementById('phone').value.trim();
         const email = document.getElementById('email').value.trim();
 
         if (!fullname) {
             alert('Поле "ФИО" обязательно для заполнения');
-            return;
-        }
-
-        if (!organization) {
-            alert('Выберите организацию');
             return;
         }
 
@@ -324,7 +259,6 @@ if (contactForm) {
             id: id,
             fullname: fullname,
             position: position,
-            organization: organization,
             department: department,
             phone: phone,
             email: email
