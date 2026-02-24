@@ -115,7 +115,7 @@ function displayContacts(data) {
                     </div>` : ''}
                     ${settlement.max ? `
                     <div class="info-row">
-                        <span class="label">MAX:</span>
+                        <span class="label">📱 MAX:</span>
                         <span class="value">${settlement.max.includes('http') ? 
                             `<a href="${settlement.max}" target="_blank">${settlement.max}</a>` : 
                             settlement.max}
@@ -182,7 +182,7 @@ function displayContacts(data) {
                         </div>` : ''}
                         ${settlement.max ? `
                         <div class="info-row">
-                            <span class="label">MAX:</span>
+                            <span class="label">📱 MAX:</span>
                             <span class="value">${settlement.max.includes('http') ? 
                                 `<a href="${settlement.max}" target="_blank">${settlement.max}</a>` : 
                                 settlement.max}
