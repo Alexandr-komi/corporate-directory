@@ -111,13 +111,13 @@ function displayContacts(data) {
                     ${settlement.website ? `
                     <div class="info-row">
                         <span class="label">🌐 Сайт:</span>
-                        <span class="value"><a href="${settlement.website}" target="_blank" rel="noopener noreferrer">официальный сайт</a></span>
+                        <span class="value"><a href="${settlement.website}" target="_blank">${settlement.website}</a></span>
                     </div>` : ''}
                     ${settlement.max ? `
                     <div class="info-row">
                         <span class="label">📱 Канал MAX:</span>
                         <span class="value">${settlement.max.includes('http') ? 
-                            `<a href="${settlement.max}" target="_blank" rel="noopener noreferrer">страница поселения</a>` : 
+                            `<a href="${settlement.max}" target="_blank">${settlement.max}</a>` : 
                             settlement.max}
                         </span>
                     </div>` : ''}
@@ -178,13 +178,13 @@ function displayContacts(data) {
                         ${settlement.website ? `
                         <div class="info-row">
                             <span class="label">🌐 Сайт:</span>
-                            <span class="value"><a href="${settlement.website}" target="_blank" rel="noopener noreferrer">официальный сайт</a></span>
+                            <span class="value"><a href="${settlement.website}" target="_blank">${settlement.website}</a></span>
                         </div>` : ''}
                         ${settlement.max ? `
                         <div class="info-row">
                             <span class="label">📱 Канал MAX:</span>
                             <span class="value">${settlement.max.includes('http') ? 
-                                `<a href="${settlement.max}" target="_blank" rel="noopener noreferrer">страница поселения</a>` : 
+                                `<a href="${settlement.max}" target="_blank">${settlement.max}</a>` : 
                                 settlement.max}
                             </span>
                         </div>` : ''}
