@@ -1,0 +1,46 @@
+name: Save Employees Data
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  save-data:
+    runs-on: ubuntu-latest
+    # Запускается только для issue с заголовком [SAVE]
+    if: contains(github.event.issue.title, '[SAVE]')
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Save data to file
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_BODY: ${{ github.event.issue.body }}
+        run: |
+          # Сохраняем данные из Issue в файл
+          echo "$ISSUE_BODY" > docs/employees-directory/employees.json
+          
+      - name: Commit and push changes
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add docs/employees-directory/employees.json
+          # Проверяем, есть ли изменения
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Автосохранение справочника сотрудников"
+            git push
+          fi
+          
+      - name: Close issue with comment
+        uses: peter-evans/close-issue@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          comment: |
+            ✅ **Данные успешно сохранены!**
+            
+            Справочник сотрудников обновлен. Изменения появятся на сайте через 1-2 минуты.
+            
+            Спасибо за использование автоматического сохранения! 🚀
