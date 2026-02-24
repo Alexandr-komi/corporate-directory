@@ -33,6 +33,7 @@ function copyContactData(settlement) {
     textToCopy += `Глава: ${settlement.head}\n`;
     if (settlement.position) textToCopy += `Должность: ${settlement.position}\n`;
     textToCopy += `Телефон: ${settlement.phone}\n`;
+    if (settlement.specialist_phone) textToCopy += `Специалисты: ${settlement.specialist_phone}\n`;
     textToCopy += `Email: ${settlement.email}`;
     if (settlement.website) textToCopy += `\nСайт: ${settlement.website}`;
     if (settlement.max) textToCopy += `\nMAX: ${settlement.max}`;
@@ -104,6 +105,11 @@ function displayContacts(data) {
                         <span class="label">📞 Телефон:</span>
                         <span class="value"><a href="tel:${settlement.phone.replace(/[^0-9+]/g, '')}">${settlement.phone}</a></span>
                     </div>
+                    ${settlement.specialist_phone ? `
+                    <div class="info-row">
+                        <span class="label">👥 Специалисты:</span>
+                        <span class="value"><a href="tel:${settlement.specialist_phone.replace(/[^0-9+]/g, '')}">${settlement.specialist_phone}</a></span>
+                    </div>` : ''}
                     <div class="info-row">
                         <span class="label">✉️ Email:</span>
                         <span class="value"><a href="mailto:${settlement.email}">${settlement.email}</a></span>
@@ -171,6 +177,11 @@ function displayContacts(data) {
                             <span class="label">📞 Телефон:</span>
                             <span class="value"><a href="tel:${settlement.phone.replace(/[^0-9+]/g, '')}">${settlement.phone}</a></span>
                         </div>
+                        ${settlement.specialist_phone ? `
+                        <div class="info-row">
+                            <span class="label">👥 Специалисты:</span>
+                            <span class="value"><a href="tel:${settlement.specialist_phone.replace(/[^0-9+]/g, '')}">${settlement.specialist_phone}</a></span>
+                        </div>` : ''}
                         <div class="info-row">
                             <span class="label">✉️ Email:</span>
                             <span class="value"><a href="mailto:${settlement.email}">${settlement.email}</a></span>
@@ -232,6 +243,7 @@ function filterContacts() {
             (settlement.position && settlement.position.toLowerCase().includes(searchText)) ||
             (settlement.address && settlement.address.toLowerCase().includes(searchText)) ||
             (settlement.phone && settlement.phone.toLowerCase().includes(searchText)) ||
+            (settlement.specialist_phone && settlement.specialist_phone.toLowerCase().includes(searchText)) ||
             (settlement.email && settlement.email.toLowerCase().includes(searchText)) ||
             (settlement.website && settlement.website.toLowerCase().includes(searchText)) ||
             (settlement.max && settlement.max.toLowerCase().includes(searchText))
@@ -254,6 +266,7 @@ function filterContacts() {
                 (settlement.position && settlement.position.toLowerCase().includes(searchText)) ||
                 (settlement.address && settlement.address.toLowerCase().includes(searchText)) ||
                 (settlement.phone && settlement.phone.toLowerCase().includes(searchText)) ||
+                (settlement.specialist_phone && settlement.specialist_phone.toLowerCase().includes(searchText)) ||
                 (settlement.email && settlement.email.toLowerCase().includes(searchText)) ||
                 (settlement.website && settlement.website.toLowerCase().includes(searchText)) ||
                 (settlement.max && settlement.max.toLowerCase().includes(searchText)) ||
