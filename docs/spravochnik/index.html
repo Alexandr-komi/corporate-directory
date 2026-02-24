@@ -9,62 +9,63 @@
 <body>
     <div class="container">
         <h1>📞 Корпоративный Справочник</h1>
-        <button id="showFormBtn" class="add-main-btn">➕ Добавить контакт</button>
+        <button id="showFormBtn" class="add-main-btn">➕ Добавить сотрудника</button>
 
-        <div id="loading" class="loading" style="display: none;">⏳ Загрузка контактов...</div>
-        <div id="contactList" class="contact-list"></div>
+        <div id="loading" class="loading" style="display: none;">⏳ Загрузка...</div>
+        <div id="directoryContainer" class="directory-container"></div>
     </div>
 
-    <!-- Модальное окно -->
+    <!-- Модальное окно для добавления/редактирования -->
     <div id="modal" class="modal" style="display: none;">
         <div class="modal-content">
             <span id="closeModalBtn" class="close-btn">&times;</span>
-            <h2 id="formTitle">➕ Добавить новый контакт</h2>
+            <h2 id="formTitle">➕ Добавить сотрудника</h2>
             <form id="contactForm">
+                <input type="hidden" id="editId" name="editId" value="">
+                
                 <div class="form-group">
                     <label for="fullname">ФИО:</label>
                     <input type="text" id="fullname" name="fullname" required>
                 </div>
+                
                 <div class="form-group">
                     <label for="position">Должность:</label>
                     <input type="text" id="position" name="position">
                 </div>
                 
-                <!-- Организация (выпадающий список) -->
+                <!-- Организация -->
                 <div class="form-group">
                     <label for="organization">Организация:</label>
-                    <select id="organization" name="organization">
+                    <select id="organization" name="organization" required>
                         <option value="">-- Выберите организацию --</option>
                         <option value="Администрация">Администрация</option>
-                        <option value="Управление культуры">Управление культуры</option>
+                        <option value="Управление Культуры">Управление Культуры</option>
                         <option value="Спорт">Спорт</option>
                     </select>
                 </div>
                 
-                <!-- Отдел (выпадающий список) -->
+                <!-- Отдел -->
                 <div class="form-group">
                     <label for="department">Отдел:</label>
-                    <select id="department" name="department">
+                    <select id="department" name="department" required>
                         <option value="">-- Выберите отдел --</option>
                         <option value="Опека">Опека</option>
-                        <option value="орготдел">орготдел</option>
-                        <option value="управление имущества">управление имущества</option>
-                        <option value="закупки">закупки</option>
+                        <option value="Орготдел">Орготдел</option>
+                        <option value="Управление Имущества">Управление Имущества</option>
+                        <option value="Закупки">Закупки</option>
                     </select>
                 </div>
                 
                 <div class="form-group">
-                    <label for="city">Населённый пункт:</label>
-                    <input type="text" id="city" name="city">
-                </div>
-                <div class="form-group">
                     <label for="phone">Телефон:</label>
                     <input type="tel" id="phone" name="phone">
                 </div>
+                
                 <div class="form-group">
                     <label for="email">Email:</label>
                     <input type="email" id="email" name="email">
                 </div>
+                
                 <div class="form-actions">
                     <button type="button" id="cancelBtn" class="cancel-btn">Отмена</button>
                     <button type="submit" class="save-btn">Сохранить</button>
