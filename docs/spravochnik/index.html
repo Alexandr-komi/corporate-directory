@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Корпоративный Справочник</title>
+    <title>Корпоративный Справочник - Администрация</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
-        <h1>📞 Корпоративный Справочник</h1>
+        <h1>📞 Администрация Корткеросского района</h1>
         <button id="showFormBtn" class="add-main-btn">➕ Добавить сотрудника</button>
 
         <div id="loading" class="loading" style="display: none;">⏳ Загрузка...</div>
@@ -33,26 +33,16 @@
                     <input type="text" id="position" name="position">
                 </div>
                 
-                <!-- Организация -->
-                <div class="form-group">
-                    <label for="organization">Организация:</label>
-                    <select id="organization" name="organization" required>
-                        <option value="">-- Выберите организацию --</option>
-                        <option value="Администрация">Администрация</option>
-                        <option value="Управление Культуры">Управление Культуры</option>
-                        <option value="Спорт">Спорт</option>
-                    </select>
-                </div>
-                
-                <!-- Отдел -->
+                <!-- Только отдел (организация фиксированная) -->
                 <div class="form-group">
                     <label for="department">Отдел:</label>
                     <select id="department" name="department" required>
                         <option value="">-- Выберите отдел --</option>
-                        <option value="Опека">Опека</option>
+                        <option value="Руководство">Руководство</option>
                         <option value="Орготдел">Орготдел</option>
-                        <option value="Управление Имущества">Управление Имущества</option>
-                        <option value="Закупки">Закупки</option>
+                        <option value="IT-отдел">IT-отдел</option>
+                        <option value="УКС">УКС</option>
+                        <option value="Жилполитика">Жилполитика</option>
                     </select>
                 </div>
                 
