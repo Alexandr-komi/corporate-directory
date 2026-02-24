@@ -76,49 +76,30 @@ function showNotification(message, isError = false) {
 
 // АВТОМАТИЧЕСКОЕ СОХРАНЕНИЕ ЧЕРЕЗ GITHUB ISSUES
 saveChangesBtn.addEventListener('click', async () => {
-    // Показываем сообщение о начале сохранения
-    showNotification('⏳ Сохраняем данные на GitHub...');
+    showNotification('⏳ Подготовка к сохранению...');
     
-    // Преобразуем данные в JSON
     const dataStr = JSON.stringify(allData, null, 2);
     
-    // Создаём объект Issue
-    const issueData = {
-        title: '[SAVE] Обновление справочника сотрудников',
-        body: dataStr,
-        labels: ['data-update']
-    };
-    
     try {
-        // Отправляем запрос на создание Issue
-        const response = await fetch('https://api.github.com/repos/Alexandr-komi/corporate-directory/issues', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/vnd.github.v3+json',
-                'Content-Type': 'application/json'
-                // Токен НЕ НУЖЕН в браузере! GitHub Action использует свой токен
-            },
-            body: JSON.stringify(issueData)
-        });
+        // Создаём ссылку на создание Issue с предзаполненными данными
+        const encodedBody = encodeURIComponent(dataStr);
+        const issueUrl = `https://github.com/Alexandr-komi/corporate-directory/issues/new?title=${encodeURIComponent('[SAVE] Обновление справочника сотрудников')}&body=${encodedBody}&labels=data-update`;
         
-        if (response.ok) {
-            const issue = await response.json();
-            showNotification(`✅ Данные отправлены! Issue #${issue.number} создан. Через минуту они появятся на сайте`);
-            
-            // Отключаем режим редактирования после сохранения
-            editMode = false;
-            editModeBtn.style.display = 'inline-block';
-            saveChangesBtn.style.display = 'none';
-            addCompanyBtn.style.display = 'none';
-            cancelEditBtn.style.display = 'none';
-            displayData(allData);
-        } else {
-            const error = await response.json();
-            throw new Error(error.message || 'Ошибка при создании Issue');
-        }
+        // Открываем в новой вкладке
+        window.open(issueUrl, '_blank');
+        
+        showNotification('📝 Открылась страница создания Issue. Нажмите "Submit new issue" для сохранения');
+        
+        // Выходим из режима редактирования
+        editMode = false;
+        editModeBtn.style.display = 'inline-block';
+        saveChangesBtn.style.display = 'none';
+        addCompanyBtn.style.display = 'none';
+        cancelEditBtn.style.display = 'none';
+        displayData(allData);
+        
     } catch (error) {
         console.error('Ошибка сохранения:', error);
-        showNotification('❌ Ошибка сохранения. Попробуйте ещё раз или сохраните вручную', true);
         
         // Запасной вариант - скачивание файла
         const blob = new Blob([dataStr], { type: 'application/json' });
@@ -266,8 +247,10 @@ employeeForm.addEventListener('submit', (e) => {
     const employee = { name, position, phone };
     
     if (currentEditEmployee !== null) {
+        // Редактирование существующего
         allData[companyIndex].departments[deptIndex].employees[currentEditEmployee] = employee;
     } else {
+        // Добавление нового
         if (!allData[companyIndex].departments[deptIndex].employees) {
             allData[companyIndex].departments[deptIndex].employees = [];
         }
@@ -311,6 +294,7 @@ function displayData(data) {
         const companySection = document.createElement('div');
         companySection.className = 'company-section';
         
+        // Заголовок предприятия
         const companyHeader = document.createElement('div');
         companyHeader.className = 'company-header';
         companyHeader.innerHTML = `
@@ -325,6 +309,7 @@ function displayData(data) {
         `;
         companySection.appendChild(companyHeader);
         
+        // Отделы
         if (company.departments && company.departments.length > 0) {
             company.departments.forEach((dept, deptIndex) => {
                 const deptSection = document.createElement('div');
@@ -344,6 +329,7 @@ function displayData(data) {
                 `;
                 deptSection.appendChild(deptHeader);
                 
+                // Сотрудники
                 if (dept.employees && dept.employees.length > 0) {
                     const employeesGrid = document.createElement('div');
                     employeesGrid.className = 'employees-grid';
@@ -389,13 +375,15 @@ function displayData(data) {
         directory.appendChild(companySection);
     });
     
+    // Добавляем обработчики для кнопок редактирования
     if (editMode) {
         addEditHandlers();
     }
 }
 
-// Обработчики кнопок
+// Обработчики кнопок редактирования
 function addEditHandlers() {
+    // Удаление предприятия
     document.querySelectorAll('.delete-company-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
             const companyIndex = e.target.dataset.company;
@@ -407,6 +395,7 @@ function addEditHandlers() {
         });
     });
     
+    // Редактирование предприятия
     document.querySelectorAll('.edit-company-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
             const companyIndex = e.target.dataset.company;
@@ -418,12 +407,14 @@ function addEditHandlers() {
         });
     });
     
+    // Добавление отдела
     document.querySelectorAll('.add-department-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
             showAddDepartmentModal(e.target.dataset.company);
         });
     });
     
+    // Удаление отдела
     document.querySelectorAll('.delete-dept-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
             const companyIndex = e.target.dataset.company;
@@ -436,6 +427,7 @@ function addEditHandlers() {
         });
     });
     
+    // Редактирование отдела
     document.querySelectorAll('.edit-dept-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
             const companyIndex = e.target.dataset.company;
@@ -448,12 +440,14 @@ function addEditHandlers() {
         });
     });
     
+    // Добавление сотрудника
     document.querySelectorAll('.add-employee-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
             showAddEmployeeModal(e.target.dataset.company, e.target.dataset.dept);
         });
     });
     
+    // Удаление сотрудника
     document.querySelectorAll('.delete-emp-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
             const companyIndex = e.target.dataset.company;
@@ -467,6 +461,7 @@ function addEditHandlers() {
         });
     });
     
+    // Редактирование сотрудника
     document.querySelectorAll('.edit-emp-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
             const companyIndex = e.target.dataset.company;
@@ -477,6 +472,7 @@ function addEditHandlers() {
             const dept = company.departments[deptIndex];
             const emp = dept.employees[empIndex];
             
+            // Заполняем форму
             const companySelect = document.getElementById('empCompany');
             companySelect.innerHTML = '';
             allData.forEach((c, idx) => {
@@ -500,6 +496,7 @@ function addEditHandlers() {
     });
 }
 
+// Фильтрация данных
 function filterData() {
     if (!allData) return;
     
@@ -528,6 +525,7 @@ function filterData() {
     updateStats(filtered);
 }
 
+// Обновление статистики
 function updateStats(data) {
     const stats = document.getElementById('stats');
     if (!stats) return;
