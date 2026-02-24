@@ -35,7 +35,7 @@ function copyContactData(settlement) {
     textToCopy += `Телефон: ${settlement.phone}\n`;
     textToCopy += `Email: ${settlement.email}`;
     if (settlement.website) textToCopy += `\nСайт: ${settlement.website}`;
-    if (settlement.max) textToCopy += `\nКанал MAX: ${settlement.max}`;
+    if (settlement.max) textToCopy += `\nMAX: ${settlement.max}`;
     if (settlement.address) textToCopy += `\nАдрес: ${settlement.address}`;
     if (settlement.note) textToCopy += `\nПримечание: ${settlement.note}`;
     
@@ -115,7 +115,7 @@ function displayContacts(data) {
                     </div>` : ''}
                     ${settlement.max ? `
                     <div class="info-row">
-                        <span class="label">📱 Канал MAX:</span>
+                        <span class="label">MAX:</span>
                         <span class="value">${settlement.max.includes('http') ? 
                             `<a href="${settlement.max}" target="_blank">${settlement.max}</a>` : 
                             settlement.max}
@@ -182,7 +182,7 @@ function displayContacts(data) {
                         </div>` : ''}
                         ${settlement.max ? `
                         <div class="info-row">
-                            <span class="label">📱 Канал MAX:</span>
+                            <span class="label">MAX:</span>
                             <span class="value">${settlement.max.includes('http') ? 
                                 `<a href="${settlement.max}" target="_blank">${settlement.max}</a>` : 
                                 settlement.max}
