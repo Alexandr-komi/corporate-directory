@@ -16,13 +16,13 @@ const formTitle = document.getElementById('formTitle');
 // Загрузка контактов при старте
 function loadContacts() {
     showLoading(true);
-    setTimeout(() => { // Имитация загрузки
+    setTimeout(function() {
         try {
             const stored = localStorage.getItem(STORAGE_KEY);
             if (stored) {
                 contacts = JSON.parse(stored);
             } else {
-                // Начальные данные для примера (обновленные с отделами)
+                // Начальные данные для примера
                 contacts = [
                     { 
                         id: Date.now() + 1, 
@@ -58,92 +58,126 @@ function loadContacts() {
 }
 
 function showLoading(isLoading) {
-    loadingEl.style.display = isLoading ? 'block' : 'none';
-    contactListEl.style.display = isLoading ? 'none' : 'grid';
+    if (loadingEl) {
+        loadingEl.style.display = isLoading ? 'block' : 'none';
+    }
+    if (contactListEl) {
+        contactListEl.style.display = isLoading ? 'none' : 'grid';
+    }
 }
 
 function saveContacts() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(contacts));
 }
 
+function escapeHtml(unsafe) {
+    if (!unsafe) return unsafe;
+    return unsafe
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+
 function renderContacts() {
+    if (!contactListEl) return;
+    
     if (contacts.length === 0) {
         contactListEl.innerHTML = '<p class="empty-message">Справочник пуст. Добавьте первый контакт!</p>';
         return;
     }
 
-    contactListEl.innerHTML = contacts.map(contact => `
-        <div class="contact-card" data-id="${contact.id}">
-            <div class="contact-name">${escapeHtml(contact.fullname)}</div>
-            <div class="contact-detail"><strong>Должность:</strong> <span>${escapeHtml(contact.position || '—')}</span></div>
-            <div class="contact-detail"><strong>Организация:</strong> <span>${escapeHtml(contact.organization || '—')}</span></div>
-            <div class="contact-detail"><strong>Отдел:</strong> <span>${escapeHtml(contact.department || '—')}</span></div>
-            <div class="contact-detail"><strong>Нас. пункт:</strong> <span>${escapeHtml(contact.city || '—')}</span></div>
-            <div class="contact-detail"><strong>Телефон:</strong> <span>${escapeHtml(contact.phone || '—')}</span></div>
-            <div class="contact-detail"><strong>Email:</strong> <span>${escapeHtml(contact.email || '—')}</span></div>
-        </div>
-    `).join('');
-}
-
-// Простая защита от XSS
-function escapeHtml(unsafe) {
-    if (!unsafe) return unsafe;
-    return unsafe
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+    let html = '';
+    for (let i = 0; i < contacts.length; i++) {
+        const contact = contacts[i];
+        html += '<div class="contact-card" data-id="' + contact.id + '">';
+        html += '<div class="contact-name">' + escapeHtml(contact.fullname) + '</div>';
+        html += '<div class="contact-detail"><strong>Должность:</strong> <span>' + escapeHtml(contact.position || '—') + '</span></div>';
+        html += '<div class="contact-detail"><strong>Организация:</strong> <span>' + escapeHtml(contact.organization || '—') + '</span></div>';
+        html += '<div class="contact-detail"><strong>Отдел:</strong> <span>' + escapeHtml(contact.department || '—') + '</span></div>';
+        html += '<div class="contact-detail"><strong>Нас. пункт:</strong> <span>' + escapeHtml(contact.city || '—') + '</span></div>';
+        html += '<div class="contact-detail"><strong>Телефон:</strong> <span>' + escapeHtml(contact.phone || '—') + '</span></div>';
+        html += '<div class="contact-detail"><strong>Email:</strong> <span>' + escapeHtml(contact.email || '—') + '</span></div>';
+        html += '</div>';
+    }
+    contactListEl.innerHTML = html;
 }
 
 // Управление модальным окном
 function openModal() {
-    modal.style.display = 'flex';
-    contactForm.reset();
-    formTitle.textContent = '➕ Добавить новый контакт';
+    if (modal) {
+        modal.style.display = 'flex';
+    }
+    if (contactForm) {
+        contactForm.reset();
+    }
+    if (formTitle) {
+        formTitle.textContent = '➕ Добавить новый контакт';
+    }
 }
 
 function closeModal() {
-    modal.style.display = 'none';
+    if (modal) {
+        modal.style.display = 'none';
+    }
 }
 
-showFormBtn.addEventListener('click', openModal);
-closeModalBtn.addEventListener('click', closeModal);
-cancelBtn.addEventListener('click', closeModal);
+// Обработчики событий
+if (showFormBtn) {
+    showFormBtn.addEventListener('click', openModal);
+}
+
+if (closeModalBtn) {
+    closeModalBtn.addEventListener('click', closeModal);
+}
+
+if (cancelBtn) {
+    cancelBtn.addEventListener('click', closeModal);
+}
 
 // Закрытие по клику вне модального окна
-window.addEventListener('click', (e) => {
+window.addEventListener('click', function(e) {
     if (e.target === modal) {
         closeModal();
     }
 });
 
 // Обработка отправки формы
-contactForm.addEventListener('submit', (e) => {
-    e.preventDefault();
+if (contactForm) {
+    contactForm.addEventListener('submit', function(e) {
+        e.preventDefault();
 
-    const formData = new FormData(contactForm);
-    const newContact = {
-        id: Date.now(),
-        fullname: formData.get('fullname').trim(),
-        position: formData.get('position').trim(),
-        organization: formData.get('organization').trim(),
-        department: formData.get('department').trim(), // Новое поле
-        city: formData.get('city').trim(),
-        phone: formData.get('phone').trim(),
-        email: formData.get('email').trim()
-    };
+        const fullname = document.getElementById('fullname') ? document.getElementById('fullname').value.trim() : '';
+        const position = document.getElementById('position') ? document.getElementById('position').value.trim() : '';
+        const organization = document.getElementById('organization') ? document.getElementById('organization').value : '';
+        const department = document.getElementById('department') ? document.getElementById('department').value : '';
+        const city = document.getElementById('city') ? document.getElementById('city').value.trim() : '';
+        const phone = document.getElementById('phone') ? document.getElementById('phone').value.trim() : '';
+        const email = document.getElementById('email') ? document.getElementById('email').value.trim() : '';
 
-    if (!newContact.fullname) {
-        alert('Поле "ФИО" обязательно для заполнения');
-        return;
-    }
+        if (!fullname) {
+            alert('Поле "ФИО" обязательно для заполнения');
+            return;
+        }
 
-    contacts.push(newContact);
-    saveContacts();
-    renderContacts();
-    closeModal();
-});
+        const newContact = {
+            id: Date.now(),
+            fullname: fullname,
+            position: position,
+            organization: organization,
+            department: department,
+            city: city,
+            phone: phone,
+            email: email
+        };
+
+        contacts.push(newContact);
+        saveContacts();
+        renderContacts();
+        closeModal();
+    });
+}
 
 // Старт приложения
 loadContacts();
