@@ -3,6 +3,7 @@
   "settlements": [
     {
       "name": "Корткерос",
+      "type": "с.",
       "head": "Разманов Андрей Владимирович",
       "phone": "9-99-02",
       "email": "kortkeros@kortkeros.rkomi.ru",
@@ -14,6 +15,7 @@
     },
     {
       "name": "Сторожевск",
+      "type": "с.",
       "head": "Канева Ольга Валерьевна",
       "phone": "9-10-73",
       "email": "storozhevsk@kortkeros.rkomi.ru",
@@ -21,10 +23,11 @@
       "address": "168050, Республика Коми, Корткеросский район, с. Сторожевск, ул. Интернациональная, д. 51",
       "website": "https://storozhevsk-r11.gosweb.gosuslugi.ru",
       "max": "https://max.ru/id1113006767_gos",
-      "specialist_phone": "9-12-04"
+      "specialist_phone": "0-00-00"
     },
     {
       "name": "Богородск",
+      "type": "с.",
       "head": "Шевкаленко Светлана Александровна",
       "phone": "9-65-48",
       "email": "bogorodsk@kortkeros.rkomi.ru",
@@ -36,6 +39,7 @@
     },
     {
       "name": "Большелуг",
+      "type": "с.",
       "head": "Мишарин Евгений Николаевич",
       "phone": "9-64-24",
       "email": "bolshelug@kortkeros.rkomi.ru",
@@ -43,10 +47,11 @@
       "address": "168056, Республика Коми, Корткеросский район, село Большелуг, улица Центральная, дом 13",
       "website": "https://bolshelug-r11.gosweb.gosuslugi.ru",
       "max": "https://max.ru/id1113006830_gos",
-      "specialist_phone": "9-64-24"
+      "specialist_phone": "0-00-00"
     },
     {
       "name": "Вомын",
+      "type": "с.",
       "head": "Моторина Наталья Евгеньевна",
       "phone": "9-67-10",
       "email": "vomyn@kortkeros.rkomi.ru",
@@ -54,10 +59,11 @@
       "address": "168051, Республика Коми, Корткеросский район, с.Вомын, дом №125",
       "website": "https://vomyn-r11.gosweb.gosuslugi.ru",
       "max": "https://max.ru/id1113006943_gos",
-      "specialist_phone": "9-67-10"
+      "specialist_phone": "0-00-00"
     },
     {
       "name": "Додзь",
+      "type": "с.",
       "head": "Арихина Елена Александровна",
       "phone": "9-45-16",
       "email": "dodz@kortkeros.rkomi.ru",
@@ -65,10 +71,11 @@
       "address": "168031, Республика Коми, Корткеросский район, с. Додзь, ул.Центральная, д. 74",
       "website": "https://dodz-r11.gosweb.gosuslugi.ru",
       "max": "https://max.ru/id1113006975_gos",
-      "specialist_phone": "9-45-12"
+      "specialist_phone": "0-00-00"
     },
     {
       "name": "Керес",
+      "type": "с.",
       "head": "Королева Елена Васильевна",
       "phone": "9-61-89",
       "email": "keres@kortkeros.rkomi.ru",
@@ -76,10 +83,11 @@
       "address": "168054, Республика Коми, Корткеросский район, с. Керес, ул. Центральная, д. 40",
       "website": "https://keres-r11.gosweb.gosuslugi.ru",
       "max": "https://max.ru/id1113006968_gos",
-      "specialist_phone": "9-61-89"
+      "specialist_phone": "0-00-00"
     },
     {
       "name": "Маджа",
+      "type": "с.",
       "head": "Ястребова Галина Владимировна",
       "phone": "9-41-05",
       "email": "madja@kortkeros.rkomi.ru",
@@ -87,10 +95,11 @@
       "address": "168023, Республика Коми, Корткеросский район, с.Маджа, ул. Центральная , д.8",
       "website": "https://madzha-r11.gosweb.gosuslugi.ru",
       "max": "https://max.ru/id1113006862_gos",
-      "specialist_phone": "9-41-05"
+      "specialist_phone": "0-00-00"
     },
     {
       "name": "Мордино",
+      "type": "с.",
       "head": "Шарикадзе Олеся Михайловна",
       "phone": "9-53-45",
       "email": "mordino@kortkeros.rkomi.ru",
@@ -98,10 +107,11 @@
       "address": "168030, Республика Коми, Корткеросский район, с. Мордино, ул. Пушкина, д.7",
       "website": "https://mordino-r11.gosweb.gosuslugi.ru",
       "max": "длительный больничный",
-      "specialist_phone": "9-53-45"
+      "specialist_phone": "0-00-00"
     },
     {
       "name": "Намск",
+      "type": "п.",
       "head": "Забоева Светлана Валентиновна",
       "phone": "9-54-23",
       "email": "namsk@kortkeros.rkomi.ru",
@@ -109,10 +119,11 @@
       "address": "168035, Республика Коми, Корткеросский район, п. Намск, ул. Школьная, д.19а",
       "website": "https://namsk-r11.gosweb.gosuslugi.ru",
       "max": "https://max.ru/id1113006936_gos",
-      "specialist_phone": "9-54-23"
+      "specialist_phone": "0-00-00"
     },
     {
       "name": "Нёбдино",
+      "type": "с.",
       "head": "Савин Валерий Владимирович",
       "phone": "9-66-44",
       "email": "nebdino@kortkeros.rkomi.ru",
@@ -124,6 +135,7 @@
     },
     {
       "name": "Нившера",
+      "type": "с.",
       "head": "Изъюрова Нина Степановна",
       "phone": "9-82-91",
       "email": "nivshera@kortkeros.rkomi.ru",
@@ -131,10 +143,11 @@
       "address": "168059, Республика Коми, Корткеросский район, с. Нившера, д. 729",
       "website": "https://nivshera-r11.gosweb.gosuslugi.ru",
       "max": "https://max.ru/id1113006894_gos",
-      "specialist_phone": "9-83-02"
+      "specialist_phone": "0-00-00"
     },
     {
       "name": "Пезмег",
+      "type": "с.",
       "head": "Торопов Александр Александрович",
       "phone": "9-31-19",
       "email": "pezmeg@kortkeros.rkomi.ru",
@@ -146,6 +159,7 @@
     },
     {
       "name": "Подтыбок",
+      "type": "п.",
       "head": "Михайлова Елена Ивановна",
       "phone": "9-71-16",
       "email": "podtybok@kortkeros.rkomi.ru",
@@ -157,6 +171,7 @@
     },
     {
       "name": "Подъельск",
+      "type": "с.",
       "head": "Цывунин Андрей Александрович",
       "phone": "9-77-22",
       "email": "podyelsk@kortkeros.rkomi.ru",
@@ -168,6 +183,7 @@
     },
     {
       "name": "Приозерный",
+      "type": "п.",
       "head": "Богадевич Софья Николаевна",
       "phone": "9-42-48",
       "email": "priozernyi@kortkeros.rkomi.ru",
@@ -175,10 +191,11 @@
       "address": "168042, Республика Коми, Корткеросский район, п. Приозёрный, ул. Станционная, д. 3",
       "website": "https://priozerny-r11.gosweb.gosuslugi.ru",
       "max": "https://max.ru/id1113006799_gos",
-      "specialist_phone": "9-42-24"
+      "specialist_phone": "0-00-00"
     },
     {
       "name": "Позтыкерес",
+      "type": "с.",
       "head": "Пузыревская Анжела Юрьевна",
       "phone": "9-33-22",
       "email": "poztikeres@kortkeros.rkomi.ru",
@@ -186,10 +203,11 @@
       "address": "168027, Республика Коми, Корткеросский район, с. Позтыкерес, ул. Светлая, д. 20",
       "website": "https://poztikeres-r11.gosweb.gosuslugi.ru",
       "max": "https://max.ru/id1113006809_gos",
-      "specialist_phone": "9-33-22"
+      "specialist_phone": "0-00-00"
     },
     {
       "name": "Усть-Лэкчим",
+      "type": "п.",
       "head": "Меникова Алена Михайловна",
       "phone": "9-36-10",
       "email": "ust_lekchim@kortkeros.rkomi.ru",
@@ -197,7 +215,7 @@
       "address": "168024, Республика Коми, Корткеросский район, п. Усть-Лэкчим, ул. Школьная, д.1б",
       "website": "https://ust-lekchim-r11.gosweb.gosuslugi.ru",
       "max": "https://max.ru/id1113006982_gos",
-      "specialist_phone": "9-36-10"
+      "specialist_phone": "0-00-00"
     }
   ]
 }
