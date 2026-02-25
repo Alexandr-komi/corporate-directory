@@ -29,11 +29,11 @@ async function loadContacts() {
 // Функция копирования данных в буфер обмена
 function copyContactData(settlement) {
     // Формируем текст для копирования
-    let textToCopy = `${settlement.name}\n`;
+    let textToCopy = `${settlement.type ? settlement.type : ''}${settlement.name}\n`;
     textToCopy += `Глава: ${settlement.head}\n`;
     if (settlement.position) textToCopy += `Должность: ${settlement.position}\n`;
     textToCopy += `Телефон: ${settlement.phone}\n`;
-    if (settlement.specialist_phone) textToCopy += `Специалисты: ${settlement.specialist_phone}\n`;
+    if (settlement.specialist_phone && settlement.specialist_phone !== "0-00-00") textToCopy += `Специалисты: ${settlement.specialist_phone}\n`;
     textToCopy += `Email: ${settlement.email}`;
     if (settlement.website) textToCopy += `\nСайт: ${settlement.website}`;
     if (settlement.max) textToCopy += `\nMAX: ${settlement.max}`;
@@ -78,15 +78,19 @@ function displayContacts(data) {
     
     directory.innerHTML = '';
     
+    // Если data - объект с одним районом
     if (data && data.district && data.settlements) {
         const section = document.createElement('div');
         section.className = 'district-section';
         
         const settlementsHtml = data.settlements.map(settlement => {
+            // Формируем отображаемое название с типом
+            const displayName = settlement.type ? `${settlement.type}${settlement.name}` : settlement.name;
+            
             return `
             <div class="settlement-card">
                 <div class="settlement-header">
-                    <h3>${settlement.name}</h3>
+                    <h3>${displayName}</h3>
                     <button class="copy-btn" onclick='copyContactData(${JSON.stringify(settlement).replace(/'/g, "&apos;")})'>
                         📋 Копировать
                     </button>
@@ -105,7 +109,7 @@ function displayContacts(data) {
                         <span class="label">📞 Телефон:</span>
                         <span class="value"><a href="tel:${settlement.phone.replace(/[^0-9+]/g, '')}">${settlement.phone}</a></span>
                     </div>
-                    ${settlement.specialist_phone ? `
+                    ${settlement.specialist_phone && settlement.specialist_phone !== "0-00-00" ? `
                     <div class="info-row">
                         <span class="label">👥 Специалисты:</span>
                         <span class="value"><a href="tel:${settlement.specialist_phone.replace(/[^0-9+]/g, '')}">${settlement.specialist_phone}</a></span>
@@ -149,16 +153,20 @@ function displayContacts(data) {
         
         directory.appendChild(section);
     }
+    // Если data - массив районов (на будущее)
     else if (Array.isArray(data)) {
         data.forEach(districtData => {
             const section = document.createElement('div');
             section.className = 'district-section';
             
             const settlementsHtml = districtData.settlements.map(settlement => {
+                // Формируем отображаемое название с типом
+                const displayName = settlement.type ? `${settlement.type}${settlement.name}` : settlement.name;
+                
                 return `
                 <div class="settlement-card">
                     <div class="settlement-header">
-                        <h3>${settlement.name}</h3>
+                        <h3>${displayName}</h3>
                         <button class="copy-btn" onclick='copyContactData(${JSON.stringify(settlement).replace(/'/g, "&apos;")})'>
                             📋 Копировать
                         </button>
@@ -177,7 +185,7 @@ function displayContacts(data) {
                             <span class="label">📞 Телефон:</span>
                             <span class="value"><a href="tel:${settlement.phone.replace(/[^0-9+]/g, '')}">${settlement.phone}</a></span>
                         </div>
-                        ${settlement.specialist_phone ? `
+                        ${settlement.specialist_phone && settlement.specialist_phone !== "0-00-00" ? `
                         <div class="info-row">
                             <span class="label">👥 Специалисты:</span>
                             <span class="value"><a href="tel:${settlement.specialist_phone.replace(/[^0-9+]/g, '')}">${settlement.specialist_phone}</a></span>
@@ -236,6 +244,7 @@ function filterContacts() {
         return;
     }
     
+    // Фильтрация для объекта с одним районом
     if (allData.district && allData.settlements) {
         const filteredSettlements = allData.settlements.filter(settlement => 
             settlement.name.toLowerCase().includes(searchText) ||
@@ -246,7 +255,8 @@ function filterContacts() {
             (settlement.specialist_phone && settlement.specialist_phone.toLowerCase().includes(searchText)) ||
             (settlement.email && settlement.email.toLowerCase().includes(searchText)) ||
             (settlement.website && settlement.website.toLowerCase().includes(searchText)) ||
-            (settlement.max && settlement.max.toLowerCase().includes(searchText))
+            (settlement.max && settlement.max.toLowerCase().includes(searchText)) ||
+            (settlement.type && settlement.type.toLowerCase().includes(searchText))
         );
         
         const filteredData = {
@@ -257,6 +267,7 @@ function filterContacts() {
         displayContacts(filteredData);
         updateStats(filteredData);
     }
+    // Фильтрация для массива районов
     else if (Array.isArray(allData)) {
         const filtered = allData.map(district => ({
             ...district,
@@ -270,6 +281,7 @@ function filterContacts() {
                 (settlement.email && settlement.email.toLowerCase().includes(searchText)) ||
                 (settlement.website && settlement.website.toLowerCase().includes(searchText)) ||
                 (settlement.max && settlement.max.toLowerCase().includes(searchText)) ||
+                (settlement.type && settlement.type.toLowerCase().includes(searchText)) ||
                 district.district.toLowerCase().includes(searchText)
             )
         })).filter(district => district.settlements.length > 0);
@@ -283,6 +295,7 @@ function updateStats(data) {
     const stats = document.getElementById('stats');
     if (!stats) return;
     
+    // Если data - объект с одним районом
     if (data && data.district && data.settlements) {
         stats.innerHTML = `
             <div class="stats-panel">
@@ -291,6 +304,7 @@ function updateStats(data) {
             </div>
         `;
     }
+    // Если data - массив районов
     else if (Array.isArray(data)) {
         const totalSettlements = data.reduce((sum, district) => 
             sum + (district.settlements?.length || 0), 0);
