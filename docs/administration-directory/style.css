@@ -8,18 +8,18 @@ body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
     background: #f8f9fa;
     color: #2c3e50;
-    line-height: 1.6;
+    line-height: 1.5;
 }
 
 .container {
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
-    padding: 20px;
+    padding: 15px;
 }
 
 header {
-    margin-bottom: 30px;
-    padding: 30px 20px;
+    margin-bottom: 25px;
+    padding: 20px 20px;
     background: white;
     border-radius: 12px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
@@ -27,29 +27,29 @@ header {
 }
 
 header h1 {
-    font-size: 28px;
+    font-size: 24px;
     color: #1e3c72;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
 }
 
 .subtitle {
     color: #6c757d;
-    font-size: 16px;
-    margin-bottom: 20px;
+    font-size: 15px;
+    margin-bottom: 15px;
 }
 
 .search-box {
     width: 100%;
-    max-width: 800px;
+    max-width: 700px;
     margin: 0 auto;
 }
 
 .search-box input {
     width: 100%;
-    padding: 16px 28px;
+    padding: 12px 24px;
     border: 2px solid #e9ecef;
-    border-radius: 50px;
-    font-size: 16px;
+    border-radius: 40px;
+    font-size: 15px;
     transition: all 0.3s ease;
     background: white;
     box-shadow: 0 2px 5px rgba(0,0,0,0.05);
@@ -68,8 +68,8 @@ header h1 {
 
 .loading {
     text-align: center;
-    padding: 60px;
-    font-size: 18px;
+    padding: 40px;
+    font-size: 16px;
     color: #868e96;
     background: white;
     border-radius: 12px;
@@ -79,48 +79,46 @@ header h1 {
 .directory {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 10px;
 }
 
 /* Стили для аккордеона */
 .department-section {
     background: white;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
     overflow: hidden;
 }
 
 .department-header {
     background: linear-gradient(135deg, #1e3c72, #2a4a8a);
     color: white;
-    padding: 18px 25px;
+    padding: 14px 20px;
     cursor: pointer;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    transition: all 0.3s;
+    transition: all 0.2s;
 }
 
 .department-header:hover {
     background: linear-gradient(135deg, #2a4a8a, #1e3c72);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
 .department-header h3 {
     margin: 0;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 600;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
 }
 
 .department-header .toggle-icon {
-    font-size: 20px;
+    font-size: 16px;
     font-weight: bold;
-    width: 24px;
-    height: 24px;
+    width: 22px;
+    height: 22px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -136,70 +134,76 @@ header h1 {
 .department-content {
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.5s ease-out;
+    transition: max-height 0.4s ease-out;
     background: #f8f9fa;
 }
 
 .department-content.open {
     max-height: 5000px;
-    transition: max-height 0.8s ease-in;
+    transition: max-height 0.6s ease-in;
 }
 
-/* Сетка карточек сотрудников */
+/* Сетка карточек сотрудников - более компактная */
 .employees-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
-    padding: 25px;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 12px;
+    padding: 15px;
 }
 
-/* Карточка сотрудника */
+/* Карточка сотрудника - компактная */
 .employee-card {
     background: white;
-    border-radius: 10px;
-    padding: 20px;
+    border-radius: 8px;
+    padding: 12px 15px;
     border: 1px solid #e9ecef;
     transition: all 0.2s ease;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 6px;
 }
 
 .employee-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
     border-color: #4dabf7;
 }
 
 .employee-position {
-    font-size: 14px;
+    font-size: 11px;
     color: #4dabf7;
-    font-weight: 500;
+    font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 5px;
+    letter-spacing: 0.3px;
+    margin-bottom: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .employee-name {
-    font-size: 18px;
+    font-size: 15px;
     color: #1e3c72;
     font-weight: 600;
-    margin-bottom: 10px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #e9ecef;
+    margin-bottom: 4px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid #f0f2f4;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .employee-phone {
     display: flex;
     align-items: center;
-    gap: 8px;
-    font-size: 16px;
+    gap: 6px;
+    font-size: 14px;
     color: #2c3e50;
-    margin-top: 5px;
 }
 
 .employee-phone .phone-icon {
-    font-size: 18px;
+    font-size: 14px;
+    opacity: 0.7;
 }
 
 .employee-phone a {
@@ -207,6 +211,8 @@ header h1 {
     text-decoration: none;
     font-weight: 500;
     transition: color 0.2s;
+    font-size: 13px;
+    word-break: break-word;
 }
 
 .employee-phone a:hover {
@@ -218,71 +224,95 @@ header h1 {
 .empty-message {
     color: #adb5bd;
     font-style: italic;
-    padding: 20px;
+    padding: 15px;
     text-align: center;
     background: #f8f9fa;
     border-radius: 8px;
+    font-size: 14px;
 }
 
 .stats {
-    margin-top: 30px;
+    margin-top: 25px;
 }
 
 .stats-panel {
     background: white;
-    padding: 15px 25px;
+    padding: 12px 20px;
     border-radius: 30px;
     display: flex;
-    gap: 30px;
+    gap: 25px;
     justify-content: center;
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     color: #6c757d;
-    font-size: 15px;
+    font-size: 14px;
 }
 
 .stats-panel strong {
     color: #1e3c72;
-    font-size: 18px;
+    font-size: 16px;
     margin-left: 5px;
 }
 
 /* Адаптивность */
 @media (max-width: 768px) {
     .container {
-        padding: 15px;
+        padding: 10px;
     }
     
     header {
-        padding: 20px 15px;
+        padding: 15px;
     }
     
     header h1 {
-        font-size: 22px;
+        font-size: 20px;
+    }
+    
+    .subtitle {
+        font-size: 14px;
     }
     
     .search-box input {
-        padding: 14px 20px;
-        font-size: 15px;
+        padding: 12px 20px;
+        font-size: 14px;
     }
     
     .employees-grid {
         grid-template-columns: 1fr;
-        padding: 15px;
-        gap: 15px;
+        padding: 12px;
+        gap: 10px;
+    }
+    
+    .employee-card {
+        padding: 10px 12px;
     }
     
     .stats-panel {
         flex-direction: column;
-        gap: 10px;
+        gap: 8px;
         text-align: center;
-        padding: 15px;
+        padding: 12px;
     }
     
     .department-header {
-        padding: 15px;
+        padding: 12px 15px;
     }
     
     .department-header h3 {
-        font-size: 16px;
+        font-size: 15px;
+    }
+}
+
+/* Для очень маленьких экранов */
+@media (max-width: 480px) {
+    .employee-position {
+        font-size: 10px;
+    }
+    
+    .employee-name {
+        font-size: 14px;
+    }
+    
+    .employee-phone {
+        font-size: 13px;
     }
 }
