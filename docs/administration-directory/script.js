@@ -39,18 +39,25 @@ function displayDepartments(departments) {
     
     directory.innerHTML = '';
     
+    // Создаем сетку для карточек отделов
+    const departmentsGrid = document.createElement('div');
+    departmentsGrid.className = 'departments-grid';
+    
     departments.forEach((dept, index) => {
-        const deptSection = document.createElement('div');
-        deptSection.className = 'department-section';
+        const deptCard = document.createElement('div');
+        deptCard.className = 'department-card';
         
-        // Заголовок отдела (кликабельный)
+        // Заголовок карточки отдела (кликабельный)
         const deptHeader = document.createElement('div');
         deptHeader.className = 'department-header';
+        
+        let titleHtml = `<span>📁 ${dept.name}</span>`;
+        if (dept.address) {
+            titleHtml += `<span class="department-address">📍 ${dept.address}</span>`;
+        }
+        
         deptHeader.innerHTML = `
-            <h3>
-                <span>📁 ${dept.name}</span>
-                ${dept.address ? `<span style="font-size: 12px; opacity: 0.9; margin-left: 10px;">📍 ${dept.address}</span>` : ''}
-            </h3>
+            <h3>${titleHtml}</h3>
             <span class="toggle-icon">▼</span>
         `;
         
@@ -64,28 +71,21 @@ function displayDepartments(departments) {
         
         if (dept.employees && dept.employees.length > 0) {
             dept.employees.forEach(emp => {
-                // Показываем только если есть имя или телефон
                 if (emp.name || emp.phone) {
                     const empCard = document.createElement('div');
                     empCard.className = 'employee-card';
                     
                     let cardHtml = '';
                     
-                    // Должность
                     if (emp.position) {
                         cardHtml += `<div class="employee-position">${emp.position}</div>`;
                     }
                     
-                    // Имя (жирное)
                     if (emp.name) {
-                        cardHtml += `<div class="employee-name"><strong>${emp.name}</strong></div>`;
-                    } else if (!emp.name && emp.phone) {
-                        cardHtml += `<div class="employee-name"><strong>Сотрудник</strong></div>`;
+                        cardHtml += `<div class="employee-name">${emp.name}</div>`;
                     }
                     
-                    // Телефон
                     if (emp.phone) {
-                        // Форматируем телефон для ссылки (оставляем только цифры и +)
                         const phoneLink = emp.phone.replace(/[^0-9+]/g, '');
                         cardHtml += `
                             <div class="employee-phone">
@@ -108,20 +108,18 @@ function displayDepartments(departments) {
             });
         }
         
-        // Если после фильтрации остались сотрудники
         if (employeesGrid.children.length > 0) {
             deptContent.appendChild(employeesGrid);
         } else {
-            // Показываем сообщение, если нет сотрудников
             const emptyMessage = document.createElement('div');
             emptyMessage.className = 'empty-message';
             emptyMessage.textContent = 'Нет сотрудников';
             deptContent.appendChild(emptyMessage);
         }
         
-        deptSection.appendChild(deptHeader);
-        deptSection.appendChild(deptContent);
-        directory.appendChild(deptSection);
+        deptCard.appendChild(deptHeader);
+        deptCard.appendChild(deptContent);
+        departmentsGrid.appendChild(deptCard);
         
         // Добавляем обработчик клика для открытия/закрытия
         deptHeader.addEventListener('click', () => {
@@ -139,6 +137,8 @@ function displayDepartments(departments) {
             }
         });
     });
+    
+    directory.appendChild(departmentsGrid);
 }
 
 function filterData() {
@@ -147,7 +147,6 @@ function filterData() {
     const searchText = searchInput.value.toLowerCase().trim();
     
     if (!searchText) {
-        // Если поиск пустой, показываем все отделы закрытыми
         displayDepartments(allData.departments);
         updateStats(allData.departments);
         
@@ -180,9 +179,9 @@ function filterData() {
     
     // При поиске автоматически открываем все отделы с результатами
     setTimeout(() => {
-        document.querySelectorAll('.department-section').forEach((section, index) => {
-            const content = section.querySelector('.department-content');
-            const icon = section.querySelector('.toggle-icon');
+        document.querySelectorAll('.department-card').forEach((card, index) => {
+            const content = card.querySelector('.department-content');
+            const icon = card.querySelector('.toggle-icon');
             if (content && filteredDepartments[index]?.employees.length > 0) {
                 content.classList.add('open');
                 icon.classList.add('open');
