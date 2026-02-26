@@ -1,105 +1,288 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+    background: #f8f9fa;
+    color: #2c3e50;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header {
+    margin-bottom: 30px;
+    padding: 30px 20px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    text-align: center;
+}
+
+header h1 {
+    font-size: 28px;
+    color: #1e3c72;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    color: #6c757d;
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+.search-box {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 16px 28px;
+    border: 2px solid #e9ecef;
+    border-radius: 50px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    background: white;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.search-box input:focus {
+    outline: none;
+    border-color: #4dabf7;
+    box-shadow: 0 0 0 4px rgba(77, 171, 247, 0.15);
+}
+
+.search-box input::placeholder {
+    color: #adb5bd;
+    font-style: italic;
+}
+
+.loading {
+    text-align: center;
+    padding: 60px;
+    font-size: 18px;
+    color: #868e96;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.directory {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
 /* Стили для аккордеона */
 .department-section {
-    margin-bottom: 10px;
-    border: 1px solid #e9ecef;
-    border-radius: 8px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     overflow: hidden;
 }
 
 .department-header {
-    background: #f8f9fa;
-    padding: 15px 20px;
+    background: linear-gradient(135deg, #1e3c72, #2a4a8a);
+    color: white;
+    padding: 18px 25px;
     cursor: pointer;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    transition: background 0.2s;
+    transition: all 0.3s;
 }
 
 .department-header:hover {
-    background: #e9ecef;
+    background: linear-gradient(135deg, #2a4a8a, #1e3c72);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
 .department-header h3 {
     margin: 0;
-    color: #1e3c72;
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .department-header .toggle-icon {
     font-size: 20px;
-    color: #4dabf7;
+    font-weight: bold;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,0.2);
+    border-radius: 50%;
+    transition: transform 0.3s;
+}
+
+.department-header .toggle-icon.open {
+    transform: rotate(180deg);
 }
 
 .department-content {
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.3s ease-out;
-    background: white;
+    transition: max-height 0.5s ease-out;
+    background: #f8f9fa;
 }
 
 .department-content.open {
-    max-height: 2000px;
-    transition: max-height 0.5s ease-in;
+    max-height: 5000px;
+    transition: max-height 0.8s ease-in;
 }
 
-.employees-list {
-    padding: 15px 20px;
+/* Сетка карточек сотрудников */
+.employees-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 25px;
 }
 
-.employee-item {
+/* Карточка сотрудника */
+.employee-card {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    border: 1px solid #e9ecef;
+    transition: all 0.2s ease;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 0;
-    border-bottom: 1px solid #f1f3f5;
+    flex-direction: column;
+    gap: 12px;
 }
 
-.employee-item:last-child {
-    border-bottom: none;
-}
-
-.employee-info {
-    flex: 1;
+.employee-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+    border-color: #4dabf7;
 }
 
 .employee-position {
     font-size: 14px;
-    color: #495057;
-    margin-bottom: 4px;
+    color: #4dabf7;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 5px;
 }
 
 .employee-name {
-    font-size: 16px;
+    font-size: 18px;
     color: #1e3c72;
-    font-weight: 500;
+    font-weight: 600;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e9ecef;
 }
 
 .employee-phone {
-    font-size: 14px;
-    color: #4dabf7;
-    margin-left: 20px;
-    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+    color: #2c3e50;
+    margin-top: 5px;
+}
+
+.employee-phone .phone-icon {
+    font-size: 18px;
 }
 
 .employee-phone a {
     color: #4dabf7;
     text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
 }
 
 .employee-phone a:hover {
+    color: #1e3c72;
     text-decoration: underline;
 }
 
+/* Стили для пустых значений */
+.empty-message {
+    color: #adb5bd;
+    font-style: italic;
+    padding: 20px;
+    text-align: center;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.stats {
+    margin-top: 30px;
+}
+
+.stats-panel {
+    background: white;
+    padding: 15px 25px;
+    border-radius: 30px;
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    color: #6c757d;
+    font-size: 15px;
+}
+
+.stats-panel strong {
+    color: #1e3c72;
+    font-size: 18px;
+    margin-left: 5px;
+}
+
+/* Адаптивность */
 @media (max-width: 768px) {
-    .employee-item {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 8px;
+    .container {
+        padding: 15px;
     }
     
-    .employee-phone {
-        margin-left: 0;
+    header {
+        padding: 20px 15px;
+    }
+    
+    header h1 {
+        font-size: 22px;
+    }
+    
+    .search-box input {
+        padding: 14px 20px;
+        font-size: 15px;
+    }
+    
+    .employees-grid {
+        grid-template-columns: 1fr;
+        padding: 15px;
+        gap: 15px;
+    }
+    
+    .stats-panel {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+        padding: 15px;
+    }
+    
+    .department-header {
+        padding: 15px;
+    }
+    
+    .department-header h3 {
+        font-size: 16px;
     }
 }
