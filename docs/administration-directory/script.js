@@ -47,7 +47,10 @@ function displayDepartments(departments) {
         const deptHeader = document.createElement('div');
         deptHeader.className = 'department-header';
         deptHeader.innerHTML = `
-            <h3>📁 ${dept.name} ${dept.address ? `<span style="font-size: 12px; color: #6c757d; margin-left: 10px;">📍 ${dept.address}</span>` : ''}</h3>
+            <h3>
+                <span>📁 ${dept.name}</span>
+                ${dept.address ? `<span style="font-size: 12px; opacity: 0.9; margin-left: 10px;">📍 ${dept.address}</span>` : ''}
+            </h3>
             <span class="toggle-icon">▼</span>
         `;
         
@@ -55,38 +58,67 @@ function displayDepartments(departments) {
         const deptContent = document.createElement('div');
         deptContent.className = 'department-content';
         
-        // Список сотрудников
-        const employeesList = document.createElement('div');
-        employeesList.className = 'employees-list';
+        // Сетка карточек сотрудников
+        const employeesGrid = document.createElement('div');
+        employeesGrid.className = 'employees-grid';
         
         if (dept.employees && dept.employees.length > 0) {
             dept.employees.forEach(emp => {
-                if (emp.name || emp.phone) { // Показываем только если есть имя или телефон
-                    const empItem = document.createElement('div');
-                    empItem.className = 'employee-item';
+                // Показываем только если есть имя или телефон
+                if (emp.name || emp.phone) {
+                    const empCard = document.createElement('div');
+                    empCard.className = 'employee-card';
                     
-                    let empHtml = '<div class="employee-info">';
-                    if (emp.position) empHtml += `<div class="employee-position">${emp.position}</div>`;
-                    if (emp.name) empHtml += `<div class="employee-name">${emp.name}</div>`;
-                    empHtml += '</div>';
+                    let cardHtml = '';
                     
-                    if (emp.phone) {
-                        // Форматируем телефон для ссылки
-                        const phoneLink = emp.phone.replace(/[^0-9+]/g, '');
-                        empHtml += `<div class="employee-phone"><a href="tel:${phoneLink}">${emp.phone}</a></div>`;
-                    } else {
-                        empHtml += `<div class="employee-phone"></div>`;
+                    // Должность
+                    if (emp.position) {
+                        cardHtml += `<div class="employee-position">${emp.position}</div>`;
                     }
                     
-                    empItem.innerHTML = empHtml;
-                    employeesList.appendChild(empItem);
+                    // Имя (жирное)
+                    if (emp.name) {
+                        cardHtml += `<div class="employee-name"><strong>${emp.name}</strong></div>`;
+                    } else if (!emp.name && emp.phone) {
+                        cardHtml += `<div class="employee-name"><strong>Сотрудник</strong></div>`;
+                    }
+                    
+                    // Телефон
+                    if (emp.phone) {
+                        // Форматируем телефон для ссылки (оставляем только цифры и +)
+                        const phoneLink = emp.phone.replace(/[^0-9+]/g, '');
+                        cardHtml += `
+                            <div class="employee-phone">
+                                <span class="phone-icon">📞</span>
+                                <a href="tel:${phoneLink}">${emp.phone}</a>
+                            </div>
+                        `;
+                    } else {
+                        cardHtml += `
+                            <div class="employee-phone">
+                                <span class="phone-icon">📞</span>
+                                <span style="color: #adb5bd;">нет телефона</span>
+                            </div>
+                        `;
+                    }
+                    
+                    empCard.innerHTML = cardHtml;
+                    employeesGrid.appendChild(empCard);
                 }
             });
-        } else {
-            employeesList.innerHTML = '<p style="color: #adb5bd; font-style: italic; padding: 10px;">Нет данных</p>';
         }
         
-        deptContent.appendChild(employeesList);
+        // Если после фильтрации остались сотрудники
+        if (employeesGrid.children.length > 0) {
+            deptContent.appendChild(employeesGrid);
+        } else {
+            // Показываем сообщение, если нет сотрудников
+            const emptyMessage = document.createElement('div');
+            emptyMessage.className = 'empty-message';
+            emptyMessage.textContent = 'Нет сотрудников';
+            deptContent.appendChild(emptyMessage);
+        }
+        
         deptSection.appendChild(deptHeader);
         deptSection.appendChild(deptContent);
         directory.appendChild(deptSection);
@@ -98,9 +130,11 @@ function displayDepartments(departments) {
             
             if (isOpen) {
                 deptContent.classList.remove('open');
+                icon.classList.remove('open');
                 icon.textContent = '▼';
             } else {
                 deptContent.classList.add('open');
+                icon.classList.add('open');
                 icon.textContent = '▲';
             }
         });
@@ -116,6 +150,17 @@ function filterData() {
         // Если поиск пустой, показываем все отделы закрытыми
         displayDepartments(allData.departments);
         updateStats(allData.departments);
+        
+        // Закрываем все отделы
+        setTimeout(() => {
+            document.querySelectorAll('.department-content').forEach(content => {
+                content.classList.remove('open');
+            });
+            document.querySelectorAll('.toggle-icon').forEach(icon => {
+                icon.classList.remove('open');
+                icon.textContent = '▼';
+            });
+        }, 100);
         return;
     }
     
@@ -140,7 +185,8 @@ function filterData() {
             const icon = section.querySelector('.toggle-icon');
             if (content && filteredDepartments[index]?.employees.length > 0) {
                 content.classList.add('open');
-                if (icon) icon.textContent = '▲';
+                icon.classList.add('open');
+                icon.textContent = '▲';
             }
         });
     }, 100);
