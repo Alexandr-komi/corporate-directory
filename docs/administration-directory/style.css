@@ -1,0 +1,105 @@
+/* Стили для аккордеона */
+.department-section {
+    margin-bottom: 10px;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.department-header {
+    background: #f8f9fa;
+    padding: 15px 20px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background 0.2s;
+}
+
+.department-header:hover {
+    background: #e9ecef;
+}
+
+.department-header h3 {
+    margin: 0;
+    color: #1e3c72;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.department-header .toggle-icon {
+    font-size: 20px;
+    color: #4dabf7;
+}
+
+.department-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+    background: white;
+}
+
+.department-content.open {
+    max-height: 2000px;
+    transition: max-height 0.5s ease-in;
+}
+
+.employees-list {
+    padding: 15px 20px;
+}
+
+.employee-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #f1f3f5;
+}
+
+.employee-item:last-child {
+    border-bottom: none;
+}
+
+.employee-info {
+    flex: 1;
+}
+
+.employee-position {
+    font-size: 14px;
+    color: #495057;
+    margin-bottom: 4px;
+}
+
+.employee-name {
+    font-size: 16px;
+    color: #1e3c72;
+    font-weight: 500;
+}
+
+.employee-phone {
+    font-size: 14px;
+    color: #4dabf7;
+    margin-left: 20px;
+    white-space: nowrap;
+}
+
+.employee-phone a {
+    color: #4dabf7;
+    text-decoration: none;
+}
+
+.employee-phone a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+    .employee-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    
+    .employee-phone {
+        margin-left: 0;
+    }
+}
