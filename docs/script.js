@@ -35,6 +35,7 @@ function copyContactData(settlement) {
     if (settlement.specialist_phone) textToCopy += `Специалисты: ${settlement.specialist_phone}\n`;
     textToCopy += `Email: ${settlement.email}`;
     if (settlement.website) textToCopy += `\nСайт: ${settlement.website}`;
+    if (settlement.vk) textToCopy += `\nВКонтакте: ${settlement.vk}`;
     if (settlement.max) textToCopy += `\nMAX: ${settlement.max}`;
     if (settlement.address) textToCopy += `\nАдрес: ${settlement.address}`;
     if (settlement.note) textToCopy += `\nПримечание: ${settlement.note}`;
@@ -117,9 +118,14 @@ function displayContacts(data) {
                         <span class="label">🌐 Сайт:</span>
                         <span class="value"><a href="${settlement.website}" target="_blank">${settlement.website}</a></span>
                     </div>` : ''}
+                    ${settlement.vk ? `
+                    <div class="info-row">
+                        <span class="label">📱 ВКонтакте:</span>
+                        <span class="value"><a href="${settlement.vk}" target="_blank">${settlement.vk}</a></span>
+                    </div>` : ''}
                     ${settlement.max ? `
                     <div class="info-row">
-                        <span class="label">📱 MAX:</span>
+                        <span class="label">MAX:</span>
                         <span class="value">${settlement.max.includes('http') ? 
                             `<a href="${settlement.max}" target="_blank">${settlement.max}</a>` : 
                             settlement.max}
@@ -188,9 +194,14 @@ function displayContacts(data) {
                             <span class="label">🌐 Сайт:</span>
                             <span class="value"><a href="${settlement.website}" target="_blank">${settlement.website}</a></span>
                         </div>` : ''}
+                        ${settlement.vk ? `
+                        <div class="info-row">
+                            <span class="label">📱 ВКонтакте:</span>
+                            <span class="value"><a href="${settlement.vk}" target="_blank">${settlement.vk}</a></span>
+                        </div>` : ''}
                         ${settlement.max ? `
                         <div class="info-row">
-                            <span class="label">📱 MAX:</span>
+                            <span class="label">MAX:</span>
                             <span class="value">${settlement.max.includes('http') ? 
                                 `<a href="${settlement.max}" target="_blank">${settlement.max}</a>` : 
                                 settlement.max}
@@ -243,6 +254,7 @@ function filterContacts() {
             (settlement.specialist_phone && settlement.specialist_phone.toLowerCase().includes(searchText)) ||
             (settlement.email && settlement.email.toLowerCase().includes(searchText)) ||
             (settlement.website && settlement.website.toLowerCase().includes(searchText)) ||
+            (settlement.vk && settlement.vk.toLowerCase().includes(searchText)) ||
             (settlement.max && settlement.max.toLowerCase().includes(searchText)) ||
             (settlement.type && settlement.type.toLowerCase().includes(searchText))
         );
@@ -267,6 +279,7 @@ function filterContacts() {
                 (settlement.specialist_phone && settlement.specialist_phone.toLowerCase().includes(searchText)) ||
                 (settlement.email && settlement.email.toLowerCase().includes(searchText)) ||
                 (settlement.website && settlement.website.toLowerCase().includes(searchText)) ||
+                (settlement.vk && settlement.vk.toLowerCase().includes(searchText)) ||
                 (settlement.max && settlement.max.toLowerCase().includes(searchText)) ||
                 (settlement.type && settlement.type.toLowerCase().includes(searchText)) ||
                 district.district.toLowerCase().includes(searchText)
