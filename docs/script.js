@@ -35,7 +35,7 @@ function copyContactData(settlement) {
     if (settlement.specialist_phone) textToCopy += `Специалисты: ${settlement.specialist_phone}\n`;
     textToCopy += `Email: ${settlement.email}`;
     if (settlement.website) textToCopy += `\nСайт: ${settlement.website}`;
-    if (settlement.vk) textToCopy += `\nВКонтакте: ${settlement.vk}`;
+    if (settlement.vk) textToCopy += `\nVK: ${settlement.vk}`;
     if (settlement.max) textToCopy += `\nMAX: ${settlement.max}`;
     if (settlement.address) textToCopy += `\nАдрес: ${settlement.address}`;
     if (settlement.note) textToCopy += `\nПримечание: ${settlement.note}`;
@@ -120,7 +120,7 @@ function displayContacts(data) {
                     </div>` : ''}
                     ${settlement.vk ? `
                     <div class="info-row">
-                        <span class="label">📱 ВКонтакте:</span>
+                        <span class="label">📱 VK:</span>
                         <span class="value"><a href="${settlement.vk}" target="_blank">${settlement.vk}</a></span>
                     </div>` : ''}
                     ${settlement.max ? `
@@ -196,7 +196,7 @@ function displayContacts(data) {
                         </div>` : ''}
                         ${settlement.vk ? `
                         <div class="info-row">
-                            <span class="label">📱 ВКонтакте:</span>
+                            <span class="label">📱 VK:</span>
                             <span class="value"><a href="${settlement.vk}" target="_blank">${settlement.vk}</a></span>
                         </div>` : ''}
                         ${settlement.max ? `
