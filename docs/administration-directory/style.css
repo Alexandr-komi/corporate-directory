@@ -124,9 +124,10 @@ header h1 {
     display: flex;
     flex-direction: column;
     min-width: 0;
+    gap: 6px;
 }
 
-/* Первая строка - название отдела */
+/* Первая строка - название отдела + адрес */
 .department-name-row {
     font-size: 15px;
     font-weight: 600;
@@ -136,11 +137,12 @@ header h1 {
     flex-wrap: wrap;
     align-items: center;
     gap: 8px;
-    margin-bottom: 4px;
+    width: 100%;
 }
 
 .department-name {
     word-break: break-word;
+    flex: 1;
 }
 
 .department-address {
@@ -155,38 +157,24 @@ header h1 {
     flex-shrink: 0;
 }
 
-/* Вторая строка - может содержать продолжение названия + email */
-.department-second-row {
+/* Вторая строка - email */
+.department-email-container {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-    gap: 10px;
-    font-size: 15px;
-    font-weight: 600;
+    justify-content: flex-end;
     width: 100%;
 }
 
-/* Продолжение названия (если нужно) */
-.department-name-continue {
-    word-break: break-word;
-    flex: 1;
-    min-width: 50px;
-}
-
-/* Email - всегда справа, белый */
 .department-email-block {
     display: flex;
     align-items: center;
     gap: 5px;
     font-size: 11px;
     background: rgba(255,255,255,0.15);
-    padding: 4px 10px;
+    padding: 4px 12px;
     border-radius: 20px;
     white-space: nowrap;
     color: white;
-    flex-shrink: 0;
-    margin-left: auto;
+    max-width: fit-content;
 }
 
 .department-email-block .email-icon {
@@ -395,11 +383,8 @@ header h1 {
         font-size: 9px;
     }
     
-    .department-second-row {
-        font-size: 14px;
-    }
-    
     .department-email-block {
         font-size: 10px;
+        max-width: 100%;
     }
 }
