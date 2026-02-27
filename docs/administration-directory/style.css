@@ -28,3 +28,24 @@
     text-decoration: underline;
     color: #4dabf7;
 }
+/* Дополнительные стили для исправления отображения */
+.employee-phone.no-phone {
+    color: #adb5bd;
+    font-style: italic;
+}
+
+.employee-position:empty {
+    display: none;
+}
+
+.employee-row {
+    min-height: 24px;
+}
+
+.employee-card {
+    border-left: 3px solid transparent;
+}
+
+.employee-card:hover {
+    border-left-color: #4dabf7;
+}
