@@ -59,7 +59,6 @@ function displayDepartments(departments) {
         const words = deptName.split(' ');
         
         // Определяем, сколько слов помещается в первой строке (примерно)
-        // Для красоты можно регулировать
         let firstPart = '';
         let secondPart = '';
         
@@ -73,11 +72,10 @@ function displayDepartments(departments) {
             secondPart = words.slice(3).join(' ');
         }
         
-        // Формируем структуру заголовка
+        // Формируем структуру заголовка (без значка 📁)
         let titleHtml = `
             <div class="department-title-wrapper">
                 <div class="department-name-row">
-                    <span class="department-icon">📁</span>
                     <span class="department-name">${firstPart}</span>
         `;
         
