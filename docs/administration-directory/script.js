@@ -54,31 +54,31 @@ function displayDepartments(departments) {
         const deptHeader = document.createElement('div');
         deptHeader.className = 'department-header';
         
-        // Формируем структуру заголовка - без принудительного разбиения
+        // Разбиваем название на две части для двух строк
+        const words = dept.name.split(' ');
+        const midPoint = Math.ceil(words.length / 2);
+        const firstLine = words.slice(0, midPoint).join(' ');
+        const secondLine = words.slice(midPoint).join(' ');
+        
+        // Формируем структуру заголовка
         let titleHtml = `
             <div class="department-title-wrapper">
-                <div class="department-name-row">
-                    <span class="department-name">${dept.name}</span>
+                <div class="department-line department-line-first">${firstLine}</div>
+                <div class="department-line department-line-second">
+                    <span class="department-second-text">${secondLine}</span>
         `;
         
-        if (dept.address) {
-            titleHtml += `<span class="department-address">📍 ${dept.address}</span>`;
-        }
-        
-        titleHtml += `</div>`; // закрываем department-name-row
-        
-        // Email справа в отдельном контейнере
+        // Email справа во второй строке
         if (dept.email) {
             titleHtml += `
-                <div class="department-email-container">
-                    <div class="department-email-block">
-                        <span class="email-icon">📧</span>
-                        <a href="mailto:${dept.email}">${dept.email}</a>
-                    </div>
+                <div class="department-email-block">
+                    <span class="email-icon">📧</span>
+                    <a href="mailto:${dept.email}">${dept.email}</a>
                 </div>
             `;
         }
         
+        titleHtml += `</div>`; // закрываем department-line-second
         titleHtml += `</div>`; // закрываем department-title-wrapper
         
         deptHeader.innerHTML = titleHtml + `<span class="toggle-icon">▼</span>`;
@@ -139,7 +139,7 @@ function displayDepartments(departments) {
         deptHeader.addEventListener('click', (e) => {
             // Проверяем, что клик был не по ссылке email
             if (e.target.tagName === 'A' && e.target.href.includes('mailto:')) {
-                return; // не закрываем/открываем при клике на email
+                return;
             }
             
             const isOpen = deptContent.classList.contains('open');
@@ -169,7 +169,6 @@ function filterData() {
         displayDepartments(allData.departments);
         updateStats(allData.departments);
         
-        // Закрываем все отделы
         setTimeout(() => {
             document.querySelectorAll('.department-content').forEach(content => {
                 content.classList.remove('open');
@@ -182,7 +181,6 @@ function filterData() {
         return;
     }
     
-    // Фильтруем отделы и сотрудников
     const filteredDepartments = allData.departments.map(dept => ({
         ...dept,
         employees: dept.employees.filter(emp => 
@@ -199,7 +197,6 @@ function filterData() {
     displayDepartments(filteredDepartments);
     updateStats(filteredDepartments);
     
-    // При поиске автоматически открываем все отделы с результатами
     setTimeout(() => {
         document.querySelectorAll('.department-card').forEach((card, index) => {
             const content = card.querySelector('.department-content');
