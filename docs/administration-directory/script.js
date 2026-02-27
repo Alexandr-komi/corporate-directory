@@ -90,7 +90,7 @@ function displayDepartments(departments) {
                 const empCard = document.createElement('div');
                 empCard.className = 'employee-card';
                 
-                // Верхняя строка: должность + телефон
+                // Строка 1: Должность + телефон (в одной строке)
                 let cardHtml = '<div class="employee-row">';
                 
                 if (emp.position) {
@@ -100,21 +100,17 @@ function displayDepartments(departments) {
                 }
                 
                 if (emp.phone && emp.phone.trim() !== '') {
-                    // Очищаем телефон от лишних символов для ссылки
                     const phoneClean = emp.phone.replace(/[^\d+]/g, '');
                     cardHtml += `
                         <span class="employee-phone">
-                            <span class="phone-icon">📞</span>
-                            <a href="tel:${phoneClean}">${emp.phone}</a>
+                            📞 <a href="tel:${phoneClean}">${emp.phone}</a>
                         </span>
                     `;
-                } else {
-                    cardHtml += `<span class="employee-phone no-phone">нет</span>`;
                 }
                 
                 cardHtml += '</div>'; // закрываем employee-row
                 
-                // Имя сотрудника (отдельно, жирным)
+                // Строка 2: Имя сотрудника
                 if (emp.name) {
                     cardHtml += `<div class="employee-name">${emp.name}</div>`;
                 }
@@ -126,11 +122,6 @@ function displayDepartments(departments) {
         
         if (employeesGrid.children.length > 0) {
             deptContent.appendChild(employeesGrid);
-        } else {
-            const emptyMessage = document.createElement('div');
-            emptyMessage.className = 'empty-message';
-            emptyMessage.textContent = 'Нет сотрудников';
-            deptContent.appendChild(emptyMessage);
         }
         
         deptCard.appendChild(deptHeader);
@@ -216,7 +207,6 @@ function updateStats(departments) {
     
     let totalEmployees = 0;
     departments.forEach(dept => {
-        // Считаем только сотрудников с именами
         totalEmployees += dept.employees.filter(emp => emp.name && emp.name.trim() !== '').length || 0;
     });
     
