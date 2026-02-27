@@ -4,7 +4,7 @@
   "departments": [
     {
       "name": "Руководство",
-      "email": "",
+      "email": "priem@kortkeros.rkomi.ru",
       "employees": [
         {
           "position": "Глава муниципального района - руководитель администрации",
@@ -66,7 +66,7 @@
     },
     {
       "name": "Муниципальный центр управления",
-      "email": "",
+      "email": "press@kortkeros.rkomi.ru",
       "employees": [
         {
           "position": "Руководитель МЦУ",
