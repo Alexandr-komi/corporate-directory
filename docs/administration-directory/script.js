@@ -50,36 +50,38 @@ function displayDepartments(departments) {
         const deptCard = document.createElement('div');
         deptCard.className = 'department-card';
         
-        // Заголовок карточки отдела (кликабельный)
+        // Заголовок карточки отдела (кликабельный) - с адресом и email
         const deptHeader = document.createElement('div');
         deptHeader.className = 'department-header';
         
+        // Формируем первую строку заголовка: название + адрес
         let titleHtml = `<span>📁 ${dept.name}</span>`;
         if (dept.address) {
             titleHtml += `<span class="department-address">📍 ${dept.address}</span>`;
         }
         
+        // Формируем вторую строку заголовка: email (если есть)
+        let emailHtml = '';
+        if (dept.email) {
+            emailHtml = `<div class="department-email-header">
+                <span class="email-icon">📧</span>
+                <a href="mailto:${dept.email}">${dept.email}</a>
+            </div>`;
+        }
+        
         deptHeader.innerHTML = `
-            <h3>${titleHtml}</h3>
-            <span class="toggle-icon">▼</span>
+            <div style="display: flex; flex-direction: column; gap: 5px; width: 100%;">
+                <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                    <h3>${titleHtml}</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                ${emailHtml}
+            </div>
         `;
         
         // Контент отдела (изначально скрыт)
         const deptContent = document.createElement('div');
         deptContent.className = 'department-content';
-        
-        // Добавляем email отдела, если он есть
-        if (dept.email) {
-            const emailRow = document.createElement('div');
-            emailRow.className = 'department-email-row';
-            emailRow.innerHTML = `
-                <div class="department-email">
-                    <span class="email-icon">📧</span>
-                    <a href="mailto:${dept.email}">${dept.email}</a>
-                </div>
-            `;
-            deptContent.appendChild(emailRow);
-        }
         
         // Сетка карточек сотрудников
         const employeesGrid = document.createElement('div');
@@ -130,7 +132,12 @@ function displayDepartments(departments) {
         departmentsGrid.appendChild(deptCard);
         
         // Добавляем обработчик клика для открытия/закрытия
-        deptHeader.addEventListener('click', () => {
+        deptHeader.addEventListener('click', (e) => {
+            // Проверяем, что клик был не по ссылке email
+            if (e.target.tagName === 'A' && e.target.href.includes('mailto:')) {
+                return; // не закрываем/открываем при клике на email
+            }
+            
             const isOpen = deptContent.classList.contains('open');
             const icon = deptHeader.querySelector('.toggle-icon');
             
