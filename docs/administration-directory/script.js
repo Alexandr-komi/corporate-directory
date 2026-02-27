@@ -54,15 +54,18 @@ function displayDepartments(departments) {
         const deptHeader = document.createElement('div');
         deptHeader.className = 'department-header';
         
+        // Проверяем, нужно ли уменьшить шрифт для этого отдела
+        const isLongDepartment = dept.name === "Управление по капитальному строительству и территориальному развитию";
+        
         // Разбиваем название на две части для двух строк
         const words = dept.name.split(' ');
         const midPoint = Math.ceil(words.length / 2);
         const firstLine = words.slice(0, midPoint).join(' ');
         const secondLine = words.slice(midPoint).join(' ');
         
-        // Формируем структуру заголовка
+        // Формируем структуру заголовка с возможным уменьшением шрифта
         let titleHtml = `
-            <div class="department-title-wrapper">
+            <div class="department-title-wrapper ${isLongDepartment ? 'department-title-small' : ''}">
                 <div class="department-line department-line-first">${firstLine}</div>
                 <div class="department-line department-line-second">
                     <span class="department-second-text">${secondLine}</span>
