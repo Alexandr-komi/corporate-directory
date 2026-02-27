@@ -65,6 +65,19 @@ function displayDepartments(departments) {
         const deptContent = document.createElement('div');
         deptContent.className = 'department-content';
         
+        // Добавляем email отдела, если он есть
+        if (dept.email) {
+            const emailRow = document.createElement('div');
+            emailRow.className = 'department-email-row';
+            emailRow.innerHTML = `
+                <div class="department-email">
+                    <span class="email-icon">📧</span>
+                    <a href="mailto:${dept.email}">${dept.email}</a>
+                </div>
+            `;
+            deptContent.appendChild(emailRow);
+        }
+        
         // Сетка карточек сотрудников
         const employeesGrid = document.createElement('div');
         employeesGrid.className = 'employees-grid';
@@ -163,14 +176,15 @@ function filterData() {
         return;
     }
     
-    // Фильтруем отделы и сотрудников
+    // Фильтруем отделы и сотрудников (включая email отдела)
     const filteredDepartments = allData.departments.map(dept => ({
         ...dept,
         employees: dept.employees.filter(emp => 
             (emp.name && emp.name.toLowerCase().includes(searchText)) ||
             (emp.position && emp.position.toLowerCase().includes(searchText)) ||
             (emp.phone && emp.phone.toLowerCase().includes(searchText)) ||
-            (dept.name && dept.name.toLowerCase().includes(searchText))
+            (dept.name && dept.name.toLowerCase().includes(searchText)) ||
+            (dept.email && dept.email.toLowerCase().includes(searchText))
         )
     })).filter(dept => dept.employees.length > 0);
     
