@@ -54,11 +54,31 @@ function displayDepartments(departments) {
         const deptHeader = document.createElement('div');
         deptHeader.className = 'department-header';
         
-        // Формируем структуру заголовка: название + адрес в первой строке, email во второй
+        // Разбиваем название на части для переноса
+        const deptName = dept.name;
+        const words = deptName.split(' ');
+        
+        // Определяем, сколько слов помещается в первой строке (примерно)
+        // Для красоты можно регулировать
+        let firstPart = '';
+        let secondPart = '';
+        
+        if (words.length <= 3) {
+            // Если слов 3 или меньше - всё в первую строку
+            firstPart = deptName;
+            secondPart = '';
+        } else {
+            // Первые 3 слова в первую строку, остальные во вторую
+            firstPart = words.slice(0, 3).join(' ');
+            secondPart = words.slice(3).join(' ');
+        }
+        
+        // Формируем структуру заголовка
         let titleHtml = `
-            <div class="department-title-section">
+            <div class="department-title-wrapper">
                 <div class="department-name-row">
-                    <span class="department-name">📁 ${dept.name}</span>
+                    <span class="department-icon">📁</span>
+                    <span class="department-name">${firstPart}</span>
         `;
         
         if (dept.address) {
@@ -67,17 +87,28 @@ function displayDepartments(departments) {
         
         titleHtml += `</div>`; // закрываем department-name-row
         
-        // Email всегда во второй строке, если есть
+        // Вторая строка (продолжение названия + email)
+        titleHtml += `<div class="department-second-row">`;
+        
+        if (secondPart) {
+            titleHtml += `<span class="department-name-continue">${secondPart}</span>`;
+        } else {
+            // Если нет продолжения, добавляем пустой span для сохранения структуры
+            titleHtml += `<span class="department-name-continue"></span>`;
+        }
+        
+        // Email справа в той же строке
         if (dept.email) {
             titleHtml += `
-                <div class="department-email-row">
+                <div class="department-email-block">
                     <span class="email-icon">📧</span>
                     <a href="mailto:${dept.email}">${dept.email}</a>
                 </div>
             `;
         }
         
-        titleHtml += `</div>`; // закрываем department-title-section
+        titleHtml += `</div>`; // закрываем department-second-row
+        titleHtml += `</div>`; // закрываем department-title-wrapper
         
         deptHeader.innerHTML = titleHtml + `<span class="toggle-icon">▼</span>`;
         
