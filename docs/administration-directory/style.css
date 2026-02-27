@@ -118,30 +118,32 @@ header h1 {
     background: linear-gradient(135deg, #2a4a8a, #1e3c72);
 }
 
-/* Левая часть заголовка */
-.department-title-section {
+/* Контейнер для текста заголовка */
+.department-title-wrapper {
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    min-width: 0; /* Для корректного переноса */
 }
 
-/* Первая строка: название отдела + адрес */
+/* Первая строка - название отдела */
 .department-name-row {
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.4;
+    word-break: break-word;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     gap: 8px;
-    font-size: 15px;
-    font-weight: 600;
-    line-height: 1.4;
+    margin-bottom: 4px;
 }
 
-.department-name {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    white-space: normal;
+.department-name-row .department-icon {
+    flex-shrink: 0;
+}
+
+.department-name-row .department-name {
     word-break: break-word;
 }
 
@@ -154,37 +156,55 @@ header h1 {
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 150px;
+    flex-shrink: 0;
 }
 
-/* Вторая строка: email (всегда отдельно) */
-.department-email-row {
+/* Вторая строка - может содержать продолжение названия + email */
+.department-second-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    width: 100%;
+}
+
+/* Продолжение названия (если нужно) */
+.department-name-continue {
+    word-break: break-word;
+    flex: 1;
+    min-width: 50px;
+}
+
+/* Email - всегда справа, белый */
+.department-email-block {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 5px;
     font-size: 11px;
-    background: rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.15);
     padding: 4px 10px;
     border-radius: 20px;
-    width: fit-content;
-    max-width: 100%;
+    white-space: nowrap;
     color: white;
+    flex-shrink: 0;
+    margin-left: auto;
 }
 
-.department-email-row .email-icon {
+.department-email-block .email-icon {
     font-size: 11px;
     opacity: 0.9;
 }
 
-.department-email-row a {
+.department-email-block a {
     color: white;
     text-decoration: none;
     font-weight: 500;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
 }
 
-.department-email-row a:hover {
+.department-email-block a:hover {
     text-decoration: underline;
     opacity: 0.9;
 }
@@ -379,8 +399,11 @@ header h1 {
         font-size: 9px;
     }
     
-    .department-email-row {
+    .department-second-row {
+        font-size: 14px;
+    }
+    
+    .department-email-block {
         font-size: 10px;
-        max-width: 100%;
     }
 }
