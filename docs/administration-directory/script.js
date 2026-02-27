@@ -1,370 +1,229 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+document.addEventListener('DOMContentLoaded', loadData);
+
+const searchInput = document.getElementById('searchInput');
+if (searchInput) {
+    searchInput.addEventListener('input', filterData);
 }
 
-body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-    background: #f8f9fa;
-    color: #2c3e50;
-    line-height: 1.4;
+let allData = null;
+
+async function loadData() {
+    const loading = document.getElementById('loading');
+    const directory = document.getElementById('directory');
+    const stats = document.getElementById('stats');
+    const addressEl = document.getElementById('address');
+    
+    try {
+        const response = await fetch('employees.json');
+        if (!response.ok) throw new Error('Файл с данными не найден');
+        
+        allData = await response.json();
+        
+        // Отображаем адрес
+        if (allData.address) {
+            addressEl.textContent = `📍 ${allData.address}`;
+        }
+        
+        displayDepartments(allData.departments);
+        updateStats(allData.departments);
+        loading.style.display = 'none';
+    } catch (error) {
+        console.error('Ошибка загрузки:', error);
+        loading.innerHTML = '❌ Не удалось загрузить данные';
+    }
 }
 
-.container {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 15px;
+function displayDepartments(departments) {
+    const directory = document.getElementById('directory');
+    if (!directory) return;
+    
+    directory.innerHTML = '';
+    
+    // Создаем сетку для карточек отделов
+    const departmentsGrid = document.createElement('div');
+    departmentsGrid.className = 'departments-grid';
+    
+    departments.forEach((dept, index) => {
+        // Фильтруем сотрудников: оставляем только тех, у кого есть имя
+        const validEmployees = dept.employees.filter(emp => emp.name && emp.name.trim() !== '');
+        
+        const deptCard = document.createElement('div');
+        deptCard.className = 'department-card';
+        
+        // Заголовок карточки отдела (кликабельный)
+        const deptHeader = document.createElement('div');
+        deptHeader.className = 'department-header';
+        
+        let titleHtml = `<span>📁 ${dept.name}</span>`;
+        if (dept.address) {
+            titleHtml += `<span class="department-address">📍 ${dept.address}</span>`;
+        }
+        
+        deptHeader.innerHTML = `
+            <h3>${titleHtml}</h3>
+            <span class="toggle-icon">▼</span>
+        `;
+        
+        // Контент отдела (изначально скрыт)
+        const deptContent = document.createElement('div');
+        deptContent.className = 'department-content';
+        
+        // Добавляем email отдела, если он есть
+        if (dept.email) {
+            const emailRow = document.createElement('div');
+            emailRow.className = 'department-email-row';
+            emailRow.innerHTML = `
+                <div class="department-email">
+                    <span class="email-icon">📧</span>
+                    <a href="mailto:${dept.email}">${dept.email}</a>
+                </div>
+            `;
+            deptContent.appendChild(emailRow);
+        }
+        
+        // Сетка карточек сотрудников
+        const employeesGrid = document.createElement('div');
+        employeesGrid.className = 'employees-grid';
+        
+        if (validEmployees.length > 0) {
+            validEmployees.forEach(emp => {
+                const empCard = document.createElement('div');
+                empCard.className = 'employee-card';
+                
+                // Верхняя строка: должность + телефон
+                let cardHtml = '<div class="employee-row">';
+                
+                if (emp.position) {
+                    cardHtml += `<span class="employee-position">${emp.position}</span>`;
+                } else {
+                    cardHtml += `<span class="employee-position">—</span>`;
+                }
+                
+                if (emp.phone && emp.phone.trim() !== '') {
+                    // Очищаем телефон от лишних символов для ссылки
+                    const phoneClean = emp.phone.replace(/[^\d+]/g, '');
+                    cardHtml += `
+                        <span class="employee-phone">
+                            <span class="phone-icon">📞</span>
+                            <a href="tel:${phoneClean}">${emp.phone}</a>
+                        </span>
+                    `;
+                } else {
+                    cardHtml += `<span class="employee-phone no-phone">нет</span>`;
+                }
+                
+                cardHtml += '</div>'; // закрываем employee-row
+                
+                // Имя сотрудника (отдельно, жирным)
+                if (emp.name) {
+                    cardHtml += `<div class="employee-name">${emp.name}</div>`;
+                }
+                
+                empCard.innerHTML = cardHtml;
+                employeesGrid.appendChild(empCard);
+            });
+        }
+        
+        if (employeesGrid.children.length > 0) {
+            deptContent.appendChild(employeesGrid);
+        } else {
+            const emptyMessage = document.createElement('div');
+            emptyMessage.className = 'empty-message';
+            emptyMessage.textContent = 'Нет сотрудников';
+            deptContent.appendChild(emptyMessage);
+        }
+        
+        deptCard.appendChild(deptHeader);
+        deptCard.appendChild(deptContent);
+        departmentsGrid.appendChild(deptCard);
+        
+        // Добавляем обработчик клика для открытия/закрытия
+        deptHeader.addEventListener('click', () => {
+            const isOpen = deptContent.classList.contains('open');
+            const icon = deptHeader.querySelector('.toggle-icon');
+            
+            if (isOpen) {
+                deptContent.classList.remove('open');
+                icon.classList.remove('open');
+                icon.textContent = '▼';
+            } else {
+                deptContent.classList.add('open');
+                icon.classList.add('open');
+                icon.textContent = '▲';
+            }
+        });
+    });
+    
+    directory.appendChild(departmentsGrid);
 }
 
-header {
-    margin-bottom: 25px;
-    padding: 20px 20px;
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    text-align: center;
-}
-
-header h1 {
-    font-size: 24px;
-    color: #1e3c72;
-    margin-bottom: 8px;
-}
-
-.subtitle {
-    color: #6c757d;
-    font-size: 15px;
-    margin-bottom: 15px;
-}
-
-.search-box {
-    width: 100%;
-    max-width: 700px;
-    margin: 0 auto;
-}
-
-.search-box input {
-    width: 100%;
-    padding: 12px 24px;
-    border: 2px solid #e9ecef;
-    border-radius: 40px;
-    font-size: 15px;
-    transition: all 0.3s ease;
-    background: white;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-}
-
-.search-box input:focus {
-    outline: none;
-    border-color: #4dabf7;
-    box-shadow: 0 0 0 4px rgba(77, 171, 247, 0.15);
-}
-
-.search-box input::placeholder {
-    color: #adb5bd;
-    font-style: italic;
-}
-
-.loading {
-    text-align: center;
-    padding: 40px;
-    font-size: 16px;
-    color: #868e96;
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-}
-
-/* Сетка для карточек отделов */
-.departments-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
-    gap: 15px;
-    margin-top: 20px;
-}
-
-/* Карточка отдела */
-.department-card {
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-    overflow: hidden;
-    transition: all 0.2s ease;
-    border: 1px solid #e9ecef;
-    height: fit-content;
-}
-
-.department-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-    border-color: #4dabf7;
-}
-
-/* Заголовок карточки отдела */
-.department-header {
-    background: linear-gradient(135deg, #1e3c72, #2a4a8a);
-    color: white;
-    padding: 12px 16px;
-    cursor: pointer;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    transition: all 0.2s;
-}
-
-.department-header:hover {
-    background: linear-gradient(135deg, #2a4a8a, #1e3c72);
-}
-
-.department-header h3 {
-    margin: 0;
-    font-size: 15px;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex: 1;
-}
-
-.department-header .toggle-icon {
-    font-size: 14px;
-    font-weight: bold;
-    width: 22px;
-    height: 22px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(255,255,255,0.2);
-    border-radius: 50%;
-    transition: transform 0.3s;
-}
-
-.department-header .toggle-icon.open {
-    transform: rotate(180deg);
-}
-
-/* Адрес отдела */
-.department-address {
-    font-size: 10px;
-    color: #f8f9fa;
-    background: rgba(255,255,255,0.15);
-    padding: 3px 8px;
-    border-radius: 20px;
-    margin-left: 8px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 150px;
-}
-
-/* Контент отдела */
-.department-content {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.4s ease-out;
-    background: #f8f9fa;
-}
-
-.department-content.open {
-    max-height: 5000px;
-    transition: max-height 0.6s ease-in;
-}
-
-/* Email отдела */
-.department-email-row {
-    padding: 10px 15px 5px 15px;
-}
-
-.department-email {
-    background: #e8f4fd;
-    border-radius: 20px;
-    padding: 5px 12px;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 12px;
-    border: 1px solid #b8daff;
-}
-
-.email-icon {
-    font-size: 13px;
-}
-
-.department-email a {
-    color: #1e3c72;
-    text-decoration: none;
-    font-weight: 500;
-}
-
-.department-email a:hover {
-    text-decoration: underline;
-    color: #4dabf7;
-}
-
-/* Сетка карточек сотрудников */
-.employees-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 8px;
-    padding: 12px 15px;
-}
-
-/* Карточка сотрудника */
-.employee-card {
-    background: white;
-    border-radius: 8px;
-    padding: 10px 12px;
-    border: 1px solid #e9ecef;
-    transition: all 0.2s ease;
-}
-
-.employee-card:hover {
-    background: #f0f7ff;
-    border-color: #4dabf7;
-}
-
-/* Строка с должностью и телефоном */
-.employee-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 4px;
-}
-
-.employee-position {
-    font-size: 11px;
-    color: #4dabf7;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.3px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.employee-phone {
-    font-size: 11px;
-    color: #2c3e50;
-    white-space: nowrap;
-    display: flex;
-    align-items: center;
-    gap: 3px;
-}
-
-.employee-phone .phone-icon {
-    font-size: 11px;
-    opacity: 0.7;
-}
-
-.employee-phone a {
-    color: #4dabf7;
-    text-decoration: none;
-    font-weight: 500;
-}
-
-.employee-phone a:hover {
-    color: #1e3c72;
-    text-decoration: underline;
-}
-
-/* Имя сотрудника */
-.employee-name {
-    font-size: 13px;
-    color: #1e3c72;
-    font-weight: 600;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-/* Пустые сообщения */
-.empty-message {
-    color: #adb5bd;
-    font-style: italic;
-    padding: 15px;
-    text-align: center;
-    background: #f8f9fa;
-    border-radius: 8px;
-    font-size: 12px;
-    grid-column: 1 / -1;
-}
-
-/* Статистика */
-.stats {
-    margin-top: 25px;
-}
-
-.stats-panel {
-    background: white;
-    padding: 12px 20px;
-    border-radius: 30px;
-    display: flex;
-    gap: 25px;
-    justify-content: center;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    color: #6c757d;
-    font-size: 14px;
-}
-
-.stats-panel strong {
-    color: #1e3c72;
-    font-size: 16px;
-    margin-left: 5px;
-}
-
-/* Адаптивность */
-@media (max-width: 768px) {
-    .container {
-        padding: 10px;
+function filterData() {
+    if (!allData) return;
+    
+    const searchText = searchInput.value.toLowerCase().trim();
+    
+    if (!searchText) {
+        displayDepartments(allData.departments);
+        updateStats(allData.departments);
+        
+        // Закрываем все отделы
+        setTimeout(() => {
+            document.querySelectorAll('.department-content').forEach(content => {
+                content.classList.remove('open');
+            });
+            document.querySelectorAll('.toggle-icon').forEach(icon => {
+                icon.classList.remove('open');
+                icon.textContent = '▼';
+            });
+        }, 100);
+        return;
     }
     
-    header {
-        padding: 15px;
-    }
+    // Фильтруем отделы и сотрудников
+    const filteredDepartments = allData.departments.map(dept => ({
+        ...dept,
+        employees: dept.employees.filter(emp => 
+            emp.name && emp.name.trim() !== '' && (
+                (emp.name && emp.name.toLowerCase().includes(searchText)) ||
+                (emp.position && emp.position.toLowerCase().includes(searchText)) ||
+                (emp.phone && emp.phone.toLowerCase().includes(searchText)) ||
+                (dept.name && dept.name.toLowerCase().includes(searchText)) ||
+                (dept.email && dept.email.toLowerCase().includes(searchText))
+            )
+        )
+    })).filter(dept => dept.employees.length > 0);
     
-    header h1 {
-        font-size: 20px;
-    }
+    displayDepartments(filteredDepartments);
+    updateStats(filteredDepartments);
     
-    .subtitle {
-        font-size: 14px;
-    }
+    // При поиске автоматически открываем все отделы с результатами
+    setTimeout(() => {
+        document.querySelectorAll('.department-card').forEach((card, index) => {
+            const content = card.querySelector('.department-content');
+            const icon = card.querySelector('.toggle-icon');
+            if (content && filteredDepartments[index]?.employees.length > 0) {
+                content.classList.add('open');
+                icon.classList.add('open');
+                icon.textContent = '▲';
+            }
+        });
+    }, 100);
+}
+
+function updateStats(departments) {
+    const stats = document.getElementById('stats');
+    if (!stats) return;
     
-    .search-box input {
-        padding: 12px 20px;
-        font-size: 14px;
-    }
+    let totalEmployees = 0;
+    departments.forEach(dept => {
+        // Считаем только сотрудников с именами
+        totalEmployees += dept.employees.filter(emp => emp.name && emp.name.trim() !== '').length || 0;
+    });
     
-    .departments-grid {
-        grid-template-columns: 1fr;
-        gap: 12px;
-    }
-    
-    .employee-row {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 3px;
-    }
-    
-    .stats-panel {
-        flex-direction: column;
-        gap: 8px;
-        text-align: center;
-        padding: 12px;
-    }
-    
-    .department-header {
-        padding: 12px 15px;
-    }
-    
-    .department-header h3 {
-        font-size: 14px;
-    }
-    
-    .department-address {
-        max-width: 100px;
-        font-size: 9px;
-    }
+    stats.innerHTML = `
+        <div class="stats-panel">
+            <span>📁 Отделов: <strong>${departments.length}</strong></span>
+            <span>👥 Сотрудников: <strong>${totalEmployees}</strong></span>
+        </div>
+    `;
 }
