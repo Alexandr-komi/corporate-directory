@@ -50,34 +50,36 @@ function displayDepartments(departments) {
         const deptCard = document.createElement('div');
         deptCard.className = 'department-card';
         
-        // Заголовок карточки отдела (кликабельный) - с адресом и email
+        // Заголовок карточки отдела (кликабельный)
         const deptHeader = document.createElement('div');
         deptHeader.className = 'department-header';
         
-        // Формируем первую строку заголовка: название + адрес
-        let titleHtml = `<span>📁 ${dept.name}</span>`;
+        // Формируем структуру заголовка: название + адрес в первой строке, email во второй
+        let titleHtml = `
+            <div class="department-title-section">
+                <div class="department-name-row">
+                    <span class="department-name">📁 ${dept.name}</span>
+        `;
+        
         if (dept.address) {
             titleHtml += `<span class="department-address">📍 ${dept.address}</span>`;
         }
         
-        // Формируем вторую строку заголовка: email (если есть)
-        let emailHtml = '';
+        titleHtml += `</div>`; // закрываем department-name-row
+        
+        // Email всегда во второй строке, если есть
         if (dept.email) {
-            emailHtml = `<div class="department-email-header">
-                <span class="email-icon">📧</span>
-                <a href="mailto:${dept.email}">${dept.email}</a>
-            </div>`;
+            titleHtml += `
+                <div class="department-email-row">
+                    <span class="email-icon">📧</span>
+                    <a href="mailto:${dept.email}">${dept.email}</a>
+                </div>
+            `;
         }
         
-        deptHeader.innerHTML = `
-            <div style="display: flex; flex-direction: column; gap: 5px; width: 100%;">
-                <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-                    <h3>${titleHtml}</h3>
-                    <span class="toggle-icon">▼</span>
-                </div>
-                ${emailHtml}
-            </div>
-        `;
+        titleHtml += `</div>`; // закрываем department-title-section
+        
+        deptHeader.innerHTML = titleHtml + `<span class="toggle-icon">▼</span>`;
         
         // Контент отдела (изначально скрыт)
         const deptContent = document.createElement('div');
