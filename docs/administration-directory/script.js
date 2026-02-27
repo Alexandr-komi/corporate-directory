@@ -100,7 +100,8 @@ function displayDepartments(departments) {
                 }
                 
                 if (emp.phone && emp.phone.trim() !== '') {
-                    const phoneClean = emp.phone.replace(/[^\d+]/g, '');
+                    // Для ссылки оставляем только цифры
+                    const phoneClean = emp.phone.replace(/[^\d]/g, '');
                     cardHtml += `
                         <span class="employee-phone">
                             📞 <a href="tel:${phoneClean}">${emp.phone}</a>
