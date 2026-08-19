@@ -123,36 +123,46 @@ header h1 {
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 6px;
 }
 
-/* Обычный размер шрифта для названий */
-.department-line {
+/* Первая строка - название отдела + адрес */
+.department-name-row {
     font-size: 15px;
     font-weight: 600;
     line-height: 1.4;
     word-break: break-word;
-}
-
-/* Уменьшенный шрифт только для названия длинного отдела */
-.department-title-small .department-line {
-    font-size: 13px;
-}
-
-.department-line-second {
     display: flex;
-    justify-content: space-between;
+    flex-wrap: wrap;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
     width: 100%;
 }
 
-.department-second-text {
+.department-name {
     word-break: break-word;
     flex: 1;
 }
 
-/* Email - всегда обычного размера */
+.department-address {
+    font-size: 10px;
+    background: rgba(255,255,255,0.15);
+    padding: 3px 8px;
+    border-radius: 20px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 150px;
+    flex-shrink: 0;
+}
+
+/* Вторая строка - email */
+.department-email-container {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+}
+
 .department-email-block {
     display: flex;
     align-items: center;
@@ -163,7 +173,7 @@ header h1 {
     border-radius: 20px;
     white-space: nowrap;
     color: white;
-    flex-shrink: 0;
+    max-width: fit-content;
 }
 
 .department-email-block .email-icon {
@@ -223,7 +233,7 @@ header h1 {
     padding: 16px;
 }
 
-/* Карточка сотрудника - компактная, 2 строки */
+/* Карточка сотрудника - обычная */
 .employee-card {
     background: white;
     border-radius: 8px;
@@ -232,9 +242,25 @@ header h1 {
     transition: all 0.2s ease;
 }
 
+/* Карточка руководителя - фон и рамка */
+.employee-card.manager {
+    background: #e8f4fd !important;
+    border-left: 4px solid #4dabf7 !important;
+}
+
+/* Имя руководителя - жирным */
+.employee-card.manager .employee-name {
+    font-weight: 700 !important;
+    color: #1e3c72 !important;
+}
+
 .employee-card:hover {
     background: #f0f7ff;
     border-color: #4dabf7;
+}
+
+.employee-card.manager:hover {
+    background: #d6edfc !important;
 }
 
 /* Строка 1: должность + телефон */
@@ -279,8 +305,8 @@ header h1 {
 /* Строка 2: имя сотрудника */
 .employee-name {
     font-size: 14px;
-    color: #1e3c72;
-    font-weight: 600;
+    color: #2c3e50;
+    font-weight: 400;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -363,17 +389,17 @@ header h1 {
         padding: 12px 15px;
     }
     
-    .department-line-second {
-        flex-direction: column;
-        align-items: flex-start;
+    .department-name-row {
+        font-size: 14px;
+    }
+    
+    .department-address {
+        max-width: 100px;
+        font-size: 9px;
     }
     
     .department-email-block {
-        margin-left: 0;
-    }
-    
-    /* На мобильных уменьшаем шрифт для всех длинных названий */
-    .department-title-small .department-line {
-        font-size: 12px;
+        font-size: 10px;
+        max-width: 100%;
     }
 }
