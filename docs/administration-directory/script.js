@@ -54,34 +54,31 @@ function displayDepartments(departments) {
         const deptHeader = document.createElement('div');
         deptHeader.className = 'department-header';
         
-        // Проверяем, нужно ли уменьшить шрифт для этого отдела
-        const isLongDepartment = dept.name === "Управление по капитальному строительству и территориальному развитию";
-        
-        // Разбиваем название на две части для двух строк
-        const words = dept.name.split(' ');
-        const midPoint = Math.ceil(words.length / 2);
-        const firstLine = words.slice(0, midPoint).join(' ');
-        const secondLine = words.slice(midPoint).join(' ');
-        
-        // Формируем структуру заголовка с возможным уменьшением шрифта
+        // Формируем структуру заголовка: название + адрес в первой строке, email во второй
         let titleHtml = `
-            <div class="department-title-wrapper ${isLongDepartment ? 'department-title-small' : ''}">
-                <div class="department-line department-line-first">${firstLine}</div>
-                <div class="department-line department-line-second">
-                    <span class="department-second-text">${secondLine}</span>
+            <div class="department-title-wrapper">
+                <div class="department-name-row">
+                    <span class="department-name">${dept.name}</span>
         `;
         
-        // Email справа во второй строке
+        if (dept.address) {
+            titleHtml += `<span class="department-address">📍 ${dept.address}</span>`;
+        }
+        
+        titleHtml += `</div>`; // закрываем department-name-row
+        
+        // Email всегда во второй строке, если есть
         if (dept.email) {
             titleHtml += `
-                <div class="department-email-block">
-                    <span class="email-icon">📧</span>
-                    <a href="mailto:${dept.email}">${dept.email}</a>
+                <div class="department-email-container">
+                    <div class="department-email-block">
+                        <span class="email-icon">📧</span>
+                        <a href="mailto:${dept.email}">${dept.email}</a>
+                    </div>
                 </div>
             `;
         }
         
-        titleHtml += `</div>`; // закрываем department-line-second
         titleHtml += `</div>`; // закрываем department-title-wrapper
         
         deptHeader.innerHTML = titleHtml + `<span class="toggle-icon">▼</span>`;
@@ -98,6 +95,16 @@ function displayDepartments(departments) {
             validEmployees.forEach(emp => {
                 const empCard = document.createElement('div');
                 empCard.className = 'employee-card';
+                
+                // Проверяем, является ли сотрудник руководителем
+                const isManager = ['Начальник', 'Заместитель начальника', 'Заведующий отделом', 'Заместитель заведующего', 'Руководитель'].some(
+                    role => emp.position && emp.position.includes(role)
+                );
+                
+                // Добавляем класс manager, если сотрудник - руководитель
+                if (isManager) {
+                    empCard.classList.add('manager');
+                }
                 
                 // Строка 1: Должность + телефон (в одной строке)
                 let cardHtml = '<div class="employee-row">';
