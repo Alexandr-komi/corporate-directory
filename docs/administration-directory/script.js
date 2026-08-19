@@ -19,7 +19,6 @@ async function loadData() {
         
         allData = await response.json();
         
-        // Отображаем адрес
         if (allData.address) {
             addressEl.textContent = `📍 ${allData.address}`;
         }
@@ -39,22 +38,18 @@ function displayDepartments(departments) {
     
     directory.innerHTML = '';
     
-    // Создаем сетку для карточек отделов
     const departmentsGrid = document.createElement('div');
     departmentsGrid.className = 'departments-grid';
     
     departments.forEach((dept, index) => {
-        // Фильтруем сотрудников: оставляем только тех, у кого есть имя
         const validEmployees = dept.employees.filter(emp => emp.name && emp.name.trim() !== '');
         
         const deptCard = document.createElement('div');
         deptCard.className = 'department-card';
         
-        // Заголовок карточки отдела (кликабельный)
         const deptHeader = document.createElement('div');
         deptHeader.className = 'department-header';
         
-        // Формируем структуру заголовка: название + адрес в первой строке, email во второй
         let titleHtml = `
             <div class="department-title-wrapper">
                 <div class="department-name-row">
@@ -65,9 +60,8 @@ function displayDepartments(departments) {
             titleHtml += `<span class="department-address">📍 ${dept.address}</span>`;
         }
         
-        titleHtml += `</div>`; // закрываем department-name-row
+        titleHtml += `</div>`;
         
-        // Email всегда во второй строке, если есть
         if (dept.email) {
             titleHtml += `
                 <div class="department-email-container">
@@ -79,15 +73,13 @@ function displayDepartments(departments) {
             `;
         }
         
-        titleHtml += `</div>`; // закрываем department-title-wrapper
+        titleHtml += `</div>`;
         
         deptHeader.innerHTML = titleHtml + `<span class="toggle-icon">▼</span>`;
         
-        // Контент отдела (изначально скрыт)
         const deptContent = document.createElement('div');
         deptContent.className = 'department-content';
         
-        // Сетка карточек сотрудников
         const employeesGrid = document.createElement('div');
         employeesGrid.className = 'employees-grid';
         
@@ -97,16 +89,14 @@ function displayDepartments(departments) {
                 empCard.className = 'employee-card';
                 
                 // Проверяем, является ли сотрудник руководителем
-                const isManager = ['Начальник', 'Заместитель начальника', 'Заведующий отделом', 'Заместитель заведующего', 'Руководитель'].some(
+                const isManager = ['Начальник', 'Заместитель начальника', 'Заведующий отделом', 'Заместитель заведующего', 'Руководитель', 'Заведующий'].some(
                     role => emp.position && emp.position.includes(role)
                 );
                 
-                // Добавляем класс manager, если сотрудник - руководитель
                 if (isManager) {
                     empCard.classList.add('manager');
                 }
                 
-                // Строка 1: Должность + телефон (в одной строке)
                 let cardHtml = '<div class="employee-row">';
                 
                 if (emp.position) {
@@ -116,7 +106,6 @@ function displayDepartments(departments) {
                 }
                 
                 if (emp.phone && emp.phone.trim() !== '') {
-                    // Для ссылки оставляем только цифры
                     const phoneClean = emp.phone.replace(/[^\d]/g, '');
                     cardHtml += `
                         <span class="employee-phone">
@@ -125,9 +114,8 @@ function displayDepartments(departments) {
                     `;
                 }
                 
-                cardHtml += '</div>'; // закрываем employee-row
+                cardHtml += '</div>';
                 
-                // Строка 2: Имя сотрудника
                 if (emp.name) {
                     cardHtml += `<div class="employee-name">${emp.name}</div>`;
                 }
@@ -145,9 +133,7 @@ function displayDepartments(departments) {
         deptCard.appendChild(deptContent);
         departmentsGrid.appendChild(deptCard);
         
-        // Добавляем обработчик клика для открытия/закрытия
         deptHeader.addEventListener('click', (e) => {
-            // Проверяем, что клик был не по ссылке email
             if (e.target.tagName === 'A' && e.target.href.includes('mailto:')) {
                 return;
             }
