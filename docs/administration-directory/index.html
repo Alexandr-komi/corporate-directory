@@ -9,8 +9,29 @@
 <body>
     <div class="container">
         <header>
-            <h1>🏢 Администрация муниципального района «Корткеросский»</h1>
-            <div class="subtitle" id="address"></div>
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap;">
+                <div style="flex: 1;">
+                    <h1>🏢 Администрация муниципального района «Корткеросский»</h1>
+                    <div class="subtitle" id="address"></div>
+                </div>
+                <!-- Кнопка "Сказать спасибо" -->
+                <div style="text-align: right; margin-top: 5px;">
+                    <a href="mailto:vasya@example.com?subject=Спасибо за справочник!&body=Благодарю за работу над справочником!"
+                       style="display: inline-block;
+                              padding: 8px 18px;
+                              font-size: 14px;
+                              font-weight: 500;
+                              color: #1e3c72;
+                              background: transparent;
+                              border: 2px solid #1e3c72;
+                              border-radius: 30px;
+                              text-decoration: none;
+                              transition: all 0.3s ease;
+                              white-space: nowrap;">
+                        ❤️ Сказать спасибо
+                    </a>
+                </div>
+            </div>
             <div class="search-box">
                 <input type="text" id="searchInput" placeholder="Поиск по ФИО, должности, отделу...">
             </div>
