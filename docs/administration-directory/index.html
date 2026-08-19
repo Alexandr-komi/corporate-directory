@@ -16,20 +16,20 @@
                 </div>
                 <!-- Кнопка "Сказать спасибо" -->
                 <div style="text-align: right; margin-top: 5px;">
-                    <a href="mailto:vasya@example.com?subject=Спасибо за справочник!&body=Благодарю за работу над справочником!"
-                       style="display: inline-block;
-                              padding: 8px 18px;
-                              font-size: 14px;
-                              font-weight: 500;
-                              color: #1e3c72;
-                              background: transparent;
-                              border: 2px solid #1e3c72;
-                              border-radius: 30px;
-                              text-decoration: none;
-                              transition: all 0.3s ease;
-                              white-space: nowrap;">
+                    <button id="thankYouBtn"
+                            style="display: inline-block;
+                                   padding: 8px 18px;
+                                   font-size: 14px;
+                                   font-weight: 500;
+                                   color: #1e3c72;
+                                   background: transparent;
+                                   border: 2px solid #1e3c72;
+                                   border-radius: 30px;
+                                   cursor: pointer;
+                                   transition: all 0.3s ease;
+                                   white-space: nowrap;">
                         ❤️ Сказать спасибо
-                    </a>
+                    </button>
                 </div>
             </div>
             <div class="search-box">
@@ -45,5 +45,40 @@
     </div>
 
     <script src="script.js"></script>
+    <script>
+        // Кнопка "Сказать спасибо"
+        document.addEventListener('DOMContentLoaded', function() {
+            const btn = document.getElementById('thankYouBtn');
+            if (btn) {
+                btn.addEventListener('click', function(e) {
+                    // Замените vasya@example.com на свой email!
+                    const email = 'vasya@example.com';
+                    const subject = encodeURIComponent('Спасибо за справочник!');
+                    const body = encodeURIComponent('Благодарю за работу над справочником!');
+                    
+                    // Пробуем открыть почтовую программу
+                    const mailtoLink = `mailto:${email}?subject=${subject}&body=${body}`;
+                    window.location.href = mailtoLink;
+                    
+                    // Если через 2 секунды ничего не произошло — показываем подсказку
+                    setTimeout(function() {
+                        // Проверяем, не было ли перехода (окно не закрылось)
+                        // Просто показываем инструкцию, если пользователь ещё на странице
+                        alert(`Пожалуйста, отправьте письмо вручную:\n\nКому: ${email}\nТема: Спасибо за справочник!\n\nБлагодарю за работу над справочником!`);
+                    }, 2000);
+                });
+                
+                // Эффект при наведении
+                btn.addEventListener('mouseenter', function() {
+                    this.style.background = '#1e3c72';
+                    this.style.color = 'white';
+                });
+                btn.addEventListener('mouseleave', function() {
+                    this.style.background = 'transparent';
+                    this.style.color = '#1e3c72';
+                });
+            }
+        });
+    </script>
 </body>
 </html>
