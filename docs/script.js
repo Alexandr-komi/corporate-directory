@@ -7,6 +7,9 @@ if (searchInput) {
 
 let allData = null;
 
+// Пароль для показа мобильных телефонов
+const MOBILE_PASSWORD = 'mobil2026';
+
 async function loadContacts() {
     const loading = document.getElementById('loading');
     const directory = document.getElementById('directory');
@@ -28,7 +31,6 @@ async function loadContacts() {
 
 // Функция копирования данных в буфер обмена
 function copyContactData(settlement) {
-    // Формируем текст для копирования
     let textToCopy = `${settlement.type ? settlement.type : ''}${settlement.name}\n`;
     textToCopy += `Глава: ${settlement.head}\n`;
     textToCopy += `Телефон: ${settlement.phone}\n`;
@@ -40,7 +42,6 @@ function copyContactData(settlement) {
     if (settlement.address) textToCopy += `\nАдрес: ${settlement.address}`;
     if (settlement.note) textToCopy += `\nПримечание: ${settlement.note}`;
     
-    // Копируем в буфер обмена
     navigator.clipboard.writeText(textToCopy).then(() => {
         showNotification('✅ Данные скопированы!');
     }).catch(err => {
@@ -72,20 +73,64 @@ function showNotification(message) {
     }, 100);
 }
 
+// Функция показа мобильного телефона с запросом пароля
+function showMobilePhone(settlement, buttonElement) {
+    // Проверяем, есть ли уже открытый номер у этой кнопки
+    const parentDiv = buttonElement.parentElement;
+    let phoneDisplay = parentDiv.querySelector('.mobile-phone-display');
+    
+    if (phoneDisplay) {
+        // Если уже открыто — скрываем
+        phoneDisplay.remove();
+        buttonElement.textContent = '📱 Показать мобильный';
+        return;
+    }
+    
+    // Запрашиваем пароль
+    const enteredPassword = prompt('Введите пароль для просмотра мобильного телефона:');
+    
+    if (enteredPassword === null) {
+        return; // Пользователь нажал "Отмена"
+    }
+    
+    if (enteredPassword === MOBILE_PASSWORD) {
+        // Пароль верный — показываем номер
+        phoneDisplay = document.createElement('div');
+        phoneDisplay.className = 'mobile-phone-display info-row';
+        phoneDisplay.style.cssText = 'margin-top: 5px; padding: 5px 10px; background: #e8f5e9; border-radius: 6px; border-left: 3px solid #4caf50;';
+        phoneDisplay.innerHTML = `
+            <span class="label">📱 Мобильный:</span>
+            <span class="value"><a href="tel:${settlement.mobile_phone.replace(/[^0-9+]/g, '')}">${settlement.mobile_phone}</a></span>
+        `;
+        parentDiv.appendChild(phoneDisplay);
+        buttonElement.textContent = '🙈 Скрыть мобильный';
+    } else {
+        alert('❌ Неверный пароль!');
+    }
+}
+
 function displayContacts(data) {
     const directory = document.getElementById('directory');
     if (!directory) return;
     
     directory.innerHTML = '';
     
-    // Если data - объект с одним районом
     if (data && data.district && data.settlements) {
         const section = document.createElement('div');
         section.className = 'district-section';
         
         const settlementsHtml = data.settlements.map(settlement => {
-            // Формируем отображаемое название с типом
             const displayName = settlement.type ? `${settlement.type}${settlement.name}` : settlement.name;
+            
+            // Формируем кнопку для мобильного телефона, если он есть
+            let mobileButtonHtml = '';
+            if (settlement.mobile_phone) {
+                mobileButtonHtml = `
+                    <button class="mobile-phone-btn" onclick='showMobilePhone(${JSON.stringify(settlement).replace(/'/g, "&apos;")}, this)'>
+                        📱 Показать мобильный
+                    </button>
+                `;
+            }
             
             return `
             <div class="settlement-card">
@@ -141,6 +186,10 @@ function displayContacts(data) {
                         <span class="label">📌 Примечание:</span>
                         <span class="value">${settlement.note}</span>
                     </div>` : ''}
+                    ${mobileButtonHtml ? `
+                    <div class="info-row mobile-phone-row">
+                        ${mobileButtonHtml}
+                    </div>` : ''}
                 </div>
             </div>
         `}).join('');
@@ -153,15 +202,22 @@ function displayContacts(data) {
         
         directory.appendChild(section);
     }
-    // Если data - массив районов (на будущее)
     else if (Array.isArray(data)) {
         data.forEach(districtData => {
             const section = document.createElement('div');
             section.className = 'district-section';
             
             const settlementsHtml = districtData.settlements.map(settlement => {
-                // Формируем отображаемое название с типом
                 const displayName = settlement.type ? `${settlement.type}${settlement.name}` : settlement.name;
+                
+                let mobileButtonHtml = '';
+                if (settlement.mobile_phone) {
+                    mobileButtonHtml = `
+                        <button class="mobile-phone-btn" onclick='showMobilePhone(${JSON.stringify(settlement).replace(/'/g, "&apos;")}, this)'>
+                            📱 Показать мобильный
+                        </button>
+                    `;
+                }
                 
                 return `
                 <div class="settlement-card">
@@ -217,6 +273,10 @@ function displayContacts(data) {
                             <span class="label">📌 Примечание:</span>
                             <span class="value">${settlement.note}</span>
                         </div>` : ''}
+                        ${mobileButtonHtml ? `
+                        <div class="info-row mobile-phone-row">
+                            ${mobileButtonHtml}
+                        </div>` : ''}
                     </div>
                 </div>
             `}).join('');
@@ -244,7 +304,6 @@ function filterContacts() {
         return;
     }
     
-    // Фильтрация для объекта с одним районом
     if (allData.district && allData.settlements) {
         const filteredSettlements = allData.settlements.filter(settlement => 
             settlement.name.toLowerCase().includes(searchText) ||
@@ -256,7 +315,8 @@ function filterContacts() {
             (settlement.website && settlement.website.toLowerCase().includes(searchText)) ||
             (settlement.vk && settlement.vk.toLowerCase().includes(searchText)) ||
             (settlement.max && settlement.max.toLowerCase().includes(searchText)) ||
-            (settlement.type && settlement.type.toLowerCase().includes(searchText))
+            (settlement.type && settlement.type.toLowerCase().includes(searchText)) ||
+            (settlement.mobile_phone && settlement.mobile_phone.toLowerCase().includes(searchText))
         );
         
         const filteredData = {
@@ -267,7 +327,6 @@ function filterContacts() {
         displayContacts(filteredData);
         updateStats(filteredData);
     }
-    // Фильтрация для массива районов
     else if (Array.isArray(allData)) {
         const filtered = allData.map(district => ({
             ...district,
@@ -282,6 +341,7 @@ function filterContacts() {
                 (settlement.vk && settlement.vk.toLowerCase().includes(searchText)) ||
                 (settlement.max && settlement.max.toLowerCase().includes(searchText)) ||
                 (settlement.type && settlement.type.toLowerCase().includes(searchText)) ||
+                (settlement.mobile_phone && settlement.mobile_phone.toLowerCase().includes(searchText)) ||
                 district.district.toLowerCase().includes(searchText)
             )
         })).filter(district => district.settlements.length > 0);
@@ -295,7 +355,6 @@ function updateStats(data) {
     const stats = document.getElementById('stats');
     if (!stats) return;
     
-    // Если data - объект с одним районом
     if (data && data.district && data.settlements) {
         stats.innerHTML = `
             <div class="stats-panel">
@@ -304,7 +363,6 @@ function updateStats(data) {
             </div>
         `;
     }
-    // Если data - массив районов
     else if (Array.isArray(data)) {
         const totalSettlements = data.reduce((sum, district) => 
             sum + (district.settlements?.length || 0), 0);
