@@ -63,21 +63,21 @@ function displayDepartments(departments) {
         
         titleHtml += `</div>`;
         
-        // Email и сайт в ОДНОЙ строке
+        // Контакты: сайт слева, почта справа (в одной строке)
         if (dept.email || dept.site) {
             titleHtml += `
                 <div class="department-contact-row">
-                    ${dept.email ? `
-                        <div class="department-email-block">
-                            <span class="email-icon">📧</span>
-                            <a href="mailto:${dept.email}">${dept.email}</a>
-                        </div>
-                    ` : ''}
                     ${dept.site ? `
                         <div class="department-site-block">
                             <a href="${dept.site}" target="_blank" title="Официальная страница отдела">
                                 🌐 Официальная страница
                             </a>
+                        </div>
+                    ` : ''}
+                    ${dept.email ? `
+                        <div class="department-email-block">
+                            <span class="email-icon">📧</span>
+                            <a href="mailto:${dept.email}">${dept.email}</a>
                         </div>
                     ` : ''}
                 </div>
