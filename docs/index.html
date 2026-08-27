@@ -40,14 +40,111 @@
         .portal-subtitle {
             font-size: 18px;
             color: #6c757d;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
+        }
+
+        .search-box {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto 30px auto;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 14px 24px;
+            border: 2px solid #e9ecef;
+            border-radius: 50px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #4dabf7;
+            box-shadow: 0 0 0 4px rgba(77, 171, 247, 0.15);
+        }
+
+        .search-results {
+            margin: 10px 0 30px 0;
+            text-align: left;
+            max-height: 400px;
+            overflow-y: auto;
+            border-radius: 12px;
+            background: #f8f9fa;
+            padding: 10px;
+            display: none;
+        }
+
+        .search-results.active {
+            display: block;
+        }
+
+        .search-result-item {
+            padding: 10px 14px;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: #2c3e50;
+            transition: background 0.2s;
+            border-radius: 8px;
+        }
+
+        .search-result-item:last-child {
+            border-bottom: none;
+        }
+
+        .search-result-item:hover {
+            background: #e9ecef;
+        }
+
+        .search-result-item .badge {
+            font-size: 12px;
+            font-weight: 600;
+            padding: 2px 10px;
+            border-radius: 20px;
+            white-space: nowrap;
+        }
+
+        .badge-admin {
+            background: #dbeafe;
+            color: #1e3c72;
+        }
+
+        .badge-settlement {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .search-result-item .text {
+            flex: 1;
+            font-size: 14px;
+        }
+
+        .search-result-item .text .highlight {
+            font-weight: 600;
+            color: #1e3c72;
+        }
+
+        .search-result-item .arrow {
+            color: #adb5bd;
+        }
+
+        .no-results {
+            padding: 20px;
+            color: #6c757d;
+            font-size: 14px;
+            text-align: center;
         }
 
         .portal-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 30px;
-            margin-bottom: 40px;
+            margin-top: 20px;
         }
 
         .portal-card {
@@ -121,6 +218,11 @@
             .portal-container {
                 padding: 24px;
             }
+
+            .search-box input {
+                font-size: 14px;
+                padding: 12px 18px;
+            }
         }
     </style>
 </head>
@@ -129,6 +231,15 @@
         <h1 class="portal-title">📂 Справочники</h1>
         <p class="portal-subtitle">Администрация МР «Корткеросский»</p>
 
+        <!-- Поиск -->
+        <div class="search-box">
+            <input type="text" id="portalSearch" placeholder="🔍 Поиск по всем справочникам...">
+        </div>
+
+        <!-- Результаты поиска -->
+        <div id="searchResults" class="search-results"></div>
+
+        <!-- Кнопки-плитки -->
         <div class="portal-grid">
             <a href="administration-directory/" class="portal-card">
                 <span class="icon">🏢</span>
@@ -150,5 +261,148 @@
             </a>
         </div>
     </div>
+
+    <script>
+        let allData = null;
+        let searchTimeout = null;
+
+        async function loadSearchData() {
+            try {
+                const [adminRes, settlementRes] = await Promise.all([
+                    fetch('administration-directory/employees.json'),
+                    fetch('settlements/contacts.json')
+                ]);
+
+                const adminData = await adminRes.json();
+                const settlementData = await settlementRes.json();
+
+                allData = {
+                    admin: adminData,
+                    settlements: settlementData
+                };
+            } catch (error) {
+                console.error('Ошибка загрузки данных для поиска:', error);
+            }
+        }
+
+        function searchInAdmin(data, query) {
+            const results = [];
+            const q = query.toLowerCase();
+
+            data.departments.forEach(dept => {
+                dept.employees.forEach(emp => {
+                    if (!emp.name) return;
+                    const match = 
+                        emp.name.toLowerCase().includes(q) ||
+                        (emp.position && emp.position.toLowerCase().includes(q)) ||
+                        dept.name.toLowerCase().includes(q);
+                    if (match) {
+                        results.push({
+                            type: 'admin',
+                            label: `${dept.name} → ${emp.position ? emp.position + ' ' : ''}${emp.name}`,
+                            link: 'administration-directory/',
+                            highlight: emp.name
+                        });
+                    }
+                });
+            });
+
+            return results;
+        }
+
+        function searchInSettlements(data, query) {
+            const results = [];
+            const q = query.toLowerCase();
+
+            const settlements = Array.isArray(data) ? data : [data];
+            settlements.forEach(district => {
+                district.settlements.forEach(settlement => {
+                    const match = 
+                        settlement.name.toLowerCase().includes(q) ||
+                        settlement.head.toLowerCase().includes(q) ||
+                        (settlement.address && settlement.address.toLowerCase().includes(q));
+                    if (match) {
+                        results.push({
+                            type: 'settlement',
+                            label: `${settlement.type || ''}${settlement.name} → ${settlement.head}`,
+                            link: 'settlements/',
+                            highlight: settlement.name
+                        });
+                    }
+                });
+            });
+
+            return results;
+        }
+
+        function renderResults(results) {
+            const container = document.getElementById('searchResults');
+            container.innerHTML = '';
+
+            if (results.length === 0) {
+                container.innerHTML = `<div class="no-results">Ничего не найдено</div>`;
+                container.classList.add('active');
+                return;
+            }
+
+            results.forEach(result => {
+                const link = document.createElement('a');
+                link.className = 'search-result-item';
+                link.href = result.link;
+
+                const badge = document.createElement('span');
+                badge.className = `badge ${result.type === 'admin' ? 'badge-admin' : 'badge-settlement'}`;
+                badge.textContent = result.type === 'admin' ? '🏢 Администрация' : '🌾 Поселения';
+
+                const text = document.createElement('span');
+                text.className = 'text';
+                text.innerHTML = result.label;
+
+                const arrow = document.createElement('span');
+                arrow.className = 'arrow';
+                arrow.textContent = '→';
+
+                link.appendChild(badge);
+                link.appendChild(text);
+                link.appendChild(arrow);
+                container.appendChild(link);
+            });
+
+            container.classList.add('active');
+        }
+
+        document.addEventListener('DOMContentLoaded', async function() {
+            await loadSearchData();
+
+            const searchInput = document.getElementById('portalSearch');
+            const resultsContainer = document.getElementById('searchResults');
+
+            searchInput.addEventListener('input', function(e) {
+                clearTimeout(searchTimeout);
+                const query = e.target.value.trim();
+
+                if (query.length < 2) {
+                    resultsContainer.classList.remove('active');
+                    resultsContainer.innerHTML = '';
+                    return;
+                }
+
+                searchTimeout = setTimeout(() => {
+                    if (!allData) return;
+
+                    const adminResults = searchInAdmin(allData.admin, query);
+                    const settlementResults = searchInSettlements(allData.settlements, query);
+
+                    const combined = [...adminResults, ...settlementResults];
+
+                    if (combined.length === 0) {
+                        renderResults([]);
+                    } else {
+                        renderResults(combined.slice(0, 15));
+                    }
+                }, 300);
+            });
+        });
+    </script>
 </body>
 </html>
