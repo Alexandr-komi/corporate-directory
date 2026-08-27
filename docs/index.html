@@ -192,7 +192,7 @@
             color: #6c757d;
         }
 
-        /* ----- КНОПКА РЕКВИЗИТЫ ----- */
+        /* ----- КНОПКИ ДЕЙСТВИЙ ----- */
         .portal-actions {
             margin-top: 25px;
             display: flex;
@@ -201,7 +201,9 @@
             flex-wrap: wrap;
         }
 
+        .portal-actions a,
         .portal-actions button {
+            display: inline-block;
             padding: 12px 30px;
             font-size: 16px;
             font-weight: 500;
@@ -209,10 +211,12 @@
             background: transparent;
             border: 2px solid #1e3c72;
             border-radius: 30px;
+            text-decoration: none;
             cursor: pointer;
             transition: all 0.3s ease;
         }
 
+        .portal-actions a:hover,
         .portal-actions button:hover {
             background: #1e3c72;
             color: white;
@@ -424,6 +428,7 @@
         <!-- Кнопки действий -->
         <div class="portal-actions">
             <button onclick="openRequisites()">📄 Реквизиты администрации</button>
+            <a href="https://kortkeros.gosuslugi.ru/" target="_blank">🌐 Сайт администрации</a>
         </div>
 
         <!-- Кнопка "Спасибо разработчику" -->
