@@ -5,7 +5,7 @@
     {
       "name": "Руководство",
       "email": "priem@kortkeros.rkomi.ru",
-      "site": "",
+      "site": "https://kortkeros.gosuslugi.ru/glavnoe/administratsiya/struktura/",
       "employees": [
         {
           "position": "Глава муниципального района - руководитель администрации",
@@ -74,7 +74,7 @@
     {
       "name": "Муниципальный центр управления",
       "email": "press@kortkeros.rkomi.ru",
-      "site": "",
+      "site": "https://kortkeros.gosuslugi.ru/glavnoe/administratsiya/struktura/press-sluzhba/",
       "employees": [
         {
           "position": "Руководитель МЦУ",
@@ -197,7 +197,7 @@
     {
       "name": "Управление жилищно-коммунального, дорожного хозяйства и транспорта",
       "email": "zkh@kortkeros.rkomi.ru",
-      "site": "",
+      "site": "https://kortkeros.gosuslugi.ru/glavnoe/administratsiya/struktura/upravlenie-zhkh/",
       "employees": [
         {
           "position": "Начальник",
@@ -254,65 +254,6 @@
       ]
     },
     {
-      "name": "Единая дежурно-диспетчерская служба (ЕДДС)",
-      "email": "edds@kortkeros.rkomi.ru",
-      "site": "",
-      "employees": [
-        {
-          "position": "Руководитель",
-          "name": "Юранев Андрей Васильевич",
-          "phone": "8(82136)9-95-61"
-        },
-        {
-          "position": "Оперативный дежурный",
-          "name": "Кирушев Сергей Иванович",
-          "phone": "8(82136)9-26-39"
-        },
-        {
-          "position": "Оперативный дежурный",
-          "name": "Тараканов Владислав Васильевич",
-          "phone": "8(82136)9-26-39"
-        },
-        {
-          "position": "Оперативный дежурный",
-          "name": "Гасматулин Константин Юрьевич",
-          "phone": "8(82136)9-26-39"
-        },
-        {
-          "position": "Оперативный дежурный",
-          "name": "Габов Василий Олегович",
-          "phone": "8(82136)9-26-39"
-        }
-      ]
-    },
-    {
-      "name": "Служба контроля",
-      "email": "sk@kortkeros.rkomi.ru",
-      "site": "",
-      "employees": [
-        {
-          "position": "Специалист",
-          "name": "Стахиев Сергей Алексеевич",
-          "phone": "8(82136)9-23-38"
-        },
-        {
-          "position": "Специалист",
-          "name": "Подоров Алексей Александрович",
-          "phone": "8(82136)9-23-38"
-        },
-        {
-          "position": "Специалист",
-          "name": "Лушков Владимир Иванович",
-          "phone": "8(82136)9-23-38"
-        },
-        {
-          "position": "Специалист",
-          "name": "Забоев Василий Васильевич",
-          "phone": "8(82136)9-23-38"
-        }
-      ]
-    },
-    {
       "name": "Сектор по мобилизационной работе",
       "email": "mob@kortkeros.rkomi.ru",
       "site": "https://kortkeros.gosuslugi.ru/glavnoe/administratsiya/struktura/sektor-po-mobilizatsionnoy-rabote/",
@@ -326,33 +267,6 @@
           "position": "Специалист",
           "name": "Елфимова Светлана Сергеевна",
           "phone": "8(82136)9-21-55"
-        }
-      ]
-    },
-    {
-      "name": "Управление финансов",
-      "email": "uf@kortkeros.rkomi.ru",
-      "site": "",
-      "employees": [
-        {
-          "position": "Начальник",
-          "name": "Попова Надежда Николаевна",
-          "phone": "8(82136)9-23-30"
-        },
-        {
-          "position": "Приемная",
-          "name": "",
-          "phone": "8(82136)9-96-32"
-        },
-        {
-          "position": "Заместитель начальника – заведующий бюджетным отделом",
-          "name": "Любименко Людмила Анатольевна",
-          "phone": "8(82136)9-23-50"
-        },
-        {
-          "position": "Специалист",
-          "name": "Минский Александр Игоревич",
-          "phone": "8(82136)9-22-63"
         }
       ]
     },
@@ -501,7 +415,7 @@
     {
       "name": "Отдел жилищной политики",
       "email": "gp@kortkeros.rkomi.ru",
-      "site": "",
+      "site": "https://kortkeros.gosuslugi.ru/glavnoe/administratsiya/struktura/otdel-zhilischnoy-politiki/",
       "employees": [
         {
           "position": "Заведующий отделом",
@@ -555,7 +469,7 @@
     {
       "name": "Сектор по архивной работе",
       "email": "arhiv@kortkeros.rkomi.ru",
-      "site": "",
+      "site": "https://kortkeros.gosuslugi.ru/glavnoe/administratsiya/struktura/sektor-po-arhivnoy-rabote/",
       "employees": [
         {
           "position": "Руководитель сектором",
@@ -577,7 +491,7 @@
     {
       "name": "Управление образования",
       "email": "uo@kortkeros.rkomi.ru",
-      "site": "https://kortkeros-r11.gosweb.gosuslugi.ru/glavnoe/administratsiya/struktura/upravlenie-obrazovaniya/",
+      "site": "https://kortkeros.gosuslugi.ru/glavnoe/administratsiya/struktura/upravlenie-obrazovaniya/",
       "employees": [
         {
           "position": "Начальник",
