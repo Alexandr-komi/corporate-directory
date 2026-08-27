@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌾 Сельские поселения - Корткеросский район</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🌾 Контакты сельских поселений Корткеросского района</h1>
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Поиск по названию, главе, должности...">
+            </div>
+        </header>
+        
+        <div id="loading" class="loading">⏳ Загрузка данных...</div>
+        
+        <div id="directory" class="directory"></div>
+        
+        <div id="stats" class="stats"></div>
+        
+        <!-- Счетчик просмотров -->
+        <div class="counter-container" style="text-align: center; margin-top: 30px; padding: 15px; background: #f8f9fa; border-radius: 30px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+            <span style="color: #1e3c72; font-size: 18px; font-weight: 500;">👁️ Просмотров страницы: </span>
+            <span id="visitCounter" style="color: #2c3e50; font-size: 24px; font-weight: bold; background: white; padding: 5px 15px; border-radius: 20px; margin-left: 10px; border: 1px solid #4dabf7;">0</span>
+        </div>
+    </div>
+
+    <script>
+        // Счетчик просмотров
+        function updateVisitCounter() {
+            let counter = localStorage.getItem('pageViewCounter');
+            if (counter) {
+                counter = parseInt(counter) + 1;
+            } else {
+                counter = 1;
+            }
+            localStorage.setItem('pageViewCounter', counter);
+            
+            const counterElement = document.getElementById('visitCounter');
+            if (counterElement) {
+                counterElement.textContent = counter;
+            }
+        }
+        window.addEventListener('load', updateVisitCounter);
+    </script>
+
+    <script src="script.js"></script>
+</body>
+</html>
