@@ -150,7 +150,7 @@
             text-align: center;
         }
 
-        /* ----- ПЛИТКИ ----- */
+        /* ===== КНОПКИ-ПЛИТКИ (чёткие, как кнопки) ===== */
         .portal-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -159,38 +159,62 @@
         }
 
         .portal-card {
-            background: #f8f9fa;
-            border-radius: 12px;
-            padding: 40px 30px;
-            text-decoration: none;
-            color: #2c3e50;
-            border: 1px solid #e9ecef;
-            transition: all 0.2s ease;
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
             gap: 12px;
+            padding: 32px 20px;
+            background: white;
+            border: 2px solid #1e3c72;
+            border-radius: 12px;
+            text-decoration: none;
+            color: #1e3c72;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
         }
 
         .portal-card:hover {
+            background: #1e3c72;
+            border-color: #1e3c72;
             transform: translateY(-2px);
-            border-color: #4dabf7;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+            box-shadow: 0 6px 16px rgba(30, 60, 114, 0.15);
+        }
+
+        .portal-card:hover .icon,
+        .portal-card:hover .name,
+        .portal-card:hover .desc {
+            color: white;
         }
 
         .portal-card .icon {
-            font-size: 48px;
+            font-size: 44px;
+            transition: color 0.2s;
         }
 
         .portal-card .name {
             font-size: 20px;
             font-weight: 700;
             color: #1e3c72;
+            transition: color 0.2s;
         }
 
         .portal-card .desc {
             font-size: 14px;
             color: #6c757d;
+            transition: color 0.2s;
+        }
+
+        .portal-card .arrow-hint {
+            font-size: 18px;
+            color: #4dabf7;
+            margin-top: 4px;
+            transition: color 0.2s;
+        }
+
+        .portal-card:hover .arrow-hint {
+            color: white;
         }
 
         /* ----- КНОПКИ ДЕЙСТВИЙ ----- */
@@ -412,17 +436,19 @@
         <!-- Результаты поиска -->
         <div id="searchResults" class="search-results"></div>
 
-        <!-- Плитки -->
+        <!-- Кнопки-плитки -->
         <div class="portal-grid">
             <a href="administration-directory/" class="portal-card">
                 <span class="icon">🏢</span>
                 <span class="name">Администрация</span>
                 <span class="desc">Контакты отделов и сотрудников</span>
+                <span class="arrow-hint">→</span>
             </a>
             <a href="settlements/" class="portal-card">
                 <span class="icon">🌾</span>
                 <span class="name">Сельские поселения</span>
                 <span class="desc">Контакты глав и администраций</span>
+                <span class="arrow-hint">→</span>
             </a>
         </div>
 
