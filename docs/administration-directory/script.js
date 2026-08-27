@@ -50,6 +50,7 @@ function displayDepartments(departments) {
         const deptHeader = document.createElement('div');
         deptHeader.className = 'department-header';
         
+        // Формируем структуру заголовка
         let titleHtml = `
             <div class="department-title-wrapper">
                 <div class="department-name-row">
@@ -62,6 +63,7 @@ function displayDepartments(departments) {
         
         titleHtml += `</div>`;
         
+        // Email
         if (dept.email) {
             titleHtml += `
                 <div class="department-email-container">
@@ -69,6 +71,20 @@ function displayDepartments(departments) {
                         <span class="email-icon">📧</span>
                         <a href="mailto:${dept.email}">${dept.email}</a>
                     </div>
+                </div>
+            `;
+        }
+        
+        // Сайт отдела
+        if (dept.site) {
+            titleHtml += `
+                <div class="department-site-block">
+                    <a href="${dept.site}" target="_blank" title="Сайт отдела" 
+                       style="color: white; text-decoration: none; font-size: 12px; 
+                              background: rgba(255,255,255,0.15); padding: 2px 10px; 
+                              border-radius: 20px; display: inline-flex; align-items: center; gap: 4px;">
+                        🌐 сайт отдела
+                    </a>
                 </div>
             `;
         }
@@ -185,7 +201,8 @@ function filterData() {
                 (emp.position && emp.position.toLowerCase().includes(searchText)) ||
                 (emp.phone && emp.phone.toLowerCase().includes(searchText)) ||
                 (dept.name && dept.name.toLowerCase().includes(searchText)) ||
-                (dept.email && dept.email.toLowerCase().includes(searchText))
+                (dept.email && dept.email.toLowerCase().includes(searchText)) ||
+                (dept.site && dept.site.toLowerCase().includes(searchText))
             )
         )
     })).filter(dept => dept.employees.length > 0);
