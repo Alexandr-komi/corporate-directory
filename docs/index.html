@@ -50,6 +50,24 @@
             transition: color 0.3s ease;
         }
 
+        /* ===== ПОГОДА ===== */
+        .weather-wrapper {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .weather-wrapper iframe {
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            transition: all 0.3s ease;
+            max-width: 100%;
+        }
+
+        body.dark-theme .weather-wrapper iframe {
+            filter: brightness(0.9) contrast(1.1);
+        }
+
         /* ===== ПЕРЕКЛЮЧАТЕЛЬ ТЕМЫ ===== */
         .theme-toggle-wrapper {
             display: flex;
@@ -73,6 +91,16 @@
         #themeToggle:hover {
             background: #1e3c72;
             color: white;
+        }
+
+        body.dark-theme #themeToggle {
+            color: #e0e0e0;
+            border-color: #e0e0e0;
+        }
+
+        body.dark-theme #themeToggle:hover {
+            background: #e0e0e0;
+            color: #1a1a2e;
         }
 
         /* ===== ПОИСК ===== */
@@ -474,16 +502,6 @@
             color: #a0a0a0;
         }
 
-        body.dark-theme #themeToggle {
-            color: #e0e0e0;
-            border-color: #e0e0e0;
-        }
-
-        body.dark-theme #themeToggle:hover {
-            background: #e0e0e0;
-            color: #1a1a2e;
-        }
-
         body.dark-theme .search-box input {
             background: #1e2a4a;
             color: #e0e0e0;
@@ -657,11 +675,25 @@
             .blank-item .blank-download {
                 text-align: center;
             }
+
+            .weather-wrapper iframe {
+                height: 80px !important;
+            }
         }
     </style>
 </head>
 <body>
     <div class="portal-container">
+        <!-- Погода -->
+        <div class="weather-wrapper">
+            <iframe src="https://yandex.ru/weather/widget/?city=11314" 
+                    width="100%" 
+                    height="120" 
+                    frameborder="0" 
+                    style="border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+            </iframe>
+        </div>
+
         <!-- Переключатель тёмной темы -->
         <div class="theme-toggle-wrapper">
             <button id="themeToggle">🌙 Тёмная тема</button>
