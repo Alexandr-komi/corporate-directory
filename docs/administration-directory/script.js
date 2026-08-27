@@ -233,3 +233,28 @@ function updateStats(departments) {
         </div>
     `;
 }
+
+// ===== ТЁМНАЯ ТЕМА =====
+document.addEventListener('DOMContentLoaded', function() {
+    const themeToggle = document.getElementById('themeToggle');
+    if (!themeToggle) return;
+    
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    
+    if (currentTheme === 'dark') {
+        document.body.classList.add('dark-theme');
+        themeToggle.textContent = '☀️ Светлая тема';
+    }
+    
+    themeToggle.addEventListener('click', function() {
+        const isDark = document.body.classList.toggle('dark-theme');
+        
+        if (isDark) {
+            this.textContent = '☀️ Светлая тема';
+            localStorage.setItem('theme', 'dark');
+        } else {
+            this.textContent = '🌙 Тёмная тема';
+            localStorage.setItem('theme', 'light');
+        }
+    });
+});
