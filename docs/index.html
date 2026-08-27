@@ -129,6 +129,13 @@
             color: #1e3c72;
         }
 
+        .search-result-item .text .phone {
+            color: #4dabf7;
+            font-weight: 500;
+            margin-left: 6px;
+            white-space: nowrap;
+        }
+
         .search-result-item .arrow {
             color: #adb5bd;
         }
@@ -223,13 +230,22 @@
                 font-size: 14px;
                 padding: 12px 18px;
             }
+
+            .search-result-item {
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+
+            .search-result-item .text .phone {
+                white-space: normal;
+            }
         }
     </style>
 </head>
 <body>
     <div class="portal-container">
         <h1 class="portal-title">📂 Справочники</h1>
-        <p class="portal-subtitle">Администрация МР «Корткеросский»</p>
+        <p class="portal-subtitle">Муниципальный район Корткеросский</p>
 
         <!-- Поиск -->
         <div class="search-box">
@@ -297,9 +313,14 @@
                         (emp.position && emp.position.toLowerCase().includes(q)) ||
                         dept.name.toLowerCase().includes(q);
                     if (match) {
+                        let phoneText = '';
+                        if (emp.phone) {
+                            phoneText = `📞 ${emp.phone}`;
+                        }
                         results.push({
                             type: 'admin',
                             label: `${dept.name} → ${emp.position ? emp.position + ' ' : ''}${emp.name}`,
+                            phone: phoneText,
                             link: 'administration-directory/',
                             highlight: emp.name
                         });
@@ -322,9 +343,14 @@
                         settlement.head.toLowerCase().includes(q) ||
                         (settlement.address && settlement.address.toLowerCase().includes(q));
                     if (match) {
+                        let phoneText = '';
+                        if (settlement.phone) {
+                            phoneText = `📞 ${settlement.phone}`;
+                        }
                         results.push({
                             type: 'settlement',
                             label: `${settlement.type || ''}${settlement.name} → ${settlement.head}`,
+                            phone: phoneText,
                             link: 'settlements/',
                             highlight: settlement.name
                         });
@@ -356,7 +382,7 @@
 
                 const text = document.createElement('span');
                 text.className = 'text';
-                text.innerHTML = result.label;
+                text.innerHTML = `${result.label} <span class="phone">${result.phone}</span>`;
 
                 const arrow = document.createElement('span');
                 arrow.className = 'arrow';
