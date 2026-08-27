@@ -14,34 +14,40 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            background: #f0f4f8;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 20px;
+            background: linear-gradient(145deg, #eef2f7 0%, #d9e2ef 100%);
         }
 
         .portal-container {
             max-width: 900px;
             width: 100%;
-            background: white;
-            border-radius: 24px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 32px;
+            box-shadow: 0 20px 60px rgba(30, 60, 114, 0.15);
             padding: 40px;
             text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.3);
         }
 
         .portal-title {
             font-size: 32px;
             color: #1e3c72;
             margin-bottom: 10px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
         }
 
         .portal-subtitle {
             font-size: 18px;
-            color: #6c757d;
+            color: #4a6a8b;
             margin-bottom: 30px;
+            font-weight: 400;
         }
 
         /* ----- ПОИСК ----- */
@@ -53,19 +59,23 @@
 
         .search-box input {
             width: 100%;
-            padding: 14px 24px;
-            border: 2px solid #e9ecef;
+            padding: 16px 28px;
+            border: none;
             border-radius: 50px;
             font-size: 16px;
-            transition: all 0.3s ease;
             background: white;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+            transition: all 0.3s ease;
+            color: #1e3c72;
         }
 
         .search-box input:focus {
             outline: none;
-            border-color: #4dabf7;
-            box-shadow: 0 0 0 4px rgba(77, 171, 247, 0.15);
+            box-shadow: 0 4px 16px rgba(77, 171, 247, 0.25);
+        }
+
+        .search-box input::placeholder {
+            color: #9bafc9;
         }
 
         .search-results {
@@ -73,8 +83,9 @@
             text-align: left;
             max-height: 400px;
             overflow-y: auto;
-            border-radius: 12px;
-            background: #f8f9fa;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(4px);
             padding: 10px;
             display: none;
         }
@@ -84,15 +95,15 @@
         }
 
         .search-result-item {
-            padding: 10px 14px;
-            border-bottom: 1px solid #e9ecef;
+            padding: 12px 16px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.04);
             display: flex;
             align-items: center;
             gap: 12px;
             text-decoration: none;
-            color: #2c3e50;
+            color: #1e3c72;
             transition: background 0.2s;
-            border-radius: 8px;
+            border-radius: 12px;
         }
 
         .search-result-item:last-child {
@@ -100,13 +111,13 @@
         }
 
         .search-result-item:hover {
-            background: #e9ecef;
+            background: rgba(77, 171, 247, 0.08);
         }
 
         .search-result-item .badge {
             font-size: 12px;
             font-weight: 600;
-            padding: 2px 10px;
+            padding: 4px 12px;
             border-radius: 20px;
             white-space: nowrap;
         }
@@ -126,11 +137,6 @@
             font-size: 14px;
         }
 
-        .search-result-item .text .highlight {
-            font-weight: 600;
-            color: #1e3c72;
-        }
-
         .search-result-item .text .phone {
             color: #4dabf7;
             font-weight: 500;
@@ -139,12 +145,12 @@
         }
 
         .search-result-item .arrow {
-            color: #adb5bd;
+            color: #9bafc9;
         }
 
         .no-results {
             padding: 20px;
-            color: #6c757d;
+            color: #6c7f96;
             font-size: 14px;
             text-align: center;
         }
@@ -153,28 +159,29 @@
         .portal-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 30px;
+            gap: 24px;
             margin-top: 20px;
         }
 
         .portal-card {
-            background: #f8f9fa;
-            border-radius: 16px;
+            background: white;
+            border-radius: 20px;
             padding: 40px 30px;
             text-decoration: none;
-            color: #2c3e50;
-            border: 2px solid #e9ecef;
+            color: #1e3c72;
+            border: none;
             transition: all 0.3s ease;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 15px;
+            gap: 16px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
         }
 
         .portal-card:hover {
             transform: translateY(-4px);
-            border-color: #4dabf7;
-            box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+            box-shadow: 0 12px 32px rgba(30, 60, 114, 0.12);
+            background: #f7faff;
         }
 
         .portal-card .icon {
@@ -189,15 +196,15 @@
 
         .portal-card .desc {
             font-size: 14px;
-            color: #6c757d;
+            color: #6c7f96;
         }
 
         /* ----- КНОПКИ ДЕЙСТВИЙ ----- */
         .portal-actions {
-            margin-top: 25px;
+            margin-top: 28px;
             display: flex;
             justify-content: center;
-            gap: 15px;
+            gap: 14px;
             flex-wrap: wrap;
         }
 
@@ -205,24 +212,27 @@
         .portal-actions button {
             display: inline-block;
             padding: 12px 30px;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 500;
             color: #1e3c72;
-            background: transparent;
-            border: 2px solid #1e3c72;
-            border-radius: 30px;
+            background: white;
+            border: none;
+            border-radius: 40px;
             text-decoration: none;
             cursor: pointer;
             transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
         }
 
         .portal-actions a:hover,
         .portal-actions button:hover {
             background: #1e3c72;
             color: white;
+            box-shadow: 0 6px 20px rgba(30, 60, 114, 0.2);
+            transform: translateY(-2px);
         }
 
-        /* ----- МОДАЛЬНОЕ ОКНО (реквизиты) ----- */
+        /* ----- МОДАЛЬНОЕ ОКНО ----- */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -230,8 +240,8 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.5);
-            backdrop-filter: blur(4px);
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(6px);
             z-index: 9999;
             align-items: center;
             justify-content: center;
@@ -245,9 +255,9 @@
             background: white;
             max-width: 550px;
             width: 90%;
-            border-radius: 16px;
-            padding: 30px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            border-radius: 24px;
+            padding: 32px;
+            box-shadow: 0 24px 48px rgba(0, 0, 0, 0.15);
             position: relative;
             max-height: 90vh;
             overflow-y: auto;
@@ -255,13 +265,13 @@
 
         .modal-close {
             position: absolute;
-            right: 16px;
-            top: 12px;
+            right: 18px;
+            top: 14px;
             font-size: 28px;
             background: none;
             border: none;
             cursor: pointer;
-            color: #adb5bd;
+            color: #9bafc9;
             transition: color 0.2s;
         }
 
@@ -274,16 +284,16 @@
             color: #1e3c72;
             margin-bottom: 20px;
             text-align: left;
-            border-bottom: 2px solid #e9ecef;
-            padding-bottom: 12px;
+            border-bottom: 2px solid #eef2f7;
+            padding-bottom: 14px;
         }
 
         .modal-row {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            padding: 10px 0;
-            border-bottom: 1px solid #f1f3f5;
+            padding: 12px 0;
+            border-bottom: 1px solid #f1f5f9;
             gap: 15px;
         }
 
@@ -293,13 +303,13 @@
 
         .modal-row .label {
             font-weight: 600;
-            color: #6c757d;
+            color: #4a6a8b;
             white-space: nowrap;
             min-width: 70px;
         }
 
         .modal-row .value {
-            color: #2c3e50;
+            color: #1e3c72;
             text-align: right;
             word-break: break-word;
             font-size: 14px;
@@ -307,11 +317,11 @@
 
         .modal-copy-btn {
             margin-top: 20px;
-            padding: 10px 24px;
+            padding: 12px 28px;
             background: #4dabf7;
             color: white;
             border: none;
-            border-radius: 30px;
+            border-radius: 40px;
             font-size: 14px;
             font-weight: 500;
             cursor: pointer;
@@ -323,7 +333,7 @@
         }
 
         .modal-copy-notification {
-            margin-top: 10px;
+            margin-top: 12px;
             font-size: 14px;
             color: #28a745;
             display: none;
@@ -335,27 +345,30 @@
 
         /* ----- КНОПКА СПАСИБО ----- */
         .portal-thanks {
-            margin-top: 30px;
+            margin-top: 32px;
             padding-top: 30px;
-            border-top: 1px solid #e9ecef;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
         }
 
         .portal-thanks a {
             display: inline-block;
-            padding: 12px 30px;
+            padding: 12px 32px;
             font-size: 16px;
             font-weight: 500;
             color: #1e3c72;
-            background: transparent;
-            border: 2px solid #1e3c72;
-            border-radius: 30px;
+            background: white;
+            border: none;
+            border-radius: 40px;
             text-decoration: none;
             transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
         }
 
         .portal-thanks a:hover {
             background: #1e3c72;
             color: white;
+            box-shadow: 0 6px 20px rgba(30, 60, 114, 0.2);
+            transform: translateY(-2px);
         }
 
         /* ----- АДАПТИВНОСТЬ ----- */
@@ -374,7 +387,7 @@
 
             .search-box input {
                 font-size: 14px;
-                padding: 12px 18px;
+                padding: 14px 20px;
             }
 
             .search-result-item {
@@ -452,7 +465,7 @@
     </div>
 
     <script>
-        // ----- ДАННЫЕ РЕКВИЗИТОВ -----
+        // ============== РЕКВИЗИТЫ ==============
         const requisites = [
             { label: 'Получатель', value: 'УФК по Республике Коми (Администрация муниципального района «Корткеросский», л/сч 04073001810)' },
             { label: 'ИНН', value: '1113001350' },
@@ -467,62 +480,47 @@
             { label: 'БИК', value: '018702501' }
         ];
 
-        // ----- ОТКРЫТЬ МОДАЛЬНОЕ ОКНО -----
         function openRequisites() {
             const modal = document.getElementById('requisitesModal');
             const body = document.getElementById('requisitesBody');
             body.innerHTML = '';
-
             requisites.forEach(item => {
                 const row = document.createElement('div');
                 row.className = 'modal-row';
-                row.innerHTML = `
-                    <span class="label">${item.label}</span>
-                    <span class="value">${item.value}</span>
-                `;
+                row.innerHTML = `<span class="label">${item.label}</span><span class="value">${item.value}</span>`;
                 body.appendChild(row);
             });
-
             document.getElementById('copyNotification').classList.remove('show');
             modal.classList.add('active');
             document.body.style.overflow = 'hidden';
         }
 
-        // ----- ЗАКРЫТЬ МОДАЛЬНОЕ ОКНО -----
         function closeRequisites() {
             document.getElementById('requisitesModal').classList.remove('active');
             document.body.style.overflow = 'auto';
         }
 
-        // ----- ЗАКРЫТИЕ ПО КЛИКУ ВНЕ ОКНА -----
         document.getElementById('requisitesModal').addEventListener('click', function(e) {
             if (e.target === this) closeRequisites();
         });
 
-        // ----- ЗАКРЫТИЕ ПО ESC -----
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') closeRequisites();
         });
 
-        // ----- КОПИРОВАТЬ ВСЕ РЕКВИЗИТЫ -----
         function copyRequisites() {
             let text = '📄 Реквизиты администрации МР «Корткеросский»\n\n';
             requisites.forEach(item => {
                 text += `${item.label}: ${item.value}\n`;
             });
-
             navigator.clipboard.writeText(text).then(() => {
                 const notification = document.getElementById('copyNotification');
                 notification.classList.add('show');
-                setTimeout(() => {
-                    notification.classList.remove('show');
-                }, 3000);
-            }).catch(() => {
-                alert('Не удалось скопировать. Скопируйте вручную.');
-            });
+                setTimeout(() => notification.classList.remove('show'), 3000);
+            }).catch(() => alert('Не удалось скопировать. Скопируйте вручную.'));
         }
 
-        // ----- ПОИСК НА ПОРТАЛЕ -----
+        // ============== ПОИСК ==============
         let allData = null;
         let searchTimeout = null;
 
@@ -532,14 +530,9 @@
                     fetch('administration-directory/employees.json'),
                     fetch('settlements/contacts.json')
                 ]);
-
                 const adminData = await adminRes.json();
                 const settlementData = await settlementRes.json();
-
-                allData = {
-                    admin: adminData,
-                    settlements: settlementData
-                };
+                allData = { admin: adminData, settlements: settlementData };
             } catch (error) {
                 console.error('Ошибка загрузки данных для поиска:', error);
             }
@@ -548,128 +541,101 @@
         function searchInAdmin(data, query) {
             const results = [];
             const q = query.toLowerCase();
-
             data.departments.forEach(dept => {
                 dept.employees.forEach(emp => {
                     if (!emp.name) return;
-                    const match = 
+                    const match =
                         emp.name.toLowerCase().includes(q) ||
                         (emp.position && emp.position.toLowerCase().includes(q)) ||
                         dept.name.toLowerCase().includes(q);
                     if (match) {
                         let phoneText = '';
-                        if (emp.phone) {
-                            phoneText = `📞 ${emp.phone}`;
-                        }
+                        if (emp.phone) phoneText = `📞 ${emp.phone}`;
                         results.push({
                             type: 'admin',
                             label: `${dept.name} → ${emp.position ? emp.position + ' ' : ''}${emp.name}`,
                             phone: phoneText,
-                            link: 'administration-directory/',
-                            highlight: emp.name
+                            link: 'administration-directory/'
                         });
                     }
                 });
             });
-
             return results;
         }
 
         function searchInSettlements(data, query) {
             const results = [];
             const q = query.toLowerCase();
-
             const settlements = Array.isArray(data) ? data : [data];
             settlements.forEach(district => {
                 district.settlements.forEach(settlement => {
-                    const match = 
+                    const match =
                         settlement.name.toLowerCase().includes(q) ||
                         settlement.head.toLowerCase().includes(q) ||
                         (settlement.address && settlement.address.toLowerCase().includes(q));
                     if (match) {
                         let phoneText = '';
-                        if (settlement.phone) {
-                            phoneText = `📞 ${settlement.phone}`;
-                        }
+                        if (settlement.phone) phoneText = `📞 ${settlement.phone}`;
                         results.push({
                             type: 'settlement',
                             label: `${settlement.type || ''}${settlement.name} → ${settlement.head}`,
                             phone: phoneText,
-                            link: 'settlements/',
-                            highlight: settlement.name
+                            link: 'settlements/'
                         });
                     }
                 });
             });
-
             return results;
         }
 
         function renderResults(results) {
             const container = document.getElementById('searchResults');
             container.innerHTML = '';
-
             if (results.length === 0) {
                 container.innerHTML = `<div class="no-results">Ничего не найдено</div>`;
                 container.classList.add('active');
                 return;
             }
-
             results.forEach(result => {
                 const link = document.createElement('a');
                 link.className = 'search-result-item';
                 link.href = result.link;
-
                 const badge = document.createElement('span');
                 badge.className = `badge ${result.type === 'admin' ? 'badge-admin' : 'badge-settlement'}`;
                 badge.textContent = result.type === 'admin' ? '🏢 Администрация' : '🌾 Поселения';
-
                 const text = document.createElement('span');
                 text.className = 'text';
                 text.innerHTML = `${result.label} <span class="phone">${result.phone}</span>`;
-
                 const arrow = document.createElement('span');
                 arrow.className = 'arrow';
                 arrow.textContent = '→';
-
                 link.appendChild(badge);
                 link.appendChild(text);
                 link.appendChild(arrow);
                 container.appendChild(link);
             });
-
             container.classList.add('active');
         }
 
         document.addEventListener('DOMContentLoaded', async function() {
             await loadSearchData();
-
             const searchInput = document.getElementById('portalSearch');
             const resultsContainer = document.getElementById('searchResults');
-
             searchInput.addEventListener('input', function(e) {
                 clearTimeout(searchTimeout);
                 const query = e.target.value.trim();
-
                 if (query.length < 2) {
                     resultsContainer.classList.remove('active');
                     resultsContainer.innerHTML = '';
                     return;
                 }
-
                 searchTimeout = setTimeout(() => {
                     if (!allData) return;
-
                     const adminResults = searchInAdmin(allData.admin, query);
                     const settlementResults = searchInSettlements(allData.settlements, query);
-
                     const combined = [...adminResults, ...settlementResults];
-
-                    if (combined.length === 0) {
-                        renderResults([]);
-                    } else {
-                        renderResults(combined.slice(0, 15));
-                    }
+                    if (combined.length === 0) renderResults([]);
+                    else renderResults(combined.slice(0, 15));
                 }, 300);
             });
         });
