@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Справочники Корткеросского района</title>
     <style>
+        /* ===== ОБЩИЕ СТИЛИ ===== */
         * {
             margin: 0;
             padding: 0;
@@ -19,6 +20,7 @@
             align-items: center;
             justify-content: center;
             padding: 20px;
+            transition: background 0.3s ease, color 0.3s ease;
         }
 
         .portal-container {
@@ -30,6 +32,7 @@
             padding: 40px;
             text-align: center;
             border: 1px solid #e9ecef;
+            transition: background 0.3s ease, border-color 0.3s ease;
         }
 
         .portal-title {
@@ -37,15 +40,42 @@
             color: #1e3c72;
             margin-bottom: 8px;
             font-weight: 700;
+            transition: color 0.3s ease;
         }
 
         .portal-subtitle {
             font-size: 16px;
             color: #6c757d;
             margin-bottom: 30px;
+            transition: color 0.3s ease;
         }
 
-        /* ----- ПОИСК ----- */
+        /* ===== ПЕРЕКЛЮЧАТЕЛЬ ТЕМЫ ===== */
+        .theme-toggle-wrapper {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 20px;
+        }
+
+        #themeToggle {
+            padding: 8px 18px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #1e3c72;
+            background: transparent;
+            border: 2px solid #1e3c72;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        #themeToggle:hover {
+            background: #1e3c72;
+            color: white;
+        }
+
+        /* ===== ПОИСК ===== */
         .search-box {
             width: 100%;
             max-width: 600px;
@@ -150,7 +180,7 @@
             text-align: center;
         }
 
-        /* ----- КНОПКИ-ПЛИТКИ ----- */
+        /* ===== КНОПКИ-ПЛИТКИ ===== */
         .portal-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -217,7 +247,7 @@
             color: white;
         }
 
-        /* ----- КНОПКИ ДЕЙСТВИЙ ----- */
+        /* ===== КНОПКИ ДЕЙСТВИЙ ===== */
         .portal-actions {
             margin-top: 28px;
             display: flex;
@@ -247,7 +277,7 @@
             color: white;
         }
 
-        /* ----- МОДАЛЬНОЕ ОКНО (реквизиты) ----- */
+        /* ===== МОДАЛЬНОЕ ОКНО (реквизиты) ===== */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -358,7 +388,7 @@
             display: block;
         }
 
-        /* ===== МОДАЛЬНОЕ ОКНО ДЛЯ БЛАНКОВ ===== */
+        /* ===== БЛАНКИ ЗАЯВЛЕНИЙ (модальное окно) ===== */
         .blank-item {
             display: flex;
             justify-content: space-between;
@@ -400,7 +430,7 @@
             background: #1e3c72;
         }
 
-        /* ----- КНОПКА СПАСИБО ----- */
+        /* ===== КНОПКА "СПАСИБО" ===== */
         .portal-thanks {
             margin-top: 32px;
             padding-top: 28px;
@@ -425,7 +455,157 @@
             color: white;
         }
 
-        /* ----- АДАПТИВНОСТЬ ----- */
+        /* ===== ТЁМНАЯ ТЕМА ДЛЯ ПОРТАЛА ===== */
+        body.dark-theme {
+            background: #1a1a2e;
+        }
+
+        body.dark-theme .portal-container {
+            background: #16213e;
+            border-color: #2a3a5e;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        body.dark-theme .portal-title {
+            color: #e0e0e0;
+        }
+
+        body.dark-theme .portal-subtitle {
+            color: #a0a0a0;
+        }
+
+        body.dark-theme #themeToggle {
+            color: #e0e0e0;
+            border-color: #e0e0e0;
+        }
+
+        body.dark-theme #themeToggle:hover {
+            background: #e0e0e0;
+            color: #1a1a2e;
+        }
+
+        body.dark-theme .search-box input {
+            background: #1e2a4a;
+            color: #e0e0e0;
+            border-color: #2a3a5e;
+        }
+
+        body.dark-theme .search-box input::placeholder {
+            color: #6a7a8a;
+        }
+
+        body.dark-theme .search-results {
+            background: #1e2a4a;
+            border-color: #2a3a5e;
+        }
+
+        body.dark-theme .search-result-item {
+            color: #e0e0e0;
+            border-color: #2a3a5e;
+        }
+
+        body.dark-theme .search-result-item:hover {
+            background: #2a3a6a;
+        }
+
+        body.dark-theme .portal-card {
+            background: #1e2a4a;
+            border-color: #4dabf7;
+            color: #e0e0e0;
+        }
+
+        body.dark-theme .portal-card:hover {
+            background: #4dabf7;
+            border-color: #4dabf7;
+        }
+
+        body.dark-theme .portal-card .name {
+            color: #e0e0e0;
+        }
+
+        body.dark-theme .portal-card .desc {
+            color: #a0a0a0;
+        }
+
+        body.dark-theme .portal-card:hover .name,
+        body.dark-theme .portal-card:hover .desc {
+            color: #1a1a2e;
+        }
+
+        body.dark-theme .portal-actions a,
+        body.dark-theme .portal-actions button {
+            color: #e0e0e0;
+            border-color: #e0e0e0;
+        }
+
+        body.dark-theme .portal-actions a:hover,
+        body.dark-theme .portal-actions button:hover {
+            background: #e0e0e0;
+            color: #1a1a2e;
+        }
+
+        body.dark-theme .portal-thanks {
+            border-color: #2a3a5e;
+        }
+
+        body.dark-theme .portal-thanks a {
+            color: #e0e0e0;
+            border-color: #e0e0e0;
+        }
+
+        body.dark-theme .portal-thanks a:hover {
+            background: #e0e0e0;
+            color: #1a1a2e;
+        }
+
+        body.dark-theme .modal-content {
+            background: #16213e;
+            border-color: #2a3a5e;
+        }
+
+        body.dark-theme .modal-title {
+            color: #e0e0e0;
+            border-color: #2a3a5e;
+        }
+
+        body.dark-theme .modal-row {
+            border-color: #2a3a5e;
+        }
+
+        body.dark-theme .modal-row .label {
+            color: #a0a0a0;
+        }
+
+        body.dark-theme .modal-row .value {
+            color: #e0e0e0;
+        }
+
+        body.dark-theme .blank-item {
+            background: #1e2a4a;
+            border-color: #2a3a5e;
+        }
+
+        body.dark-theme .blank-item .blank-name {
+            color: #e0e0e0;
+        }
+
+        body.dark-theme .blank-item:hover {
+            background: #2a3a6a;
+        }
+
+        body.dark-theme .no-results {
+            color: #a0a0a0;
+        }
+
+        body.dark-theme .modal-close {
+            color: #a0a0a0;
+        }
+
+        body.dark-theme .modal-close:hover {
+            color: #e0e0e0;
+        }
+
+        /* ===== АДАПТИВНОСТЬ ===== */
         @media (max-width: 600px) {
             .portal-grid {
                 grid-template-columns: 1fr;
@@ -441,7 +621,7 @@
 
             .search-box input {
                 font-size: 14px;
-                padding: 12px 20px;
+                padding: 12px 18px;
             }
 
             .search-result-item {
@@ -482,6 +662,11 @@
 </head>
 <body>
     <div class="portal-container">
+        <!-- Переключатель тёмной темы -->
+        <div class="theme-toggle-wrapper">
+            <button id="themeToggle">🌙 Тёмная тема</button>
+        </div>
+
         <h1 class="portal-title">📂 Справочники</h1>
         <p class="portal-subtitle">Муниципальный район Корткеросский</p>
 
@@ -546,7 +731,32 @@
     </div>
 
     <script>
-        // ============== БЛАНКИ ЗАЯВЛЕНИЙ ==============
+        // ===== ТЁМНАЯ ТЕМА (ГЛАВНАЯ) =====
+        document.addEventListener('DOMContentLoaded', function() {
+            const themeToggle = document.getElementById('themeToggle');
+            if (!themeToggle) return;
+            
+            const currentTheme = localStorage.getItem('theme') || 'light';
+            
+            if (currentTheme === 'dark') {
+                document.body.classList.add('dark-theme');
+                themeToggle.textContent = '☀️ Светлая тема';
+            }
+            
+            themeToggle.addEventListener('click', function() {
+                const isDark = document.body.classList.toggle('dark-theme');
+                
+                if (isDark) {
+                    this.textContent = '☀️ Светлая тема';
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    this.textContent = '🌙 Тёмная тема';
+                    localStorage.setItem('theme', 'light');
+                }
+            });
+        });
+
+        // ===== БЛАНКИ ЗАЯВЛЕНИЙ =====
         const blanks = [
             { name: 'Заявление на отпуск за свой счет', file: 'blanki/zayavlenie_za_svoy_schet.docx' },
             { name: 'Заявление на привлечение к работе в выходные дни (2026)', file: 'blanki/zayavlenie_vyhodnye_2026.docx' },
@@ -583,7 +793,7 @@
             if (e.target === this) closeBlanks();
         });
 
-        // ============== РЕКВИЗИТЫ ==============
+        // ===== РЕКВИЗИТЫ =====
         const requisites = [
             { label: 'Получатель', value: 'УФК по Республике Коми (Администрация муниципального района «Корткеросский», л/сч 04073001810)' },
             { label: 'ИНН', value: '1113001350' },
@@ -640,7 +850,7 @@
             }).catch(() => alert('Не удалось скопировать. Скопируйте вручную.'));
         }
 
-        // ============== ПОИСК НА ПОРТАЛЕ ==============
+        // ===== ПОИСК НА ПОРТАЛЕ =====
         let allData = null;
         let searchTimeout = null;
 
