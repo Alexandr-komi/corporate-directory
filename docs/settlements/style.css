@@ -9,6 +9,7 @@ body {
     background: #f8f9fa;
     color: #2c3e50;
     line-height: 1.6;
+    transition: background 0.3s ease, color 0.3s ease;
 }
 
 .container {
@@ -24,12 +25,14 @@ header {
     border-radius: 12px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     text-align: center;
+    transition: background 0.3s ease, border-color 0.3s ease;
 }
 
 header h1 {
     font-size: 28px;
     color: #1e3c72;
     margin-bottom: 25px;
+    transition: color 0.3s ease;
 }
 
 .search-box {
@@ -68,6 +71,7 @@ header h1 {
     background: white;
     border-radius: 12px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    transition: background 0.3s ease, color 0.3s ease;
 }
 
 .directory {
@@ -76,7 +80,6 @@ header h1 {
     gap: 20px;
 }
 
-/* Сетка для карточек поселений */
 .settlements-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
@@ -84,7 +87,6 @@ header h1 {
     margin-top: 20px;
 }
 
-/* Карточка поселения */
 .settlement-card {
     background: white;
     border-radius: 12px;
@@ -102,7 +104,6 @@ header h1 {
     border-color: #4dabf7;
 }
 
-/* Заголовок карточки (всегда виден) */
 .settlement-header {
     background: linear-gradient(135deg, #1e3c72, #2a4a8a);
     color: white;
@@ -144,7 +145,6 @@ header h1 {
     transform: rotate(180deg);
 }
 
-/* Контент карточки (скрыт по умолчанию) */
 .settlement-content {
     max-height: 0;
     overflow: hidden;
@@ -164,7 +164,6 @@ header h1 {
     padding: 20px;
 }
 
-/* Информационные строки */
 .info-row {
     display: flex;
     align-items: flex-start;
@@ -213,7 +212,6 @@ header h1 {
     border-left: 3px solid #fab005;
 }
 
-/* Мобильный телефон */
 .mobile-phone-row {
     cursor: pointer;
     padding: 8px 12px;
@@ -241,7 +239,6 @@ header h1 {
     color: #1e3c72 !important;
 }
 
-/* Статистика */
 .stats {
     margin-top: 30px;
 }
@@ -264,7 +261,6 @@ header h1 {
     margin-left: 5px;
 }
 
-/* Копирование */
 .copy-btn {
     background: #4dabf7;
     color: white;
@@ -311,7 +307,120 @@ header h1 {
     transform: translateY(0);
 }
 
-/* Адаптивность */
+/* ===== ТЁМНАЯ ТЕМА ===== */
+:root {
+    --bg-body: #f8f9fa;
+    --bg-card: #ffffff;
+    --bg-header: #ffffff;
+    --text-primary: #2c3e50;
+    --text-secondary: #6c757d;
+    --border-color: #e9ecef;
+    --shadow-color: rgba(0, 0, 0, 0.06);
+    --bg-content: #f8f9fa;
+    --bg-phone: #f0f7ff;
+    --bg-phone-hover: #e3f2fd;
+    --bg-stats: #ffffff;
+}
+
+body.dark-theme {
+    --bg-body: #1a1a2e;
+    --bg-card: #16213e;
+    --bg-header: #1a1a2e;
+    --text-primary: #e0e0e0;
+    --text-secondary: #a0a0a0;
+    --border-color: #2a3a5e;
+    --shadow-color: rgba(0, 0, 0, 0.3);
+    --bg-content: #1e2a4a;
+    --bg-phone: #1a2a4a;
+    --bg-phone-hover: #2a3a6a;
+    --bg-stats: #16213e;
+}
+
+body {
+    background: var(--bg-body);
+    color: var(--text-primary);
+}
+
+header {
+    background: var(--bg-header);
+    border-color: var(--border-color);
+}
+
+header h1 {
+    color: var(--text-primary);
+}
+
+.search-box input {
+    background: var(--bg-card);
+    color: var(--text-primary);
+    border-color: var(--border-color);
+}
+
+.settlement-card {
+    background: var(--bg-card);
+    border-color: var(--border-color);
+}
+
+.settlement-content {
+    background: var(--bg-content);
+}
+
+.info-row .label {
+    color: var(--text-secondary);
+}
+
+.info-row .value {
+    color: var(--text-primary);
+}
+
+.info-row .value strong {
+    color: var(--text-primary);
+}
+
+.mobile-phone-row {
+    background: var(--bg-phone);
+}
+
+.mobile-phone-row:hover {
+    background: var(--bg-phone-hover);
+}
+
+.stats-panel {
+    background: var(--bg-stats);
+    color: var(--text-secondary);
+}
+
+.stats-panel strong {
+    color: var(--text-primary);
+}
+
+.loading {
+    background: var(--bg-card);
+    color: var(--text-secondary);
+}
+
+.counter-container {
+    background: var(--bg-card) !important;
+}
+
+.counter-container span {
+    color: var(--text-secondary);
+}
+
+.counter-container #visitCounter {
+    background: var(--bg-card);
+    color: var(--text-primary);
+}
+
+body.dark-theme .settlement-header {
+    background: linear-gradient(135deg, #1a2a4a, #2a3a6a);
+}
+
+body.dark-theme .settlement-header:hover {
+    background: linear-gradient(135deg, #2a3a6a, #3a4a8a);
+}
+
+/* ===== АДАПТИВНОСТЬ ===== */
 @media (max-width: 768px) {
     .container {
         padding: 15px;
