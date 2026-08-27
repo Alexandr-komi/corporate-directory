@@ -63,7 +63,7 @@ function displayDepartments(departments) {
         
         titleHtml += `</div>`;
         
-        // Контакты: сайт слева, почта справа (в одной строке)
+        // Контакты: сайт слева, почта прижата вправо
         if (dept.email || dept.site) {
             titleHtml += `
                 <div class="department-contact-row">
