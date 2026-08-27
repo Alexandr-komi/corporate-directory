@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Справочники Корткеросского района</title>
     <style>
+        /* ----- ОБЩИЕ СТИЛИ ----- */
         * {
             margin: 0;
             padding: 0;
@@ -43,6 +44,7 @@
             margin-bottom: 30px;
         }
 
+        /* ----- ПОИСК ----- */
         .search-box {
             width: 100%;
             max-width: 600px;
@@ -147,6 +149,7 @@
             text-align: center;
         }
 
+        /* ----- ПЛИТКИ ----- */
         .portal-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -189,6 +192,144 @@
             color: #6c757d;
         }
 
+        /* ----- КНОПКА РЕКВИЗИТЫ ----- */
+        .portal-actions {
+            margin-top: 25px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .portal-actions button {
+            padding: 12px 30px;
+            font-size: 16px;
+            font-weight: 500;
+            color: #1e3c72;
+            background: transparent;
+            border: 2px solid #1e3c72;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .portal-actions button:hover {
+            background: #1e3c72;
+            color: white;
+        }
+
+        /* ----- МОДАЛЬНОЕ ОКНО (реквизиты) ----- */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(4px);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            max-width: 550px;
+            width: 90%;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-close {
+            position: absolute;
+            right: 16px;
+            top: 12px;
+            font-size: 28px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #adb5bd;
+            transition: color 0.2s;
+        }
+
+        .modal-close:hover {
+            color: #1e3c72;
+        }
+
+        .modal-title {
+            font-size: 22px;
+            color: #1e3c72;
+            margin-bottom: 20px;
+            text-align: left;
+            border-bottom: 2px solid #e9ecef;
+            padding-bottom: 12px;
+        }
+
+        .modal-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 10px 0;
+            border-bottom: 1px solid #f1f3f5;
+            gap: 15px;
+        }
+
+        .modal-row:last-child {
+            border-bottom: none;
+        }
+
+        .modal-row .label {
+            font-weight: 600;
+            color: #6c757d;
+            white-space: nowrap;
+            min-width: 70px;
+        }
+
+        .modal-row .value {
+            color: #2c3e50;
+            text-align: right;
+            word-break: break-all;
+            font-size: 14px;
+        }
+
+        .modal-copy-btn {
+            margin-top: 20px;
+            padding: 10px 24px;
+            background: #4dabf7;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .modal-copy-btn:hover {
+            background: #1e3c72;
+        }
+
+        .modal-copy-notification {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #28a745;
+            display: none;
+        }
+
+        .modal-copy-notification.show {
+            display: block;
+        }
+
+        /* ----- КНОПКА СПАСИБО ----- */
         .portal-thanks {
             margin-top: 30px;
             padding-top: 30px;
@@ -213,6 +354,7 @@
             color: white;
         }
 
+        /* ----- АДАПТИВНОСТЬ ----- */
         @media (max-width: 600px) {
             .portal-grid {
                 grid-template-columns: 1fr;
@@ -239,6 +381,16 @@
             .search-result-item .text .phone {
                 white-space: normal;
             }
+
+            .modal-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 4px;
+            }
+
+            .modal-row .value {
+                text-align: left;
+            }
         }
     </style>
 </head>
@@ -255,7 +407,7 @@
         <!-- Результаты поиска -->
         <div id="searchResults" class="search-results"></div>
 
-        <!-- Кнопки-плитки -->
+        <!-- Плитки -->
         <div class="portal-grid">
             <a href="administration-directory/" class="portal-card">
                 <span class="icon">🏢</span>
@@ -269,7 +421,12 @@
             </a>
         </div>
 
-        <!-- Кнопка "Сказать спасибо разработчику" -->
+        <!-- Кнопки действий -->
+        <div class="portal-actions">
+            <button onclick="openRequisites()">📄 Реквизиты администрации</button>
+        </div>
+
+        <!-- Кнопка "Спасибо разработчику" -->
         <div class="portal-thanks">
             <a href="https://e.armgs.team/compose/?mailto=mailto%3Aa.v.butikov%40kortkeros.rkomi.ru%3Fsubject%3D%D0%A1%D0%BF%D0%B0%D1%81%D0%B8%D0%B1%D0%BE%20%D0%B7%D0%B0%20%D1%81%D0%BF%D1%80%D0%B0%D0%B2%D0%BE%D1%87%D0%BD%D0%B8%D0%BA%21%26body%3D%D0%91%D0%BB%D0%B0%D0%B3%D0%BE%D0%B4%D0%B0%D1%80%D1%8E%20%D0%B7%D0%B0%20%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D1%83%20%D0%BD%D0%B0%D0%B4%20%D1%81%D0%BF%D1%80%D0%B0%D0%B2%D0%BE%D1%87%D0%BD%D0%B8%D0%BA%D0%BE%D0%BC"
                target="_blank">
@@ -278,7 +435,89 @@
         </div>
     </div>
 
+    <!-- Модальное окно с реквизитами -->
+    <div id="requisitesModal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeRequisites()">✕</button>
+            <div class="modal-title">📄 Реквизиты администрации</div>
+            <div id="requisitesBody"></div>
+            <button class="modal-copy-btn" onclick="copyRequisites()">📋 Скопировать все реквизиты</button>
+            <div id="copyNotification" class="modal-copy-notification">✅ Реквизиты скопированы!</div>
+        </div>
+    </div>
+
     <script>
+        // ----- ДАННЫЕ РЕКВИЗИТОВ -----
+        const requisites = [
+            { label: 'Получатель', value: 'УФК по Республике Коми (Администрация муниципального района «Корткеросский», л/сч 04073001810)' },
+            { label: 'ИНН', value: '1113001350' },
+            { label: 'КПП', value: '111301001' },
+            { label: 'ОКПО', value: '04047903' },
+            { label: 'ОКТМО', value: '87616000' },
+            { label: 'ОГРН', value: '1021101017960' },
+            { label: 'Лицевой счёт', value: '04073001810' },
+            { label: 'Расчётный счёт', value: '03100643000000010700' },
+            { label: 'Банк', value: 'ОКЦ №4 СЗГУ Банка России//УФК по Республике Коми г.Сыктывкар' },
+            { label: 'ЕКС (к/сч)', value: '40102810245370000074' },
+            { label: 'БИК', value: '018702501' }
+        ];
+
+        // ----- ОТКРЫТЬ МОДАЛЬНОЕ ОКНО -----
+        function openRequisites() {
+            const modal = document.getElementById('requisitesModal');
+            const body = document.getElementById('requisitesBody');
+            body.innerHTML = '';
+
+            requisites.forEach(item => {
+                const row = document.createElement('div');
+                row.className = 'modal-row';
+                row.innerHTML = `
+                    <span class="label">${item.label}</span>
+                    <span class="value">${item.value}</span>
+                `;
+                body.appendChild(row);
+            });
+
+            document.getElementById('copyNotification').classList.remove('show');
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // ----- ЗАКРЫТЬ МОДАЛЬНОЕ ОКНО -----
+        function closeRequisites() {
+            document.getElementById('requisitesModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // ----- ЗАКРЫТИЕ ПО КЛИКУ ВНЕ ОКНА -----
+        document.getElementById('requisitesModal').addEventListener('click', function(e) {
+            if (e.target === this) closeRequisites();
+        });
+
+        // ----- ЗАКРЫТИЕ ПО ESC -----
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeRequisites();
+        });
+
+        // ----- КОПИРОВАТЬ ВСЕ РЕКВИЗИТЫ -----
+        function copyRequisites() {
+            let text = '📄 Реквизиты администрации МР «Корткеросский»\n\n';
+            requisites.forEach(item => {
+                text += `${item.label}: ${item.value}\n`;
+            });
+
+            navigator.clipboard.writeText(text).then(() => {
+                const notification = document.getElementById('copyNotification');
+                notification.classList.add('show');
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                }, 3000);
+            }).catch(() => {
+                alert('Не удалось скопировать. Скопируйте вручную.');
+            });
+        }
+
+        // ----- ПОИСК НА ПОРТАЛЕ (остаётся без изменений) -----
         let allData = null;
         let searchTimeout = null;
 
