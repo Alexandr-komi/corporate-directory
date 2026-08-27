@@ -150,7 +150,7 @@
             text-align: center;
         }
 
-        /* ===== КНОПКИ-ПЛИТКИ (чёткие, как кнопки) ===== */
+        /* ----- КНОПКИ-ПЛИТКИ ----- */
         .portal-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -245,6 +245,69 @@
         .portal-actions button:hover {
             background: #1e3c72;
             color: white;
+        }
+
+        /* ===== БЛАНКИ ЗАЯВЛЕНИЙ ===== */
+        .portal-blanks {
+            margin-top: 28px;
+            padding-top: 28px;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .portal-blanks-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1e3c72;
+            margin-bottom: 16px;
+        }
+
+        .blanks-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .blank-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 500px;
+            padding: 12px 18px;
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 10px;
+            transition: all 0.2s ease;
+        }
+
+        .blank-item:hover {
+            background: #f1f3f5;
+            border-color: #4dabf7;
+        }
+
+        .blank-item .blank-name {
+            font-size: 15px;
+            color: #2c3e50;
+            text-align: left;
+        }
+
+        .blank-item .blank-download {
+            padding: 6px 18px;
+            font-size: 13px;
+            font-weight: 500;
+            color: white;
+            background: #4dabf7;
+            border: none;
+            border-radius: 20px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background 0.2s;
+            white-space: nowrap;
+        }
+
+        .blank-item .blank-download:hover {
+            background: #1e3c72;
         }
 
         /* ----- МОДАЛЬНОЕ ОКНО ----- */
@@ -420,6 +483,21 @@
             .modal-row .value {
                 text-align: left;
             }
+
+            .blank-item {
+                flex-direction: column;
+                gap: 10px;
+                align-items: stretch;
+                text-align: center;
+            }
+
+            .blank-item .blank-name {
+                text-align: center;
+            }
+
+            .blank-item .blank-download {
+                text-align: center;
+            }
         }
     </style>
 </head>
@@ -458,6 +536,14 @@
             <a href="https://kortkeros.gosuslugi.ru/" target="_blank">🌐 Сайт администрации</a>
         </div>
 
+        <!-- Бланки заявлений -->
+        <div class="portal-blanks">
+            <div class="portal-blanks-title">📋 Бланки заявлений</div>
+            <div class="blanks-grid" id="blanksGrid">
+                <!-- Бланки будут добавлены скриптом -->
+            </div>
+        </div>
+
         <!-- Кнопка "Спасибо разработчику" -->
         <div class="portal-thanks">
             <a href="https://e.armgs.team/compose/?mailto=mailto%3Aa.v.butikov%40kortkeros.rkomi.ru%3Fsubject%3D%D0%A1%D0%BF%D0%B0%D1%81%D0%B8%D0%B1%D0%BE%20%D0%B7%D0%B0%20%D1%81%D0%BF%D1%80%D0%B0%D0%B2%D0%BE%D1%87%D0%BD%D0%B8%D0%BA%21%26body%3D%D0%91%D0%BB%D0%B0%D0%B3%D0%BE%D0%B4%D0%B0%D1%80%D1%8E%20%D0%B7%D0%B0%20%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D1%83%20%D0%BD%D0%B0%D0%B4%20%D1%81%D0%BF%D1%80%D0%B0%D0%B2%D0%BE%D1%87%D0%BD%D0%B8%D0%BA%D0%BE%D0%BC"
@@ -479,7 +565,30 @@
     </div>
 
     <script>
-        // ----- ДАННЫЕ РЕКВИЗИТОВ -----
+        // ============== БЛАНКИ ЗАЯВЛЕНИЙ ==============
+        const blanks = [
+            { name: 'Заявление на отпуск за свой счет', file: 'blanki/zayavlenie_za_svoy_schet.docx' },
+            { name: 'Заявление на привлечение к работе в выходные дни (2026)', file: 'blanki/zayavlenie_vyhodnye_2026.docx' },
+            { name: 'Заявление на материальную помощь', file: 'blanki/zayavlenie_matpomosh.docx' },
+            { name: 'Заявление на отгулы', file: 'blanki/zayavlenie_otguly.docx' },
+            { name: 'Заявление на часть отпуска', file: 'blanki/zayavlenie_chast_otpuska.docx' }
+        ];
+
+        function renderBlanks() {
+            const container = document.getElementById('blanksGrid');
+            container.innerHTML = '';
+            blanks.forEach(blank => {
+                const item = document.createElement('div');
+                item.className = 'blank-item';
+                item.innerHTML = `
+                    <span class="blank-name">📄 ${blank.name}</span>
+                    <a href="${blank.file}" class="blank-download" download>⬇ Скачать</a>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        // ============== РЕКВИЗИТЫ ==============
         const requisites = [
             { label: 'Получатель', value: 'УФК по Республике Коми (Администрация муниципального района «Корткеросский», л/сч 04073001810)' },
             { label: 'ИНН', value: '1113001350' },
@@ -533,7 +642,7 @@
             }).catch(() => alert('Не удалось скопировать. Скопируйте вручную.'));
         }
 
-        // ----- ПОИСК НА ПОРТАЛЕ -----
+        // ============== ПОИСК НА ПОРТАЛЕ ==============
         let allData = null;
         let searchTimeout = null;
 
@@ -631,9 +740,12 @@
         }
 
         document.addEventListener('DOMContentLoaded', async function() {
+            renderBlanks();
             await loadSearchData();
+
             const searchInput = document.getElementById('portalSearch');
             const resultsContainer = document.getElementById('searchResults');
+
             searchInput.addEventListener('input', function(e) {
                 clearTimeout(searchTimeout);
                 const query = e.target.value.trim();
