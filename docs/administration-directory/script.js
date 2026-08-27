@@ -63,7 +63,7 @@ function displayDepartments(departments) {
         
         titleHtml += `</div>`;
         
-        // Email и сайт в одной строке
+        // Email и сайт в ОДНОЙ строке
         if (dept.email || dept.site) {
             titleHtml += `
                 <div class="department-contact-row">
@@ -99,7 +99,6 @@ function displayDepartments(departments) {
                 const empCard = document.createElement('div');
                 empCard.className = 'employee-card';
                 
-                // Проверяем, является ли сотрудник руководителем
                 const isManager = ['Начальник', 'Заместитель начальника', 'Заведующий отделом', 'Заместитель заведующего', 'Руководитель', 'Заведующий'].some(
                     role => emp.position && emp.position.includes(role)
                 );
