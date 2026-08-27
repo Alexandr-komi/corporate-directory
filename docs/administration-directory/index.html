@@ -14,8 +14,9 @@
                     <h1>🏢 Администрация муниципального района «Корткеросский»</h1>
                     <div class="subtitle" id="address"></div>
                 </div>
-                <!-- Навигационная кнопка на портал -->
-                <div style="text-align: right; margin-top: 5px;">
+                
+                <div style="display: flex; gap: 12px; align-items: center; margin-top: 5px; flex-wrap: wrap;">
+                    <!-- Кнопка "На главную" -->
                     <a href="../"
                        style="display: inline-block;
                               padding: 8px 18px;
@@ -31,8 +32,25 @@
                               cursor: pointer;">
                         📂 На главную
                     </a>
+                    
+                    <!-- Переключатель тёмной темы -->
+                    <button id="themeToggle"
+                            style="display: inline-block;
+                                   padding: 8px 18px;
+                                   font-size: 14px;
+                                   font-weight: 500;
+                                   color: #1e3c72;
+                                   background: transparent;
+                                   border: 2px solid #1e3c72;
+                                   border-radius: 30px;
+                                   cursor: pointer;
+                                   transition: all 0.3s ease;
+                                   white-space: nowrap;">
+                        🌙 Тёмная тема
+                    </button>
                 </div>
             </div>
+            
             <div class="search-box">
                 <input type="text" id="searchInput" placeholder="Поиск по ФИО, должности, отделу...">
             </div>
