@@ -247,70 +247,7 @@
             color: white;
         }
 
-        /* ===== БЛАНКИ ЗАЯВЛЕНИЙ ===== */
-        .portal-blanks {
-            margin-top: 28px;
-            padding-top: 28px;
-            border-top: 1px solid #e9ecef;
-        }
-
-        .portal-blanks-title {
-            font-size: 18px;
-            font-weight: 600;
-            color: #1e3c72;
-            margin-bottom: 16px;
-        }
-
-        .blanks-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            align-items: center;
-        }
-
-        .blank-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            max-width: 500px;
-            padding: 12px 18px;
-            background: #f8f9fa;
-            border: 1px solid #e9ecef;
-            border-radius: 10px;
-            transition: all 0.2s ease;
-        }
-
-        .blank-item:hover {
-            background: #f1f3f5;
-            border-color: #4dabf7;
-        }
-
-        .blank-item .blank-name {
-            font-size: 15px;
-            color: #2c3e50;
-            text-align: left;
-        }
-
-        .blank-item .blank-download {
-            padding: 6px 18px;
-            font-size: 13px;
-            font-weight: 500;
-            color: white;
-            background: #4dabf7;
-            border: none;
-            border-radius: 20px;
-            text-decoration: none;
-            cursor: pointer;
-            transition: background 0.2s;
-            white-space: nowrap;
-        }
-
-        .blank-item .blank-download:hover {
-            background: #1e3c72;
-        }
-
-        /* ----- МОДАЛЬНОЕ ОКНО ----- */
+        /* ----- МОДАЛЬНОЕ ОКНО (реквизиты) ----- */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -419,6 +356,48 @@
 
         .modal-copy-notification.show {
             display: block;
+        }
+
+        /* ===== МОДАЛЬНОЕ ОКНО ДЛЯ БЛАНКОВ ===== */
+        .blank-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            transition: all 0.2s ease;
+        }
+
+        .blank-item:hover {
+            background: #f1f3f5;
+            border-color: #4dabf7;
+        }
+
+        .blank-item .blank-name {
+            font-size: 15px;
+            color: #2c3e50;
+            text-align: left;
+        }
+
+        .blank-item .blank-download {
+            padding: 6px 18px;
+            font-size: 13px;
+            font-weight: 500;
+            color: white;
+            background: #4dabf7;
+            border: none;
+            border-radius: 20px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background 0.2s;
+            white-space: nowrap;
+        }
+
+        .blank-item .blank-download:hover {
+            background: #1e3c72;
         }
 
         /* ----- КНОПКА СПАСИБО ----- */
@@ -533,15 +512,8 @@
         <!-- Кнопки действий -->
         <div class="portal-actions">
             <button onclick="openRequisites()">📄 Реквизиты администрации</button>
+            <button onclick="openBlanks()">📋 Бланки заявлений</button>
             <a href="https://kortkeros.gosuslugi.ru/" target="_blank">🌐 Сайт администрации</a>
-        </div>
-
-        <!-- Бланки заявлений -->
-        <div class="portal-blanks">
-            <div class="portal-blanks-title">📋 Бланки заявлений</div>
-            <div class="blanks-grid" id="blanksGrid">
-                <!-- Бланки будут добавлены скриптом -->
-            </div>
         </div>
 
         <!-- Кнопка "Спасибо разработчику" -->
@@ -564,6 +536,15 @@
         </div>
     </div>
 
+    <!-- Модальное окно с бланками -->
+    <div id="blanksModal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeBlanks()">✕</button>
+            <div class="modal-title">📋 Бланки заявлений</div>
+            <div id="blanksBody"></div>
+        </div>
+    </div>
+
     <script>
         // ============== БЛАНКИ ЗАЯВЛЕНИЙ ==============
         const blanks = [
@@ -574,9 +555,11 @@
             { name: 'Заявление на часть отпуска', file: 'blanki/zayavlenie_chast_otpuska.docx' }
         ];
 
-        function renderBlanks() {
-            const container = document.getElementById('blanksGrid');
-            container.innerHTML = '';
+        function openBlanks() {
+            const modal = document.getElementById('blanksModal');
+            const body = document.getElementById('blanksBody');
+            body.innerHTML = '';
+
             blanks.forEach(blank => {
                 const item = document.createElement('div');
                 item.className = 'blank-item';
@@ -584,9 +567,21 @@
                     <span class="blank-name">📄 ${blank.name}</span>
                     <a href="${blank.file}" class="blank-download" download>⬇ Скачать</a>
                 `;
-                container.appendChild(item);
+                body.appendChild(item);
             });
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
         }
+
+        function closeBlanks() {
+            document.getElementById('blanksModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        document.getElementById('blanksModal').addEventListener('click', function(e) {
+            if (e.target === this) closeBlanks();
+        });
 
         // ============== РЕКВИЗИТЫ ==============
         const requisites = [
@@ -628,7 +623,10 @@
         });
 
         document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') closeRequisites();
+            if (e.key === 'Escape') {
+                closeRequisites();
+                closeBlanks();
+            }
         });
 
         function copyRequisites() {
@@ -740,7 +738,6 @@
         }
 
         document.addEventListener('DOMContentLoaded', async function() {
-            renderBlanks();
             await loadSearchData();
 
             const searchInput = document.getElementById('portalSearch');
