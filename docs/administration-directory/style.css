@@ -156,11 +156,37 @@ header h1 {
     flex-shrink: 0;
 }
 
-/* Вторая строка - email */
-.department-email-container {
+/* Контакты: сайт и почта в одной строке */
+.department-contact-row {
     display: flex;
-    justify-content: flex-start;
-    width: 100%;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    margin-top: 4px;
+}
+
+.department-site-block {
+    display: flex;
+    align-items: center;
+}
+
+.department-site-block a {
+    color: white !important;
+    text-decoration: none;
+    font-size: 12px;
+    background: rgba(255, 255, 255, 0.15);
+    padding: 4px 12px;
+    border-radius: 20px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: background 0.2s;
+    white-space: nowrap;
+}
+
+.department-site-block a:hover {
+    background: rgba(255, 255, 255, 0.3);
+    text-decoration: none;
 }
 
 .department-email-block {
@@ -168,12 +194,11 @@ header h1 {
     align-items: center;
     gap: 5px;
     font-size: 11px;
-    background: rgba(255,255,255,0.15);
+    background: rgba(255, 255, 255, 0.15);
     padding: 4px 12px;
     border-radius: 20px;
     white-space: nowrap;
     color: white;
-    max-width: fit-content;
 }
 
 .department-email-block .email-icon {
@@ -190,31 +215,6 @@ header h1 {
 .department-email-block a:hover {
     text-decoration: underline;
     opacity: 0.9;
-}
-
-/* Ссылка на сайт отдела */
-.department-site-block {
-    margin-top: 4px;
-    display: flex;
-    justify-content: flex-start;
-}
-
-.department-site-block a {
-    color: white !important;
-    text-decoration: none;
-    font-size: 12px;
-    background: rgba(255, 255, 255, 0.15);
-    padding: 2px 10px;
-    border-radius: 20px;
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    transition: background 0.2s;
-}
-
-.department-site-block a:hover {
-    background: rgba(255, 255, 255, 0.3);
-    text-decoration: none;
 }
 
 /* Иконка открытия/закрытия */
@@ -423,13 +423,17 @@ header h1 {
         font-size: 9px;
     }
     
-    .department-email-block {
-        font-size: 10px;
-        max-width: 100%;
+    .department-contact-row {
+        gap: 8px;
     }
-
+    
     .department-site-block a {
         font-size: 11px;
-        padding: 2px 8px;
+        padding: 3px 10px;
+    }
+    
+    .department-email-block {
+        font-size: 10px;
+        padding: 3px 10px;
     }
 }
