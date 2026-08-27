@@ -47,7 +47,7 @@
     {
       "name": "Общий отдел",
       "email": "amr@kortkeros.rkomi.ru",
-      "site": "",
+      "site": "https://kortkeros-r11.gosweb.gosuslugi.ru/glavnoe/administratsiya/struktura/obschiy-otdel/",
       "employees": [
         {
           "position": "Заведующий отделом",
@@ -359,7 +359,7 @@
     {
       "name": "Служба по автоматизации, информатизации и защите информации",
       "email": "it@kortkeros.rkomi.ru",
-      "site": "",
+      "site": "https://kortkeros-r11.gosweb.gosuslugi.ru/glavnoe/administratsiya/struktura/sluzhba-po-avtomatizatsii-informatizatsii-i-zaschite-informatsii/",
       "employees": [
         {
           "position": "Руководитель службы",
@@ -376,7 +376,7 @@
     {
       "name": "Отдел финансового и бухгалтерского учета",
       "email": "buh@kortkeros.rkomi.ru",
-      "site": "",
+      "site": "https://kortkeros.gosuslugi.ru/glavnoe/administratsiya/struktura/otdel-finansovogo-i-buhgalterskogo-ucheta/",
       "employees": [
         {
           "position": "Заведующий отделом",
@@ -408,7 +408,7 @@
     {
       "name": "Отдел организационной и кадровой работы",
       "email": "ookr@kortkeros.rkomi.ru",
-      "site": "",
+      "site": "https://kortkeros-r11.gosweb.gosuslugi.ru/glavnoe/administratsiya/struktura/otdel-organizatsionnoy-i-kadrovoy-raboty/",
       "employees": [
         {
           "position": "Заведующий отделом",
@@ -435,7 +435,7 @@
     {
       "name": "Правовое управление",
       "email": "pravo@kortkeros.rkomi.ru",
-      "site": "",
+      "site": "https://kortkeros-r11.gosweb.gosuslugi.ru/glavnoe/administratsiya/struktura/pravovoe-upravlenie/",
       "employees": [
         {
           "position": "Начальник",
@@ -484,7 +484,7 @@
     {
       "name": "Отдел по муниципальным закупкам",
       "email": "mz@kortkeros.rkomi.ru",
-      "site": "",
+      "site": "https://kortkeros-r11.gosweb.gosuslugi.ru/glavnoe/administratsiya/struktura/otdel-po-munitsipalnym-zakupkam/",
       "employees": [
         {
           "position": "Заведующий отделом",
@@ -577,7 +577,7 @@
     {
       "name": "Управление образования",
       "email": "uo@kortkeros.rkomi.ru",
-      "site": "",
+      "site": "https://kortkeros-r11.gosweb.gosuslugi.ru/glavnoe/administratsiya/struktura/upravlenie-obrazovaniya/",
       "employees": [
         {
           "position": "Начальник",
@@ -599,7 +599,7 @@
     {
       "name": "Управление культуры, национальной политики и туризма",
       "email": "uk@kortkeros.rkomi.ru",
-      "site": "",
+      "site": "https://kortkeros-r11.gosweb.gosuslugi.ru/glavnoe/administratsiya/struktura/upravlenie-kultury-natsionalnoy-politiki-i-turizma/",
       "employees": [
         {
           "position": "Начальник",
@@ -616,7 +616,7 @@
     {
       "name": "Отдел физической культуры и спорта",
       "email": "fks@kortkeros.rkomi.ru",
-      "site": "",
+      "site": "https://kortkeros-r11.gosweb.gosuslugi.ru/glavnoe/administratsiya/struktura/otdel-fizicheskoy-kultury-i-sporta/",
       "employees": [
         {
           "position": "Заведующий отделом",
