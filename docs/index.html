@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📞 Контакты сельских поселений - Корткеросский район</title>
+    <title>🌾 Сельские поселения - Корткеросский район</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>📞 Контакты сельских поселений Корткеросского района</h1>
+            <h1>🌾 Контакты сельских поселений Корткеросского района</h1>
             <div class="search-box">
                 <input type="text" id="searchInput" placeholder="Поиск по названию, главе, должности...">
             </div>
@@ -39,14 +39,11 @@
             }
             localStorage.setItem('pageViewCounter', counter);
             
-            // Обновляем отображение
             const counterElement = document.getElementById('visitCounter');
             if (counterElement) {
                 counterElement.textContent = counter;
             }
         }
-        
-        // Запускаем при загрузке страницы
         window.addEventListener('load', updateVisitCounter);
     </script>
 
