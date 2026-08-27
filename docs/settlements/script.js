@@ -1,5 +1,16 @@
 document.addEventListener('DOMContentLoaded', loadContacts);
 
+// ===== ПРИМЕНЕНИЕ ТЕМЫ =====
+function applyTheme() {
+    const theme = localStorage.getItem('theme') || 'light';
+    if (theme === 'dark') {
+        document.body.classList.add('dark-theme');
+    } else {
+        document.body.classList.remove('dark-theme');
+    }
+}
+applyTheme();
+
 const searchInput = document.getElementById('searchInput');
 if (searchInput) {
     searchInput.addEventListener('input', filterContacts);
@@ -105,7 +116,6 @@ function displayContacts(data) {
         const settlementsHtml = data.settlements.map(settlement => {
             const displayName = settlement.type ? `${settlement.type}${settlement.name}` : settlement.name;
             
-            // Мобильный телефон
             let mobileHtml = '';
             if (settlement.mobile_phone) {
                 mobileHtml = `
