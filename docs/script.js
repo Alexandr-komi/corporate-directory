@@ -41,6 +41,10 @@ function copyContactData(settlement) {
     if (settlement.max) textToCopy += `\nMAX: ${settlement.max}`;
     if (settlement.address) textToCopy += `\nАдрес: ${settlement.address}`;
     if (settlement.note) textToCopy += `\nПримечание: ${settlement.note}`;
+    // Добавляем мобильный, если он есть в данных (даже если скрыт)
+    if (settlement.mobile_phone) {
+        textToCopy += `\nМобильный: ${settlement.mobile_phone}`;
+    }
     
     navigator.clipboard.writeText(textToCopy).then(() => {
         showNotification('✅ Данные скопированы!');
@@ -73,17 +77,11 @@ function showNotification(message) {
     }, 100);
 }
 
-// Функция показа мобильного телефона с запросом пароля
-function showMobilePhone(settlement, buttonElement) {
-    // Проверяем, есть ли уже открытый номер у этой кнопки
-    const parentDiv = buttonElement.parentElement;
-    let phoneDisplay = parentDiv.querySelector('.mobile-phone-display');
-    
-    if (phoneDisplay) {
-        // Если уже открыто — скрываем
-        phoneDisplay.remove();
-        buttonElement.textContent = '📱 Показать мобильный';
-        return;
+// Функция показа мобильного телефона при клике на строку
+function showMobilePhone(settlement, element) {
+    // Проверяем, не показан ли уже номер
+    if (element.dataset.revealed === 'true') {
+        return; // Уже показан
     }
     
     // Запрашиваем пароль
@@ -94,16 +92,11 @@ function showMobilePhone(settlement, buttonElement) {
     }
     
     if (enteredPassword === MOBILE_PASSWORD) {
-        // Пароль верный — показываем номер
-        phoneDisplay = document.createElement('div');
-        phoneDisplay.className = 'mobile-phone-display info-row';
-        phoneDisplay.style.cssText = 'margin-top: 5px; padding: 5px 10px; background: #e8f5e9; border-radius: 6px; border-left: 3px solid #4caf50;';
-        phoneDisplay.innerHTML = `
-            <span class="label">📱 Мобильный:</span>
-            <span class="value"><a href="tel:${settlement.mobile_phone.replace(/[^0-9+]/g, '')}">${settlement.mobile_phone}</a></span>
-        `;
-        parentDiv.appendChild(phoneDisplay);
-        buttonElement.textContent = '🙈 Скрыть мобильный';
+        // Пароль верный — заменяем текст на номер
+        element.innerHTML = `<span class="label">📱 Мобильный:</span> <span class="value" style="font-size: 18px; font-weight: bold; color: #1e3c72;">${settlement.mobile_phone}</span>`;
+        element.style.cursor = 'default';
+        element.dataset.revealed = 'true';
+        showNotification('✅ Мобильный телефон показан');
     } else {
         alert('❌ Неверный пароль!');
     }
@@ -122,13 +115,15 @@ function displayContacts(data) {
         const settlementsHtml = data.settlements.map(settlement => {
             const displayName = settlement.type ? `${settlement.type}${settlement.name}` : settlement.name;
             
-            // Формируем кнопку для мобильного телефона, если он есть
-            let mobileButtonHtml = '';
+            // Формируем строку для мобильного телефона, если он есть
+            let mobileHtml = '';
             if (settlement.mobile_phone) {
-                mobileButtonHtml = `
-                    <button class="mobile-phone-btn" onclick='showMobilePhone(${JSON.stringify(settlement).replace(/'/g, "&apos;")}, this)'>
-                        📱 Показать мобильный
-                    </button>
+                mobileHtml = `
+                    <div class="info-row mobile-phone-row" style="cursor: pointer;" 
+                         onclick='showMobilePhone(${JSON.stringify(settlement).replace(/'/g, "&apos;")}, this)'>
+                        <span class="label">📱 Показать мобильный</span>
+                        <span class="value" style="color: #4dabf7; font-weight: 500;">🔒 нажмите для ввода пароля</span>
+                    </div>
                 `;
             }
             
@@ -186,10 +181,7 @@ function displayContacts(data) {
                         <span class="label">📌 Примечание:</span>
                         <span class="value">${settlement.note}</span>
                     </div>` : ''}
-                    ${mobileButtonHtml ? `
-                    <div class="info-row mobile-phone-row">
-                        ${mobileButtonHtml}
-                    </div>` : ''}
+                    ${mobileHtml}
                 </div>
             </div>
         `}).join('');
@@ -210,12 +202,14 @@ function displayContacts(data) {
             const settlementsHtml = districtData.settlements.map(settlement => {
                 const displayName = settlement.type ? `${settlement.type}${settlement.name}` : settlement.name;
                 
-                let mobileButtonHtml = '';
+                let mobileHtml = '';
                 if (settlement.mobile_phone) {
-                    mobileButtonHtml = `
-                        <button class="mobile-phone-btn" onclick='showMobilePhone(${JSON.stringify(settlement).replace(/'/g, "&apos;")}, this)'>
-                            📱 Показать мобильный
-                        </button>
+                    mobileHtml = `
+                        <div class="info-row mobile-phone-row" style="cursor: pointer;" 
+                             onclick='showMobilePhone(${JSON.stringify(settlement).replace(/'/g, "&apos;")}, this)'>
+                            <span class="label">📱 Показать мобильный</span>
+                            <span class="value" style="color: #4dabf7; font-weight: 500;">🔒 нажмите для ввода пароля</span>
+                        </div>
                     `;
                 }
                 
@@ -273,10 +267,7 @@ function displayContacts(data) {
                             <span class="label">📌 Примечание:</span>
                             <span class="value">${settlement.note}</span>
                         </div>` : ''}
-                        ${mobileButtonHtml ? `
-                        <div class="info-row mobile-phone-row">
-                            ${mobileButtonHtml}
-                        </div>` : ''}
+                        ${mobileHtml}
                     </div>
                 </div>
             `}).join('');
