@@ -5,6 +5,7 @@
     {
       "name": "Руководство",
       "email": "priem@kortkeros.rkomi.ru",
+      "site": "",
       "employees": [
         {
           "position": "Глава муниципального района - руководитель администрации",
@@ -46,6 +47,7 @@
     {
       "name": "Общий отдел",
       "email": "amr@kortkeros.rkomi.ru",
+      "site": "",
       "employees": [
         {
           "position": "Заведующий отделом",
@@ -72,6 +74,7 @@
     {
       "name": "Муниципальный центр управления",
       "email": "press@kortkeros.rkomi.ru",
+      "site": "",
       "employees": [
         {
           "position": "Руководитель МЦУ",
@@ -88,6 +91,7 @@
     {
       "name": "Служба по социальным вопросам",
       "email": "social@kortkeros.rkomi.ru",
+      "site": "https://kortkeros-r11.gosweb.gosuslugi.ru/glavnoe/administratsiya/struktura/sluzhba-po-sotsialnym-voprosam/",
       "employees": [
         {
           "position": "Руководитель службы",
@@ -99,6 +103,7 @@
     {
       "name": "Управление имущественных и земельных отношений",
       "email": "oizo@kortkeros.rkomi.ru",
+      "site": "https://kortkeros.gosuslugi.ru/glavnoe/administratsiya/struktura/upravlenie-imuschestvennyh-i-zemelnyh-otnosheniy/",
       "employees": [
         {
           "position": "Начальник",
@@ -160,6 +165,7 @@
     {
       "name": "Управление по капитальному строительству и территориальному развитию",
       "email": "uks@kortkeros.rkomi.ru",
+      "site": "https://kortkeros-r11.gosweb.gosuslugi.ru/glavnoe/administratsiya/struktura/upravlenie-po-kapitalnomu-stroitelstvu/",
       "employees": [
         {
           "position": "Начальник",
@@ -191,6 +197,7 @@
     {
       "name": "Управление жилищно-коммунального, дорожного хозяйства и транспорта",
       "email": "zkh@kortkeros.rkomi.ru",
+      "site": "",
       "employees": [
         {
           "position": "Начальник",
@@ -222,6 +229,7 @@
     {
       "name": "Управление по делам ГО, ЧС и специальной работы",
       "email": "goichs@kortkeros.rkomi.ru",
+      "site": "https://kortkeros.gosuslugi.ru/glavnoe/administratsiya/struktura/go-chs/",
       "employees": [
         {
           "position": "Начальник",
@@ -248,6 +256,7 @@
     {
       "name": "Единая дежурно-диспетчерская служба (ЕДДС)",
       "email": "edds@kortkeros.rkomi.ru",
+      "site": "",
       "employees": [
         {
           "position": "Руководитель",
@@ -279,6 +288,7 @@
     {
       "name": "Служба контроля",
       "email": "sk@kortkeros.rkomi.ru",
+      "site": "",
       "employees": [
         {
           "position": "Специалист",
@@ -305,6 +315,7 @@
     {
       "name": "Сектор по мобилизационной работе",
       "email": "mob@kortkeros.rkomi.ru",
+      "site": "https://kortkeros.gosuslugi.ru/glavnoe/administratsiya/struktura/sektor-po-mobilizatsionnoy-rabote/",
       "employees": [
         {
           "position": "Заведующий",
@@ -321,6 +332,7 @@
     {
       "name": "Управление финансов",
       "email": "uf@kortkeros.rkomi.ru",
+      "site": "",
       "employees": [
         {
           "position": "Начальник",
@@ -347,6 +359,7 @@
     {
       "name": "Служба по автоматизации, информатизации и защите информации",
       "email": "it@kortkeros.rkomi.ru",
+      "site": "",
       "employees": [
         {
           "position": "Руководитель службы",
@@ -363,6 +376,7 @@
     {
       "name": "Отдел финансового и бухгалтерского учета",
       "email": "buh@kortkeros.rkomi.ru",
+      "site": "",
       "employees": [
         {
           "position": "Заведующий отделом",
@@ -394,6 +408,7 @@
     {
       "name": "Отдел организационной и кадровой работы",
       "email": "ookr@kortkeros.rkomi.ru",
+      "site": "",
       "employees": [
         {
           "position": "Заведующий отделом",
@@ -420,6 +435,7 @@
     {
       "name": "Правовое управление",
       "email": "pravo@kortkeros.rkomi.ru",
+      "site": "",
       "employees": [
         {
           "position": "Начальник",
@@ -441,6 +457,7 @@
     {
       "name": "Отдел экономической политики",
       "email": "oep@kortkeros.rkomi.ru",
+      "site": "https://kortkeros.gosuslugi.ru/glavnoe/administratsiya/struktura/otdel-ekonomicheskoy-politiki/",
       "employees": [
         {
           "position": "Заведующий отделом",
@@ -467,6 +484,7 @@
     {
       "name": "Отдел по муниципальным закупкам",
       "email": "mz@kortkeros.rkomi.ru",
+      "site": "",
       "employees": [
         {
           "position": "Заведующий отделом",
@@ -483,6 +501,7 @@
     {
       "name": "Отдел жилищной политики",
       "email": "gp@kortkeros.rkomi.ru",
+      "site": "",
       "employees": [
         {
           "position": "Заведующий отделом",
@@ -514,6 +533,7 @@
     {
       "name": "Отдел опеки и попечительства",
       "email": "opeka@kortkeros.rkomi.ru",
+      "site": "https://kortkeros-r11.gosweb.gosuslugi.ru/glavnoe/administratsiya/struktura/otdel-opeki-i-popechitelstva/",
       "employees": [
         {
           "position": "Заведующий отделом",
@@ -535,6 +555,7 @@
     {
       "name": "Сектор по архивной работе",
       "email": "arhiv@kortkeros.rkomi.ru",
+      "site": "",
       "employees": [
         {
           "position": "Руководитель сектором",
@@ -556,6 +577,7 @@
     {
       "name": "Управление образования",
       "email": "uo@kortkeros.rkomi.ru",
+      "site": "",
       "employees": [
         {
           "position": "Начальник",
@@ -577,6 +599,7 @@
     {
       "name": "Управление культуры, национальной политики и туризма",
       "email": "uk@kortkeros.rkomi.ru",
+      "site": "",
       "employees": [
         {
           "position": "Начальник",
@@ -593,6 +616,7 @@
     {
       "name": "Отдел физической культуры и спорта",
       "email": "fks@kortkeros.rkomi.ru",
+      "site": "",
       "employees": [
         {
           "position": "Заведующий отделом",
@@ -609,6 +633,7 @@
     {
       "name": "Центр бухгалтерского обслуживания",
       "email": "",
+      "site": "",
       "employees": [
         {
           "position": "Директор",
@@ -620,6 +645,7 @@
     {
       "name": "Комиссия по делам несовершеннолетних и защите их прав",
       "email": "",
+      "site": "",
       "employees": [
         {
           "position": "Ведущий эксперт (ответственный секретарь)",
@@ -631,6 +657,7 @@
     {
       "name": "Территориальная избирательная комиссия",
       "email": "",
+      "site": "",
       "employees": [
         {
           "position": "Председатель",
@@ -647,6 +674,7 @@
     {
       "name": "Территориальный отдел ЗАГСа Корткеросского района",
       "email": "",
+      "site": "",
       "employees": [
         {
           "position": "Руководитель",
