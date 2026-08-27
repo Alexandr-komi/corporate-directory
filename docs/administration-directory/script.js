@@ -63,28 +63,23 @@ function displayDepartments(departments) {
         
         titleHtml += `</div>`;
         
-        // Email
-        if (dept.email) {
+        // Email и сайт в одной строке
+        if (dept.email || dept.site) {
             titleHtml += `
-                <div class="department-email-container">
-                    <div class="department-email-block">
-                        <span class="email-icon">📧</span>
-                        <a href="mailto:${dept.email}">${dept.email}</a>
-                    </div>
-                </div>
-            `;
-        }
-        
-        // Сайт отдела
-        if (dept.site) {
-            titleHtml += `
-                <div class="department-site-block">
-                    <a href="${dept.site}" target="_blank" title="Сайт отдела" 
-                       style="color: white; text-decoration: none; font-size: 12px; 
-                              background: rgba(255,255,255,0.15); padding: 2px 10px; 
-                              border-radius: 20px; display: inline-flex; align-items: center; gap: 4px;">
-                        🌐 сайт отдела
-                    </a>
+                <div class="department-contact-row">
+                    ${dept.email ? `
+                        <div class="department-email-block">
+                            <span class="email-icon">📧</span>
+                            <a href="mailto:${dept.email}">${dept.email}</a>
+                        </div>
+                    ` : ''}
+                    ${dept.site ? `
+                        <div class="department-site-block">
+                            <a href="${dept.site}" target="_blank" title="Официальная страница отдела">
+                                🌐 Официальная страница
+                            </a>
+                        </div>
+                    ` : ''}
                 </div>
             `;
         }
@@ -150,7 +145,7 @@ function displayDepartments(departments) {
         departmentsGrid.appendChild(deptCard);
         
         deptHeader.addEventListener('click', (e) => {
-            if (e.target.tagName === 'A' && e.target.href.includes('mailto:')) {
+            if (e.target.tagName === 'A') {
                 return;
             }
             
