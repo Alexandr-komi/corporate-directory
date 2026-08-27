@@ -156,12 +156,13 @@ header h1 {
     flex-shrink: 0;
 }
 
-/* Контакты: сайт и почта в одной строке */
+/* Контакты: сайт слева, почта прижата вправо */
 .department-contact-row {
     display: flex;
-    flex-wrap: wrap;
+    justify-content: space-between;
     align-items: center;
-    gap: 12px;
+    flex-wrap: wrap;
+    gap: 10px;
     margin-top: 4px;
 }
 
@@ -199,6 +200,7 @@ header h1 {
     border-radius: 20px;
     white-space: nowrap;
     color: white;
+    flex-shrink: 0;
 }
 
 .department-email-block .email-icon {
