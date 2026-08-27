@@ -6,8 +6,6 @@ if (searchInput) {
 }
 
 let allData = null;
-
-// Пароль для показа мобильных телефонов
 const MOBILE_PASSWORD = 'mobil2026';
 
 async function loadContacts() {
@@ -29,9 +27,8 @@ async function loadContacts() {
     }
 }
 
-// Функция копирования данных в буфер обмена
 function copyContactData(settlement) {
-    let textToCopy = `${settlement.type ? settlement.type : ''}${settlement.name}\n`;
+    let textToCopy = `${settlement.type || ''}${settlement.name}\n`;
     textToCopy += `Глава: ${settlement.head}\n`;
     textToCopy += `Телефон: ${settlement.phone}\n`;
     if (settlement.specialist_phone) textToCopy += `Специалисты: ${settlement.specialist_phone}\n`;
@@ -40,11 +37,8 @@ function copyContactData(settlement) {
     if (settlement.vk) textToCopy += `\nVK: ${settlement.vk}`;
     if (settlement.max) textToCopy += `\nMAX: ${settlement.max}`;
     if (settlement.address) textToCopy += `\nАдрес: ${settlement.address}`;
+    if (settlement.mobile_phone) textToCopy += `\nМобильный: ${settlement.mobile_phone}`;
     if (settlement.note) textToCopy += `\nПримечание: ${settlement.note}`;
-    // Добавляем мобильный, если он есть в данных (даже если скрыт)
-    if (settlement.mobile_phone) {
-        textToCopy += `\nМобильный: ${settlement.mobile_phone}`;
-    }
     
     navigator.clipboard.writeText(textToCopy).then(() => {
         showNotification('✅ Данные скопированы!');
@@ -54,12 +48,9 @@ function copyContactData(settlement) {
     });
 }
 
-// Функция показа уведомления
 function showNotification(message) {
     let notification = document.querySelector('.copy-notification');
-    if (notification) {
-        notification.remove();
-    }
+    if (notification) notification.remove();
     
     notification = document.createElement('div');
     notification.className = 'copy-notification';
@@ -77,25 +68,24 @@ function showNotification(message) {
     }, 100);
 }
 
-// Функция показа мобильного телефона при клике на строку
 function showMobilePhone(settlement, element) {
-    // Проверяем, не показан ли уже номер
-    if (element.dataset.revealed === 'true') {
-        return; // Уже показан
-    }
+    if (element.dataset.revealed === 'true') return;
     
-    // Запрашиваем пароль
-    const enteredPassword = prompt('Введите пароль для просмотра мобильного телефона:');
+    const password = prompt('Введите пароль для просмотра мобильного телефона:');
+    if (password === null) return;
     
-    if (enteredPassword === null) {
-        return; // Пользователь нажал "Отмена"
-    }
-    
-    if (enteredPassword === MOBILE_PASSWORD) {
-        // Пароль верный — заменяем текст на номер
-        element.innerHTML = `<span class="label">📱 Мобильный:</span> <span class="value" style="font-size: 18px; font-weight: bold; color: #1e3c72;">${settlement.mobile_phone}</span>`;
-        element.style.cursor = 'default';
+    if (password === MOBILE_PASSWORD) {
+        const label = element.querySelector('.label');
+        const value = element.querySelector('.value');
+        if (label) label.textContent = '📱 Мобильный:';
+        if (value) {
+            value.textContent = settlement.mobile_phone;
+            value.style.fontSize = '18px';
+            value.style.fontWeight = 'bold';
+            value.style.color = '#1e3c72';
+        }
         element.dataset.revealed = 'true';
+        element.style.cursor = 'default';
         showNotification('✅ Мобильный телефон показан');
     } else {
         alert('❌ Неверный пароль!');
@@ -115,11 +105,11 @@ function displayContacts(data) {
         const settlementsHtml = data.settlements.map(settlement => {
             const displayName = settlement.type ? `${settlement.type}${settlement.name}` : settlement.name;
             
-            // Формируем строку для мобильного телефона, если он есть
+            // Мобильный телефон
             let mobileHtml = '';
             if (settlement.mobile_phone) {
                 mobileHtml = `
-                    <div class="info-row mobile-phone-row" style="cursor: pointer;" 
+                    <div class="info-row mobile-phone-row" 
                          onclick='showMobilePhone(${JSON.stringify(settlement).replace(/'/g, "&apos;")}, this)'>
                         <span class="label">📱 Показать мобильный</span>
                         <span class="value" style="color: #4dabf7; font-weight: 500;">🔒 нажмите для ввода пароля</span>
@@ -129,98 +119,11 @@ function displayContacts(data) {
             
             return `
             <div class="settlement-card">
-                <div class="settlement-header">
+                <div class="settlement-header" onclick="toggleSettlement(this)">
                     <h3>${displayName}</h3>
-                    <button class="copy-btn" onclick='copyContactData(${JSON.stringify(settlement).replace(/'/g, "&apos;")})'>
-                        📋 Копировать
-                    </button>
+                    <span class="toggle-icon">▼</span>
                 </div>
-                <div class="settlement-body">
-                    <div class="info-row">
-                        <span class="label">👤 Глава:</span>
-                        <span class="value"><strong>${settlement.head}</strong></span>
-                    </div>
-                    <div class="info-row">
-                        <span class="label">📞 Телефон:</span>
-                        <span class="value"><a href="tel:${settlement.phone.replace(/[^0-9+]/g, '')}">${settlement.phone}</a></span>
-                    </div>
-                    ${settlement.specialist_phone ? `
-                    <div class="info-row">
-                        <span class="label">👥 Специалисты:</span>
-                        <span class="value"><a href="tel:${settlement.specialist_phone.replace(/[^0-9+]/g, '')}">${settlement.specialist_phone}</a></span>
-                    </div>` : ''}
-                    <div class="info-row">
-                        <span class="label">✉️ Email:</span>
-                        <span class="value"><a href="mailto:${settlement.email}">${settlement.email}</a></span>
-                    </div>
-                    ${settlement.website ? `
-                    <div class="info-row">
-                        <span class="label">🌐 Сайт:</span>
-                        <span class="value"><a href="${settlement.website}" target="_blank">${settlement.website}</a></span>
-                    </div>` : ''}
-                    ${settlement.vk ? `
-                    <div class="info-row">
-                        <span class="label">📱 VK:</span>
-                        <span class="value"><a href="${settlement.vk}" target="_blank">${settlement.vk}</a></span>
-                    </div>` : ''}
-                    ${settlement.max ? `
-                    <div class="info-row">
-                        <span class="label">💬 MAX:</span>
-                        <span class="value">${settlement.max.includes('http') ? 
-                            `<a href="${settlement.max}" target="_blank">${settlement.max}</a>` : 
-                            settlement.max}
-                        </span>
-                    </div>` : ''}
-                    ${settlement.address ? `
-                    <div class="info-row">
-                        <span class="label">🏢 Адрес:</span>
-                        <span class="value">${settlement.address}</span>
-                    </div>` : ''}
-                    ${settlement.note ? `
-                    <div class="info-row note">
-                        <span class="label">📌 Примечание:</span>
-                        <span class="value">${settlement.note}</span>
-                    </div>` : ''}
-                    ${mobileHtml}
-                </div>
-            </div>
-        `}).join('');
-        
-        section.innerHTML = `
-            <div class="settlements-grid">
-                ${settlementsHtml}
-            </div>
-        `;
-        
-        directory.appendChild(section);
-    }
-    else if (Array.isArray(data)) {
-        data.forEach(districtData => {
-            const section = document.createElement('div');
-            section.className = 'district-section';
-            
-            const settlementsHtml = districtData.settlements.map(settlement => {
-                const displayName = settlement.type ? `${settlement.type}${settlement.name}` : settlement.name;
-                
-                let mobileHtml = '';
-                if (settlement.mobile_phone) {
-                    mobileHtml = `
-                        <div class="info-row mobile-phone-row" style="cursor: pointer;" 
-                             onclick='showMobilePhone(${JSON.stringify(settlement).replace(/'/g, "&apos;")}, this)'>
-                            <span class="label">📱 Показать мобильный</span>
-                            <span class="value" style="color: #4dabf7; font-weight: 500;">🔒 нажмите для ввода пароля</span>
-                        </div>
-                    `;
-                }
-                
-                return `
-                <div class="settlement-card">
-                    <div class="settlement-header">
-                        <h3>${displayName}</h3>
-                        <button class="copy-btn" onclick='copyContactData(${JSON.stringify(settlement).replace(/'/g, "&apos;")})'>
-                            📋 Копировать
-                        </button>
-                    </div>
+                <div class="settlement-content">
                     <div class="settlement-body">
                         <div class="info-row">
                             <span class="label">👤 Глава:</span>
@@ -252,22 +155,113 @@ function displayContacts(data) {
                         ${settlement.max ? `
                         <div class="info-row">
                             <span class="label">💬 MAX:</span>
-                            <span class="value">${settlement.max.includes('http') ? 
-                                `<a href="${settlement.max}" target="_blank">${settlement.max}</a>` : 
-                                settlement.max}
-                            </span>
+                            <span class="value">${settlement.max.includes('http') ? `<a href="${settlement.max}" target="_blank">${settlement.max}</a>` : settlement.max}</span>
                         </div>` : ''}
                         ${settlement.address ? `
                         <div class="info-row">
                             <span class="label">🏢 Адрес:</span>
                             <span class="value">${settlement.address}</span>
                         </div>` : ''}
+                        ${mobileHtml}
                         ${settlement.note ? `
                         <div class="info-row note">
                             <span class="label">📌 Примечание:</span>
                             <span class="value">${settlement.note}</span>
                         </div>` : ''}
-                        ${mobileHtml}
+                        <div style="margin-top: 8px; text-align: right;">
+                            <button class="copy-btn" onclick='copyContactData(${JSON.stringify(settlement).replace(/'/g, "&apos;")}); event.stopPropagation();'>
+                                📋 Копировать
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `}).join('');
+        
+        section.innerHTML = `
+            <div class="settlements-grid">
+                ${settlementsHtml}
+            </div>
+        `;
+        
+        directory.appendChild(section);
+    }
+    else if (Array.isArray(data)) {
+        data.forEach(districtData => {
+            const section = document.createElement('div');
+            section.className = 'district-section';
+            
+            const settlementsHtml = districtData.settlements.map(settlement => {
+                const displayName = settlement.type ? `${settlement.type}${settlement.name}` : settlement.name;
+                
+                let mobileHtml = '';
+                if (settlement.mobile_phone) {
+                    mobileHtml = `
+                        <div class="info-row mobile-phone-row" 
+                             onclick='showMobilePhone(${JSON.stringify(settlement).replace(/'/g, "&apos;")}, this)'>
+                            <span class="label">📱 Показать мобильный</span>
+                            <span class="value" style="color: #4dabf7; font-weight: 500;">🔒 нажмите для ввода пароля</span>
+                        </div>
+                    `;
+                }
+                
+                return `
+                <div class="settlement-card">
+                    <div class="settlement-header" onclick="toggleSettlement(this)">
+                        <h3>${displayName}</h3>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="settlement-content">
+                        <div class="settlement-body">
+                            <div class="info-row">
+                                <span class="label">👤 Глава:</span>
+                                <span class="value"><strong>${settlement.head}</strong></span>
+                            </div>
+                            <div class="info-row">
+                                <span class="label">📞 Телефон:</span>
+                                <span class="value"><a href="tel:${settlement.phone.replace(/[^0-9+]/g, '')}">${settlement.phone}</a></span>
+                            </div>
+                            ${settlement.specialist_phone ? `
+                            <div class="info-row">
+                                <span class="label">👥 Специалисты:</span>
+                                <span class="value"><a href="tel:${settlement.specialist_phone.replace(/[^0-9+]/g, '')}">${settlement.specialist_phone}</a></span>
+                            </div>` : ''}
+                            <div class="info-row">
+                                <span class="label">✉️ Email:</span>
+                                <span class="value"><a href="mailto:${settlement.email}">${settlement.email}</a></span>
+                            </div>
+                            ${settlement.website ? `
+                            <div class="info-row">
+                                <span class="label">🌐 Сайт:</span>
+                                <span class="value"><a href="${settlement.website}" target="_blank">${settlement.website}</a></span>
+                            </div>` : ''}
+                            ${settlement.vk ? `
+                            <div class="info-row">
+                                <span class="label">📱 VK:</span>
+                                <span class="value"><a href="${settlement.vk}" target="_blank">${settlement.vk}</a></span>
+                            </div>` : ''}
+                            ${settlement.max ? `
+                            <div class="info-row">
+                                <span class="label">💬 MAX:</span>
+                                <span class="value">${settlement.max.includes('http') ? `<a href="${settlement.max}" target="_blank">${settlement.max}</a>` : settlement.max}</span>
+                            </div>` : ''}
+                            ${settlement.address ? `
+                            <div class="info-row">
+                                <span class="label">🏢 Адрес:</span>
+                                <span class="value">${settlement.address}</span>
+                            </div>` : ''}
+                            ${mobileHtml}
+                            ${settlement.note ? `
+                            <div class="info-row note">
+                                <span class="label">📌 Примечание:</span>
+                                <span class="value">${settlement.note}</span>
+                            </div>` : ''}
+                            <div style="margin-top: 8px; text-align: right;">
+                                <button class="copy-btn" onclick='copyContactData(${JSON.stringify(settlement).replace(/'/g, "&apos;")}); event.stopPropagation();'>
+                                    📋 Копировать
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             `}).join('');
@@ -284,14 +278,37 @@ function displayContacts(data) {
     }
 }
 
+function toggleSettlement(headerElement) {
+    const card = headerElement.closest('.settlement-card');
+    const content = card.querySelector('.settlement-content');
+    const icon = headerElement.querySelector('.toggle-icon');
+    
+    if (content.classList.contains('open')) {
+        content.classList.remove('open');
+        icon.classList.remove('open');
+        icon.textContent = '▼';
+    } else {
+        content.classList.add('open');
+        icon.classList.add('open');
+        icon.textContent = '▲';
+    }
+}
+
 function filterContacts() {
     if (!allData) return;
     
-    const searchText = searchInput.value.toLowerCase();
+    const searchText = searchInput.value.toLowerCase().trim();
     
     if (!searchText) {
         displayContacts(allData);
         updateStats(allData);
+        setTimeout(() => {
+            document.querySelectorAll('.settlement-content').forEach(el => el.classList.remove('open'));
+            document.querySelectorAll('.toggle-icon').forEach(el => {
+                el.classList.remove('open');
+                el.textContent = '▼';
+            });
+        }, 100);
         return;
     }
     
@@ -310,13 +327,16 @@ function filterContacts() {
             (settlement.mobile_phone && settlement.mobile_phone.toLowerCase().includes(searchText))
         );
         
-        const filteredData = {
-            ...allData,
-            settlements: filteredSettlements
-        };
-        
+        const filteredData = { ...allData, settlements: filteredSettlements };
         displayContacts(filteredData);
         updateStats(filteredData);
+        setTimeout(() => {
+            document.querySelectorAll('.settlement-content').forEach(el => el.classList.add('open'));
+            document.querySelectorAll('.toggle-icon').forEach(el => {
+                el.classList.add('open');
+                el.textContent = '▲';
+            });
+        }, 100);
     }
     else if (Array.isArray(allData)) {
         const filtered = allData.map(district => ({
@@ -339,6 +359,13 @@ function filterContacts() {
         
         displayContacts(filtered);
         updateStats(filtered);
+        setTimeout(() => {
+            document.querySelectorAll('.settlement-content').forEach(el => el.classList.add('open'));
+            document.querySelectorAll('.toggle-icon').forEach(el => {
+                el.classList.add('open');
+                el.textContent = '▲';
+            });
+        }, 100);
     }
 }
 
@@ -355,9 +382,7 @@ function updateStats(data) {
         `;
     }
     else if (Array.isArray(data)) {
-        const totalSettlements = data.reduce((sum, district) => 
-            sum + (district.settlements?.length || 0), 0);
-        
+        const totalSettlements = data.reduce((sum, district) => sum + (district.settlements?.length || 0), 0);
         stats.innerHTML = `
             <div class="stats-panel">
                 <span>🏘️ Поселений: <strong>${totalSettlements}</strong></span>
