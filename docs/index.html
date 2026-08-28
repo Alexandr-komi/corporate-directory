@@ -398,7 +398,7 @@
             display: block;
         }
 
-        /* ===== БЛАНКИ ЗАЯВЛЕНИЙ (модальное окно) ===== */
+        /* ===== БЛАНКИ ЗАЯВЛЕНИЙ ===== */
         .blank-item {
             display: flex;
             justify-content: space-between;
@@ -460,7 +460,7 @@
             background: #1e7e34;
         }
 
-        /* ===== ФОРМА ЗАПОЛНЕНИЯ БЛАНКА ===== */
+        /* ===== ФОРМА ЗАПОЛНЕНИЯ ===== */
         .fill-form .form-group {
             margin-bottom: 18px;
             text-align: left;
@@ -474,8 +474,7 @@
             font-size: 14px;
         }
 
-        .fill-form .form-group input,
-        .fill-form .form-group select {
+        .fill-form .form-group input {
             width: 100%;
             padding: 10px 14px;
             border: 2px solid #e9ecef;
@@ -486,15 +485,10 @@
             color: #2c3e50;
         }
 
-        .fill-form .form-group input:focus,
-        .fill-form .form-group select:focus {
+        .fill-form .form-group input:focus {
             outline: none;
             border-color: #4dabf7;
             box-shadow: 0 0 0 3px rgba(77, 171, 247, 0.1);
-        }
-
-        .fill-form .form-group input::placeholder {
-            color: #adb5bd;
         }
 
         .fill-form .form-group .autocomplete-list {
@@ -524,26 +518,12 @@
             background: #f0f7ff;
         }
 
-        .fill-form .form-group .autocomplete-list li:last-child {
-            border-bottom: none;
-        }
-
         .form-actions {
             display: flex;
             justify-content: flex-end;
             gap: 12px;
             margin-top: 20px;
             flex-wrap: wrap;
-        }
-
-        .form-actions button {
-            padding: 10px 24px;
-            border: none;
-            border-radius: 30px;
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s;
         }
 
         .form-actions .btn-secondary {
@@ -589,7 +569,7 @@
             color: white;
         }
 
-        /* ===== ТЁМНАЯ ТЕМА ДЛЯ ПОРТАЛА ===== */
+        /* ===== ТЁМНАЯ ТЕМА ===== */
         body.dark-theme {
             background: #1a1a2e;
         }
@@ -668,20 +648,6 @@
             color: #1a1a2e;
         }
 
-        body.dark-theme .portal-thanks {
-            border-color: #2a3a5e;
-        }
-
-        body.dark-theme .portal-thanks a {
-            color: #e0e0e0;
-            border-color: #e0e0e0;
-        }
-
-        body.dark-theme .portal-thanks a:hover {
-            background: #e0e0e0;
-            color: #1a1a2e;
-        }
-
         body.dark-theme .modal-content {
             background: #16213e;
             border-color: #2a3a5e;
@@ -689,10 +655,6 @@
 
         body.dark-theme .modal-title {
             color: #e0e0e0;
-            border-color: #2a3a5e;
-        }
-
-        body.dark-theme .modal-row {
             border-color: #2a3a5e;
         }
 
@@ -717,18 +679,6 @@
             background: #2a3a6a;
         }
 
-        body.dark-theme .no-results {
-            color: #a0a0a0;
-        }
-
-        body.dark-theme .modal-close {
-            color: #a0a0a0;
-        }
-
-        body.dark-theme .modal-close:hover {
-            color: #e0e0e0;
-        }
-
         /* ===== АДАПТИВНОСТЬ ===== */
         @media (max-width: 600px) {
             .portal-grid {
@@ -746,25 +696,6 @@
             .search-box input {
                 font-size: 14px;
                 padding: 12px 18px;
-            }
-
-            .search-result-item {
-                flex-wrap: wrap;
-                gap: 8px;
-            }
-
-            .search-result-item .text .phone {
-                white-space: normal;
-            }
-
-            .modal-row {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 4px;
-            }
-
-            .modal-row .value {
-                text-align: left;
             }
 
             .blank-item {
@@ -789,7 +720,6 @@
 </head>
 <body>
     <div class="portal-container">
-        <!-- Переключатель тёмной темы -->
         <div class="theme-toggle-wrapper">
             <button id="themeToggle">🌙 Тёмная тема</button>
         </div>
@@ -797,15 +727,12 @@
         <h1 class="portal-title">📂 Справочники</h1>
         <p class="portal-subtitle">Муниципальный район Корткеросский</p>
 
-        <!-- Поиск -->
         <div class="search-box">
             <input type="text" id="portalSearch" placeholder="🔍 Поиск по всем справочникам...">
         </div>
 
-        <!-- Результаты поиска -->
         <div id="searchResults" class="search-results"></div>
 
-        <!-- Кнопки-плитки -->
         <div class="portal-grid">
             <a href="administration-directory/" class="portal-card">
                 <span class="icon">🏢</span>
@@ -821,14 +748,12 @@
             </a>
         </div>
 
-        <!-- Кнопки действий -->
         <div class="portal-actions">
             <button onclick="openRequisites()">📄 Реквизиты администрации</button>
             <button onclick="openBlanks()">📋 Бланки заявлений</button>
             <a href="https://kortkeros.gosuslugi.ru/" target="_blank">🌐 Сайт администрации</a>
         </div>
 
-        <!-- Кнопка "Спасибо разработчику" -->
         <div class="portal-thanks">
             <a href="https://e.armgs.team/compose/?mailto=mailto%3Aa.v.butikov%40kortkeros.rkomi.ru%3Fsubject%3D%D0%A1%D0%BF%D0%B0%D1%81%D0%B8%D0%B1%D0%BE%20%D0%B7%D0%B0%20%D1%81%D0%BF%D1%80%D0%B0%D0%B2%D0%BE%D1%87%D0%BD%D0%B8%D0%BA%21%26body%3D%D0%91%D0%BB%D0%B0%D0%B3%D0%BE%D0%B4%D0%B0%D1%80%D1%8E%20%D0%B7%D0%B0%20%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D1%83%20%D0%BD%D0%B0%D0%B4%20%D1%81%D0%BF%D1%80%D0%B0%D0%B2%D0%BE%D1%87%D0%BD%D0%B8%D0%BA%D0%BE%D0%BC"
                target="_blank">
@@ -857,7 +782,7 @@
         </div>
     </div>
 
-    <!-- Модальное окно для заполнения бланка -->
+    <!-- Модальное окно для заполнения -->
     <div id="fillModal" class="modal-overlay">
         <div class="modal-content">
             <button class="modal-close" onclick="closeFillModal()">✕</button>
@@ -888,7 +813,7 @@
     </div>
 
     <script>
-        // ===== ТЁМНАЯ ТЕМА (ГЛАВНАЯ) =====
+        // ===== ТЁМНАЯ ТЕМА =====
         document.addEventListener('DOMContentLoaded', function() {
             const themeToggle = document.getElementById('themeToggle');
             if (!themeToggle) return;
@@ -913,11 +838,10 @@
             });
         });
 
-        // ===== ДАННЫЕ ДЛЯ БЛАНКОВ =====
+        // ===== ДАННЫЕ =====
         let employeesData = null;
         let currentBlankName = '';
 
-        // Загружаем данные из справочника администрации
         async function loadEmployeesData() {
             try {
                 const response = await fetch('administration-directory/employees.json');
@@ -930,7 +854,6 @@
             }
         }
 
-        // Получаем список всех сотрудников из справочника
         function getAllEmployees(data) {
             const employees = [];
             if (data && data.departments) {
@@ -948,7 +871,7 @@
             return employees;
         }
 
-        // ===== БЛАНКИ ЗАЯВЛЕНИЙ =====
+        // ===== БЛАНКИ =====
         const blanks = [
             { name: 'Заявление на отпуск за свой счет', file: 'blanki/zayavlenie_za_svoy_schet.docx' },
             { name: 'Заявление на привлечение к работе в выходные дни (2026)', file: 'blanki/zayavlenie_vyhodnye_2026.docx' },
@@ -989,36 +912,29 @@
             if (e.target === this) closeBlanks();
         });
 
-        // ===== ФУНКЦИИ ДЛЯ ЗАПОЛНЕНИЯ БЛАНКА =====
+        // ===== ЗАПОЛНЕНИЕ =====
         let selectedEmployee = null;
 
         async function openFillModal(blankName) {
             currentBlankName = blankName;
             
-            // Загружаем данные, если ещё не загружены
             if (!employeesData) {
                 await loadEmployeesData();
             }
             
-            // Очищаем форму
             document.getElementById('fillFio').value = '';
             document.getElementById('fillPosition').value = '';
             document.getElementById('autocompleteList').innerHTML = '';
             document.getElementById('autocompleteList').style.display = 'none';
             selectedEmployee = null;
             
-            // Устанавливаем текущую дату
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('fillDate').value = today;
             
-            // Обновляем заголовок модального окна
             document.getElementById('fillModalTitle').textContent = `📝 Заполнение: ${blankName}`;
             
-            // Открываем модальное окно
             document.getElementById('fillModal').classList.add('active');
             document.body.style.overflow = 'hidden';
-            
-            // Фокусируемся на поле ФИО
             document.getElementById('fillFio').focus();
         }
 
@@ -1027,12 +943,10 @@
             document.body.style.overflow = 'auto';
         }
 
-        // Закрытие по клику вне окна
         document.getElementById('fillModal').addEventListener('click', function(e) {
             if (e.target === this) closeFillModal();
         });
 
-        // Автодополнение
         document.addEventListener('DOMContentLoaded', function() {
             const fioInput = document.getElementById('fillFio');
             const autocompleteList = document.getElementById('autocompleteList');
@@ -1075,7 +989,6 @@
                 autocompleteList.style.display = 'block';
             });
             
-            // Скрываем список при потере фокуса
             fioInput.addEventListener('blur', function() {
                 setTimeout(() => {
                     autocompleteList.style.display = 'none';
@@ -1083,7 +996,6 @@
                 }, 200);
             });
             
-            // Закрываем по Escape
             document.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape') {
                     closeFillModal();
@@ -1091,7 +1003,7 @@
             });
         });
 
-        // ===== ГЕНЕРАЦИЯ ЗАПОЛНЕННОГО ДОКУМЕНТА =====
+        // ===== ГЕНЕРАЦИЯ ДОКУМЕНТА (через HTML) =====
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('downloadFilledBtn').addEventListener('click', function() {
                 const fio = document.getElementById('fillFio').value.trim();
@@ -1108,130 +1020,88 @@
                     return;
                 }
                 
-                // Форматируем дату
                 const dateParts = date.split('-');
                 const formattedDate = `${dateParts[2]}.${dateParts[1]}.${dateParts[0]}`;
                 
-                // Генерируем документ
-                generateFilledDocx(fio, position, formattedDate, currentBlankName);
+                generateFilledDoc(fio, position, formattedDate, currentBlankName);
             });
         });
 
-        async function generateFilledDocx(fio, position, date, blankName) {
+        function generateFilledDoc(fio, position, date, blankName) {
             try {
-                // Проверяем, загружена ли библиотека
-                if (typeof docx === 'undefined') {
-                    // Если библиотека не загружена, загружаем её динамически
-                    await loadDocxLibrary();
-                }
-                
-                const { Document, Packer, Paragraph, TextRun, AlignmentType } = docx;
-                
-                // Определяем текст заявления в зависимости от типа бланка
+                // Определяем текст заявления
                 const blankMap = {
-                    'Заявление на отпуск за свой счет': {
-                        title: 'ЗАЯВЛЕНИЕ',
-                        text: `Прошу предоставить мне отпуск без сохранения заработной платы с ${date}`
-                    },
-                    'Заявление на привлечение к работе в выходные дни (2026)': {
-                        title: 'ЗАЯВЛЕНИЕ',
-                        text: `Прошу привлечь меня к работе в выходной день ${date}`
-                    },
-                    'Заявление на материальную помощь': {
-                        title: 'ЗАЯВЛЕНИЕ',
-                        text: `Прошу оказать мне материальную помощь в связи с ${date}`
-                    },
-                    'Заявление на отгулы': {
-                        title: 'ЗАЯВЛЕНИЕ',
-                        text: `Прошу предоставить мне отгул за ранее отработанное время ${date}`
-                    },
-                    'Заявление на часть отпуска': {
-                        title: 'ЗАЯВЛЕНИЕ',
-                        text: `Прошу предоставить мне часть ежегодного оплачиваемого отпуска с ${date}`
-                    },
-                    'Заявление на донорские дни': {
-                        title: 'ЗАЯВЛЕНИЕ',
-                        text: `Прошу предоставить мне день отдыха в связи со сдачей крови ${date}`
-                    }
+                    'Заявление на отпуск за свой счет': 'отпуск без сохранения заработной платы',
+                    'Заявление на привлечение к работе в выходные дни (2026)': 'привлечение к работе в выходной день',
+                    'Заявление на материальную помощь': 'оказание материальной помощи',
+                    'Заявление на отгулы': 'предоставление отгула за ранее отработанное время',
+                    'Заявление на часть отпуска': 'часть ежегодного оплачиваемого отпуска',
+                    'Заявление на донорские дни': 'день отдыха в связи со сдачей крови'
                 };
                 
-                const blankInfo = blankMap[blankName] || blankMap['Заявление на отпуск за свой счет'];
+                const reason = blankMap[blankName] || 'отпуск без сохранения заработной платы';
                 
-                // Создаём документ
-                const doc = new Document({
-                    sections: [{
-                        properties: {},
-                        children: [
-                            // Шапка: кому
-                            new Paragraph({
-                                children: [
-                                    new TextRun({ text: 'Главе муниципального района «Корткеросский»', bold: true, size: 24 }),
-                                    new TextRun({ text: '\nСажину К.А.', bold: true, size: 24 })
-                                ],
-                                alignment: AlignmentType.RIGHT,
-                                spacing: { after: 200 }
-                            }),
-                            // От кого
-                            new Paragraph({
-                                children: [
-                                    new TextRun({ text: `от ${fio}`, bold: true, size: 24 })
-                                ],
-                                alignment: AlignmentType.RIGHT,
-                                spacing: { after: 200 }
-                            }),
-                            // Должность
-                            new Paragraph({
-                                children: [
-                                    new TextRun({ text: `должность: ${position}`, size: 24 })
-                                ],
-                                alignment: AlignmentType.RIGHT,
-                                spacing: { after: 400 }
-                            }),
-                            // Заголовок
-                            new Paragraph({
-                                children: [
-                                    new TextRun({ text: blankInfo.title, bold: true, size: 28 })
-                                ],
-                                alignment: AlignmentType.CENTER,
-                                spacing: { after: 400 }
-                            }),
-                            // Текст заявления
-                            new Paragraph({
-                                children: [
-                                    new TextRun({ text: blankInfo.text, size: 24 })
-                                ],
-                                spacing: { after: 300 }
-                            }),
-                            // Дата
-                            new Paragraph({
-                                children: [
-                                    new TextRun({ text: `Дата: ${date}`, size: 24 })
-                                ],
-                                spacing: { after: 300 }
-                            }),
-                            // Подпись
-                            new Paragraph({
-                                children: [
-                                    new TextRun({ text: '__________________', size: 24 })
-                                ],
-                                alignment: AlignmentType.RIGHT,
-                                spacing: { after: 100 }
-                            }),
-                            new Paragraph({
-                                children: [
-                                    new TextRun({ text: '(подпись)', size: 20 })
-                                ],
-                                alignment: AlignmentType.RIGHT
-                            })
-                        ]
-                    }]
+                // Создаём HTML-содержимое для документа
+                const htmlContent = `
+                    <html xmlns:o='urn:schemas-microsoft-com:office:office' 
+                          xmlns:w='urn:schemas-microsoft-com:office:word' 
+                          xmlns='http://www.w3.org/TR/REC-html40'>
+                    <head>
+                        <meta charset="utf-8">
+                        <title>Заявление</title>
+                        <!--[if gte mso 9]>
+                        <xml>
+                            <w:WordDocument>
+                                <w:View>Print</w:View>
+                                <w:Zoom>100</w:Zoom>
+                            </w:WordDocument>
+                        </xml>
+                        <![endif]-->
+                        <style>
+                            body { font-family: 'Times New Roman', serif; font-size: 14pt; margin: 40px; }
+                            .header { text-align: right; margin-bottom: 20px; }
+                            .title { text-align: center; font-weight: bold; font-size: 16pt; margin-bottom: 30px; text-transform: uppercase; }
+                            .text { margin-bottom: 20px; line-height: 1.5; }
+                            .signature { text-align: right; margin-top: 30px; }
+                            .signature-line { margin-top: 10px; }
+                        </style>
+                    </head>
+                    <body>
+                        <div class="header">
+                            <div>Главе муниципального района «Корткеросский»</div>
+                            <div>Сажину К.А.</div>
+                            <br>
+                            <div>от ${fio}</div>
+                            <div>должность: ${position}</div>
+                        </div>
+                        
+                        <div class="title">ЗАЯВЛЕНИЕ</div>
+                        
+                        <div class="text">
+                            Прошу предоставить мне ${reason} с ${date}.
+                        </div>
+                        
+                        <div class="text">
+                            Дата: ${date}
+                        </div>
+                        
+                        <div class="signature">
+                            <div>__________________</div>
+                            <div>(подпись)</div>
+                        </div>
+                    </body>
+                    </html>
+                `;
+                
+                // Создаём Blob с типом application/msword
+                const blob = new Blob([htmlContent], { 
+                    type: 'application/msword;charset=utf-8' 
                 });
                 
-                // Генерируем и скачиваем
-                const blob = await Packer.toBlob(doc);
+                // Скачиваем
                 const link = document.createElement('a');
                 link.href = URL.createObjectURL(blob);
-                const fileName = `Заявление_${fio.replace(/\s+/g, '_')}_${date}.docx`;
+                const fileName = `Заявление_${fio.replace(/\s+/g, '_')}_${date}.doc`;
                 link.download = fileName;
                 document.body.appendChild(link);
                 link.click();
@@ -1245,17 +1115,6 @@
                 console.error('Ошибка генерации документа:', error);
                 alert('❌ Ошибка при создании документа. Попробуйте ещё раз.\n\n' + error.message);
             }
-        }
-
-        // Функция для динамической загрузки библиотеки docx
-        function loadDocxLibrary() {
-            return new Promise((resolve, reject) => {
-                const script = document.createElement('script');
-                script.src = 'https://cdnjs.cloudflare.com/ajax/libs/docx/8.0.0/docx.min.js';
-                script.onload = resolve;
-                script.onerror = reject;
-                document.head.appendChild(script);
-            });
         }
 
         // ===== РЕКВИЗИТЫ =====
