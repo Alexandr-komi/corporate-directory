@@ -460,7 +460,7 @@
             background: #1e7e34;
         }
 
-        /* ===== ФОРМА ЗАПОЛНЕНИЯ ===== */
+        /* ===== ФОРМА ЗАПОЛНЕНИЯ БЛАНКА ===== */
         .fill-form .form-group {
             margin-bottom: 18px;
             text-align: left;
@@ -491,31 +491,16 @@
             box-shadow: 0 0 0 3px rgba(77, 171, 247, 0.1);
         }
 
-        .fill-form .form-group .autocomplete-list {
-            list-style: none;
-            padding: 0;
-            margin: 5px 0 0 0;
-            max-height: 200px;
-            overflow-y: auto;
-            border: 1px solid #e9ecef;
-            border-radius: 8px;
-            background: white;
-            display: none;
-            position: absolute;
-            width: calc(100% - 28px);
-            z-index: 10;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        .fill-form .form-group .hint {
+            font-size: 12px;
+            color: #6c757d;
+            margin-top: 4px;
         }
 
-        .fill-form .form-group .autocomplete-list li {
-            padding: 10px 14px;
-            cursor: pointer;
-            border-bottom: 1px solid #f1f3f5;
-            transition: background 0.2s;
-        }
-
-        .fill-form .form-group .autocomplete-list li:hover {
-            background: #f0f7ff;
+        .fill-form .form-group .days-auto {
+            font-size: 12px;
+            color: #28a745;
+            margin-top: 4px;
         }
 
         .form-actions {
@@ -524,6 +509,16 @@
             gap: 12px;
             margin-top: 20px;
             flex-wrap: wrap;
+        }
+
+        .form-actions button {
+            padding: 10px 24px;
+            border: none;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
         }
 
         .form-actions .btn-secondary {
@@ -711,10 +706,6 @@
             .blank-item .blank-actions {
                 justify-content: center;
             }
-
-            .fill-form .form-group .autocomplete-list {
-                width: calc(100% - 20px);
-            }
         }
     </style>
 </head>
@@ -788,21 +779,11 @@
             <button class="modal-close" onclick="closeFillModal()">✕</button>
             <div class="modal-title" id="fillModalTitle">📝 Заполнение бланка</div>
             <form class="fill-form" id="fillForm">
-                <div class="form-group">
-                    <label for="fillFio">👤 ФИО</label>
-                    <input type="text" id="fillFio" placeholder="Начните вводить фамилию..." autocomplete="off">
-                    <ul class="autocomplete-list" id="autocompleteList"></ul>
-                </div>
-                <div class="form-group">
-                    <label for="fillPosition">📋 Должность</label>
-                    <input type="text" id="fillPosition" placeholder="Должность">
-                </div>
-                <div class="form-group">
-                    <label for="fillDate">📅 Дата</label>
-                    <input type="date" id="fillDate">
+                <div id="dynamicFields">
+                    <!-- Поля будут генерироваться динамически -->
                 </div>
                 <div style="background: #f8f9fa; padding: 12px; border-radius: 8px; margin-top: 10px; text-align: left; font-size: 14px; color: #6c757d;">
-                    💡 Начните вводить фамилию — данные подтянутся из справочника администрации.
+                    💡 Все поля можно редактировать вручную. Незаполненные поля останутся пустыми.
                 </div>
                 <div class="form-actions">
                     <button type="button" class="btn-secondary" onclick="closeFillModal()">Отмена</button>
@@ -838,38 +819,91 @@
             });
         });
 
-        // ===== ДАННЫЕ =====
-        let employeesData = null;
-        let currentBlankName = '';
-
-        async function loadEmployeesData() {
-            try {
-                const response = await fetch('administration-directory/employees.json');
-                const data = await response.json();
-                employeesData = data;
-                return data;
-            } catch (error) {
-                console.error('Ошибка загрузки данных сотрудников:', error);
-                return null;
+        // ===== КОНФИГУРАЦИЯ ПОЛЕЙ ДЛЯ БЛАНКОВ =====
+        const blankConfigs = {
+            'Заявление на отпуск за свой счет': {
+                fields: [
+                    { id: 'fio', label: '👤 ФИО (в родительном падеже)', type: 'text', placeholder: 'Например: Сажина Константина Анатольевича', hint: 'Введите ФИО в родительном падеже' },
+                    { id: 'position', label: '📋 Должность', type: 'text', placeholder: 'Например: Глава муниципального района', hint: 'Введите должность' },
+                    { id: 'start_date', label: '📅 Дата начала', type: 'date', hint: 'Выберите дату начала' },
+                    { id: 'end_date', label: '📅 Дата окончания', type: 'date', hint: 'Выберите дату окончания' },
+                    { id: 'days_count', label: '🔢 Количество дней', type: 'number', placeholder: 'Например: 5', hint: 'Рассчитывается автоматически, можно изменить вручную' },
+                    { id: 'statement_date', label: '📅 Дата заявления', type: 'date', hint: 'Дата подачи заявления' }
+                ],
+                documentText: (data) => {
+                    const start = data.start_date || '_____________';
+                    const end = data.end_date || '_____________';
+                    const days = data.days_count || '___';
+                    return `Прошу предоставить отпуск без сохранения заработной платы в количестве ${days} дней с ${start} по ${end}.`;
+                }
+            },
+            'Заявление на привлечение к работе в выходные дни (2026)': {
+                fields: [
+                    { id: 'fio', label: '👤 ФИО (в родительном падеже)', type: 'text', placeholder: 'Например: Сажина Константина Анатольевича', hint: 'Введите ФИО в родительном падеже' },
+                    { id: 'position', label: '📋 Должность', type: 'text', placeholder: 'Например: Глава муниципального района', hint: 'Введите должность' },
+                    { id: 'work_date', label: '📅 Дата работы', type: 'date', hint: 'Выберите дату, когда планируется работа' },
+                    { id: 'statement_date', label: '📅 Дата заявления', type: 'date', hint: 'Дата подачи заявления' }
+                ],
+                documentText: (data) => {
+                    const date = data.work_date || '_____________';
+                    return `Прошу привлечь меня к работе в выходной день ${date}.`;
+                }
+            },
+            'Заявление на материальную помощь': {
+                fields: [
+                    { id: 'fio', label: '👤 ФИО (в родительном падеже)', type: 'text', placeholder: 'Например: Сажина Константина Анатольевича', hint: 'Введите ФИО в родительном падеже' },
+                    { id: 'position', label: '📋 Должность', type: 'text', placeholder: 'Например: Глава муниципального района', hint: 'Введите должность' },
+                    { id: 'help_reason', label: '📝 Основание для помощи', type: 'text', placeholder: 'Например: в связи с тяжёлым материальным положением', hint: 'Укажите причину' },
+                    { id: 'statement_date', label: '📅 Дата заявления', type: 'date', hint: 'Дата подачи заявления' }
+                ],
+                documentText: (data) => {
+                    const reason = data.help_reason || '___________________________';
+                    return `Прошу оказать мне материальную помощь в связи с ${reason}.`;
+                }
+            },
+            'Заявление на отгулы': {
+                fields: [
+                    { id: 'fio', label: '👤 ФИО (в родительном падеже)', type: 'text', placeholder: 'Например: Сажина Константина Анатольевича', hint: 'Введите ФИО в родительном падеже' },
+                    { id: 'position', label: '📋 Должность', type: 'text', placeholder: 'Например: Глава муниципального района', hint: 'Введите должность' },
+                    { id: 'otgul_date', label: '📅 Дата отгула', type: 'date', hint: 'Выберите дату отгула' },
+                    { id: 'statement_date', label: '📅 Дата заявления', type: 'date', hint: 'Дата подачи заявления' }
+                ],
+                documentText: (data) => {
+                    const date = data.otgul_date || '_____________';
+                    return `Прошу предоставить мне отгул за ранее отработанное время ${date}.`;
+                }
+            },
+            'Заявление на часть отпуска': {
+                fields: [
+                    { id: 'fio', label: '👤 ФИО (в родительном падеже)', type: 'text', placeholder: 'Например: Сажина Константина Анатольевича', hint: 'Введите ФИО в родительном падеже' },
+                    { id: 'position', label: '📋 Должность', type: 'text', placeholder: 'Например: Глава муниципального района', hint: 'Введите должность' },
+                    { id: 'start_date', label: '📅 Дата начала', type: 'date', hint: 'Выберите дату начала' },
+                    { id: 'end_date', label: '📅 Дата окончания', type: 'date', hint: 'Выберите дату окончания' },
+                    { id: 'days_count', label: '🔢 Количество дней', type: 'number', placeholder: 'Например: 5', hint: 'Рассчитывается автоматически, можно изменить вручную' },
+                    { id: 'statement_date', label: '📅 Дата заявления', type: 'date', hint: 'Дата подачи заявления' }
+                ],
+                documentText: (data) => {
+                    const start = data.start_date || '_____________';
+                    const end = data.end_date || '_____________';
+                    const days = data.days_count || '___';
+                    return `Прошу предоставить мне часть ежегодного оплачиваемого отпуска в количестве ${days} дней с ${start} по ${end}.`;
+                }
+            },
+            'Заявление на донорские дни': {
+                fields: [
+                    { id: 'fio', label: '👤 ФИО (в родительном падеже)', type: 'text', placeholder: 'Например: Сажина Константина Анатольевича', hint: 'Введите ФИО в родительном падеже' },
+                    { id: 'position', label: '📋 Должность', type: 'text', placeholder: 'Например: Глава муниципального района', hint: 'Введите должность' },
+                    { id: 'donation_date', label: '📅 Дата сдачи крови', type: 'date', hint: 'Выберите дату сдачи крови' },
+                    { id: 'rest_days', label: '🔢 Количество дней отдыха', type: 'number', placeholder: 'Например: 1', hint: 'Укажите количество дней' },
+                    { id: 'statement_date', label: '📅 Дата заявления', type: 'date', hint: 'Дата подачи заявления' }
+                ],
+                documentText: (data) => {
+                    const date = data.donation_date || '_____________';
+                    const days = data.rest_days || '___';
+                    return `Прошу предоставить мне ${days} дней отдыха в связи со сдачей крови ${date}.`;
+                }
             }
-        }
-
-        function getAllEmployees(data) {
-            const employees = [];
-            if (data && data.departments) {
-                data.departments.forEach(dept => {
-                    dept.employees.forEach(emp => {
-                        if (emp.name && emp.name.trim() !== '') {
-                            employees.push({
-                                name: emp.name,
-                                position: emp.position || ''
-                            });
-                        }
-                    });
-                });
-            }
-            return employees;
-        }
+        };
 
         // ===== БЛАНКИ =====
         const blanks = [
@@ -881,6 +915,10 @@
             { name: 'Заявление на донорские дни', file: 'blanki/zayavlenie_donorskie_dni.docx' }
         ];
 
+        let currentBlankName = '';
+        let currentConfig = null;
+
+        // ===== ОТКРЫТИЕ БЛАНКОВ =====
         function openBlanks() {
             const modal = document.getElementById('blanksModal');
             const body = document.getElementById('blanksBody');
@@ -913,29 +951,91 @@
         });
 
         // ===== ЗАПОЛНЕНИЕ =====
-        let selectedEmployee = null;
-
-        async function openFillModal(blankName) {
+        function openFillModal(blankName) {
             currentBlankName = blankName;
+            currentConfig = blankConfigs[blankName];
             
-            if (!employeesData) {
-                await loadEmployeesData();
+            if (!currentConfig) {
+                alert('Конфигурация для этого бланка не найдена');
+                return;
             }
             
-            document.getElementById('fillFio').value = '';
-            document.getElementById('fillPosition').value = '';
-            document.getElementById('autocompleteList').innerHTML = '';
-            document.getElementById('autocompleteList').style.display = 'none';
-            selectedEmployee = null;
+            const container = document.getElementById('dynamicFields');
+            container.innerHTML = '';
             
+            // Генерируем поля
+            currentConfig.fields.forEach(field => {
+                const group = document.createElement('div');
+                group.className = 'form-group';
+                
+                const label = document.createElement('label');
+                label.textContent = field.label;
+                label.htmlFor = field.id;
+                group.appendChild(label);
+                
+                const input = document.createElement('input');
+                input.type = field.type || 'text';
+                input.id = field.id;
+                input.placeholder = field.placeholder || '';
+                input.className = 'fill-input';
+                
+                // Автоматический расчёт дней для полей с датами
+                if (field.id === 'days_count') {
+                    input.readOnly = false;
+                    input.dataset.auto = 'true';
+                    
+                    // Подписываемся на изменения дат
+                    setTimeout(() => {
+                        const startInput = document.getElementById('start_date');
+                        const endInput = document.getElementById('end_date');
+                        const daysInput = document.getElementById('days_count');
+                        
+                        if (startInput && endInput && daysInput) {
+                            const calcDays = () => {
+                                if (startInput.value && endInput.value) {
+                                    const start = new Date(startInput.value);
+                                    const end = new Date(endInput.value);
+                                    const diff = Math.ceil((end - start) / (1000 * 60 * 60 * 24)) + 1;
+                                    if (diff > 0 && !daysInput.dataset.manual) {
+                                        daysInput.value = diff;
+                                    }
+                                }
+                            };
+                            
+                            startInput.addEventListener('change', () => { daysInput.dataset.manual = false; calcDays(); });
+                            endInput.addEventListener('change', () => { daysInput.dataset.manual = false; calcDays(); });
+                            daysInput.addEventListener('input', () => { daysInput.dataset.manual = 'true'; });
+                        }
+                    }, 100);
+                }
+                
+                group.appendChild(input);
+                
+                // Подсказка
+                if (field.hint) {
+                    const hint = document.createElement('div');
+                    hint.className = 'hint';
+                    hint.textContent = field.hint;
+                    group.appendChild(hint);
+                }
+                
+                container.appendChild(group);
+            });
+            
+            // Устанавливаем дату заявления по умолчанию
             const today = new Date().toISOString().split('T')[0];
-            document.getElementById('fillDate').value = today;
+            const statementDateInput = document.getElementById('statement_date');
+            if (statementDateInput) {
+                statementDateInput.value = today;
+            }
             
             document.getElementById('fillModalTitle').textContent = `📝 Заполнение: ${blankName}`;
-            
             document.getElementById('fillModal').classList.add('active');
             document.body.style.overflow = 'hidden';
-            document.getElementById('fillFio').focus();
+            
+            // Фокусируемся на первом поле
+            const firstInput = container.querySelector('input');
+            if (firstInput) firstInput.focus();
         }
 
         function closeFillModal() {
@@ -947,101 +1047,71 @@
             if (e.target === this) closeFillModal();
         });
 
-        document.addEventListener('DOMContentLoaded', function() {
-            const fioInput = document.getElementById('fillFio');
-            const autocompleteList = document.getElementById('autocompleteList');
-            
-            fioInput.addEventListener('input', function() {
-                const query = this.value.toLowerCase().trim();
-                
-                if (query.length < 2) {
-                    autocompleteList.style.display = 'none';
-                    autocompleteList.innerHTML = '';
-                    selectedEmployee = null;
-                    return;
-                }
-                
-                const allEmployees = getAllEmployees(employeesData);
-                const filtered = allEmployees.filter(emp => 
-                    emp.name.toLowerCase().includes(query)
-                );
-                
-                if (filtered.length === 0) {
-                    autocompleteList.style.display = 'none';
-                    autocompleteList.innerHTML = '';
-                    return;
-                }
-                
-                autocompleteList.innerHTML = '';
-                filtered.slice(0, 10).forEach(emp => {
-                    const li = document.createElement('li');
-                    li.textContent = emp.name;
-                    li.addEventListener('click', function() {
-                        fioInput.value = emp.name;
-                        document.getElementById('fillPosition').value = emp.position || '';
-                        selectedEmployee = emp;
-                        autocompleteList.style.display = 'none';
-                        autocompleteList.innerHTML = '';
-                    });
-                    autocompleteList.appendChild(li);
-                });
-                
-                autocompleteList.style.display = 'block';
-            });
-            
-            fioInput.addEventListener('blur', function() {
-                setTimeout(() => {
-                    autocompleteList.style.display = 'none';
-                    autocompleteList.innerHTML = '';
-                }, 200);
-            });
-            
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape') {
-                    closeFillModal();
-                }
-            });
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeFillModal();
+            }
         });
 
-        // ===== ГЕНЕРАЦИЯ ДОКУМЕНТА (через HTML) =====
+        // ===== ГЕНЕРАЦИЯ ДОКУМЕНТА =====
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('downloadFilledBtn').addEventListener('click', function() {
-                const fio = document.getElementById('fillFio').value.trim();
-                const position = document.getElementById('fillPosition').value.trim();
-                const date = document.getElementById('fillDate').value;
+                if (!currentConfig) {
+                    alert('Ошибка: не выбран бланк');
+                    return;
+                }
                 
-                if (!fio) {
+                // Собираем данные из формы
+                const data = {};
+                let hasData = false;
+                
+                currentConfig.fields.forEach(field => {
+                    const input = document.getElementById(field.id);
+                    if (input) {
+                        const value = input.value.trim();
+                        data[field.id] = value;
+                        if (value) hasData = true;
+                    }
+                });
+                
+                if (!data.fio || !data.fio.trim()) {
                     alert('Пожалуйста, укажите ФИО.');
                     return;
                 }
                 
-                if (!date) {
-                    alert('Пожалуйста, укажите дату.');
-                    return;
-                }
-                
-                const dateParts = date.split('-');
-                const formattedDate = `${dateParts[2]}.${dateParts[1]}.${dateParts[0]}`;
-                
-                generateFilledDoc(fio, position, formattedDate, currentBlankName);
+                generateFilledDoc(data, currentBlankName);
             });
         });
 
-        function generateFilledDoc(fio, position, date, blankName) {
+        function generateFilledDoc(data, blankName) {
             try {
-                // Определяем текст заявления
-                const blankMap = {
-                    'Заявление на отпуск за свой счет': 'отпуск без сохранения заработной платы',
-                    'Заявление на привлечение к работе в выходные дни (2026)': 'привлечение к работе в выходной день',
-                    'Заявление на материальную помощь': 'оказание материальной помощи',
-                    'Заявление на отгулы': 'предоставление отгула за ранее отработанное время',
-                    'Заявление на часть отпуска': 'часть ежегодного оплачиваемого отпуска',
-                    'Заявление на донорские дни': 'день отдыха в связи со сдачей крови'
+                const config = blankConfigs[blankName];
+                if (!config) {
+                    alert('Конфигурация для этого бланка не найдена');
+                    return;
+                }
+                
+                // Форматируем даты
+                const formatDate = (dateStr) => {
+                    if (!dateStr) return '_____________';
+                    const parts = dateStr.split('-');
+                    return `${parts[2]}.${parts[1]}.${parts[0]}`;
                 };
                 
-                const reason = blankMap[blankName] || 'отпуск без сохранения заработной платы';
+                // Подготавливаем данные для документа
+                const docData = { ...data };
+                if (docData.start_date) docData.start_date = formatDate(docData.start_date);
+                if (docData.end_date) docData.end_date = formatDate(docData.end_date);
+                if (docData.statement_date) docData.statement_date = formatDate(docData.statement_date);
+                if (docData.work_date) docData.work_date = formatDate(docData.work_date);
+                if (docData.otgul_date) docData.otgul_date = formatDate(docData.otgul_date);
+                if (docData.donation_date) docData.donation_date = formatDate(docData.donation_date);
+                if (!docData.days_count) docData.days_count = '___';
                 
-                // Создаём HTML-содержимое для документа
+                // Формируем текст заявления
+                const text = config.documentText(docData);
+                
+                // Собираем HTML
                 const htmlContent = `
                     <html xmlns:o='urn:schemas-microsoft-com:office:office' 
                           xmlns:w='urn:schemas-microsoft-com:office:word' 
@@ -1049,60 +1119,57 @@
                     <head>
                         <meta charset="utf-8">
                         <title>Заявление</title>
-                        <!--[if gte mso 9]>
-                        <xml>
-                            <w:WordDocument>
-                                <w:View>Print</w:View>
-                                <w:Zoom>100</w:Zoom>
-                            </w:WordDocument>
-                        </xml>
-                        <![endif]-->
                         <style>
-                            body { font-family: 'Times New Roman', serif; font-size: 14pt; margin: 40px; }
-                            .header { text-align: right; margin-bottom: 20px; }
-                            .title { text-align: center; font-weight: bold; font-size: 16pt; margin-bottom: 30px; text-transform: uppercase; }
-                            .text { margin-bottom: 20px; line-height: 1.5; }
-                            .signature { text-align: right; margin-top: 30px; }
+                            body { 
+                                font-family: 'Times New Roman', serif; 
+                                font-size: 14pt; 
+                                margin: 80px 60px; 
+                                line-height: 1.4;
+                            }
+                            .header { text-align: right; margin-bottom: 30px; }
+                            .header .from { margin-top: 15px; }
+                            .header .from-line { margin-top: 3px; }
+                            .title { text-align: center; font-weight: bold; font-size: 16pt; margin: 40px 0 30px 0; text-transform: uppercase; }
+                            .text { margin-bottom: 20px; line-height: 1.6; text-indent: 0px; }
+                            .date-line { margin-top: 30px; }
+                            .signature { text-align: right; margin-top: 40px; }
                             .signature-line { margin-top: 10px; }
+                            .empty-field { text-decoration: underline; text-decoration-style: solid; padding: 0 5px; }
                         </style>
                     </head>
                     <body>
                         <div class="header">
-                            <div>Главе муниципального района «Корткеросский»</div>
-                            <div>Сажину К.А.</div>
-                            <br>
-                            <div>от ${fio}</div>
-                            <div>должность: ${position}</div>
+                            <div>Главе муниципального района «Корткеросский» Республики Коми –</div>
+                            <div>руководителю администрации</div>
+                            <div>К.А. Сажину</div>
+                            <div class="from">от ${docData.fio || '_________________'}</div>
+                            <div class="from-line">${docData.position || '_________________'}</div>
                         </div>
                         
                         <div class="title">ЗАЯВЛЕНИЕ</div>
                         
                         <div class="text">
-                            Прошу предоставить мне ${reason} с ${date}.
+                            ${text}
                         </div>
                         
-                        <div class="text">
-                            Дата: ${date}
+                        <div class="date-line">
+                            Дата: ${docData.statement_date || '_____________'}
                         </div>
                         
                         <div class="signature">
-                            <div>__________________</div>
+                            <div class="signature-line">__________________</div>
                             <div>(подпись)</div>
                         </div>
                     </body>
                     </html>
                 `;
                 
-                // Создаём Blob с типом application/msword
-                const blob = new Blob([htmlContent], { 
-                    type: 'application/msword;charset=utf-8' 
-                });
-                
-                // Скачиваем
+                const blob = new Blob([htmlContent], { type: 'application/msword;charset=utf-8' });
                 const link = document.createElement('a');
                 link.href = URL.createObjectURL(blob);
-                const fileName = `Заявление_${fio.replace(/\s+/g, '_')}_${date}.doc`;
-                link.download = fileName;
+                const fio = docData.fio || 'заявление';
+                const date = docData.statement_date || new Date().toISOString().split('T')[0];
+                link.download = `Заявление_${fio.replace(/\s+/g, '_')}_${date}.doc`;
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
