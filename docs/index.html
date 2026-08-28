@@ -497,12 +497,6 @@
             margin-top: 4px;
         }
 
-        .fill-form .form-group .days-auto {
-            font-size: 12px;
-            color: #28a745;
-            margin-top: 4px;
-        }
-
         .form-actions {
             display: flex;
             justify-content: flex-end;
@@ -1126,39 +1120,83 @@
                                 margin: 80px 60px; 
                                 line-height: 1.4;
                             }
-                            .header { text-align: right; margin-bottom: 30px; }
-                            .header .from { margin-top: 15px; }
-                            .header .from-line { margin-top: 3px; }
-                            .title { text-align: center; font-weight: bold; font-size: 16pt; margin: 40px 0 30px 0; text-transform: uppercase; }
-                            .text { margin-bottom: 20px; line-height: 1.6; text-indent: 0px; }
-                            .date-line { margin-top: 30px; }
-                            .signature { text-align: right; margin-top: 40px; }
-                            .signature-line { margin-top: 10px; }
-                            .empty-field { text-decoration: underline; text-decoration-style: solid; padding: 0 5px; }
+                            /* ШАПКА — правый верхний угол */
+                            .header { 
+                                text-align: right; 
+                                margin-right: 20px;
+                                margin-bottom: 30px; 
+                                line-height: 1.3;
+                            }
+                            .header .from { 
+                                margin-top: 10px; 
+                            }
+                            .header .from-line { 
+                                margin-top: 2px; 
+                            }
+                            /* ДАТА И ПОДПИСЬ В ОДНОЙ СТРОКЕ */
+                            .footer { 
+                                margin-top: 40px; 
+                                display: flex; 
+                                justify-content: space-between; 
+                                align-items: center;
+                                width: 100%;
+                            }
+                            .footer .date { 
+                                text-align: left; 
+                                flex: 1;
+                            }
+                            .footer .signature { 
+                                text-align: right; 
+                                flex: 1;
+                            }
+                            .footer .signature-line { 
+                                margin-top: 5px; 
+                            }
+                            /* ЗАГОЛОВОК */
+                            .title { 
+                                text-align: center; 
+                                font-weight: bold; 
+                                font-size: 16pt; 
+                                margin: 40px 0 30px 0; 
+                                text-transform: uppercase; 
+                                letter-spacing: 1px;
+                            }
+                            .text { 
+                                margin-bottom: 20px; 
+                                line-height: 1.6; 
+                                text-indent: 0px; 
+                                text-align: left;
+                            }
                         </style>
                     </head>
                     <body>
+                        <!-- ШАПКА -->
                         <div class="header">
-                            <div>Главе муниципального района «Корткеросский» Республики Коми –</div>
+                            <div>Главе муниципального района</div>
+                            <div>«Корткеросский» Республики Коми –</div>
                             <div>руководителю администрации</div>
                             <div>К.А. Сажину</div>
                             <div class="from">от ${docData.fio || '_________________'}</div>
                             <div class="from-line">${docData.position || '_________________'}</div>
                         </div>
                         
+                        <!-- ЗАГОЛОВОК -->
                         <div class="title">ЗАЯВЛЕНИЕ</div>
                         
+                        <!-- ТЕКСТ -->
                         <div class="text">
                             ${text}
                         </div>
                         
-                        <div class="date-line">
-                            Дата: ${docData.statement_date || '_____________'}
-                        </div>
-                        
-                        <div class="signature">
-                            <div class="signature-line">__________________</div>
-                            <div>(подпись)</div>
+                        <!-- ДАТА И ПОДПИСЬ В ОДНОЙ СТРОКЕ -->
+                        <div class="footer">
+                            <div class="date">
+                                Дата: ${docData.statement_date || '_____________'}
+                            </div>
+                            <div class="signature">
+                                <div class="signature-line">__________________</div>
+                                <div>(подпись)</div>
+                            </div>
                         </div>
                     </body>
                     </html>
