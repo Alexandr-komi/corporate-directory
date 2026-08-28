@@ -1106,7 +1106,7 @@
                 const position = docData.position || '_________________';
                 const statementDate = docData.statement_date || '_____________';
                 
-                // Собираем HTML
+                // Собираем HTML с таблицами для точного позиционирования
                 const htmlContent = `
                     <html xmlns:o='urn:schemas-microsoft-com:office:office' 
                           xmlns:w='urn:schemas-microsoft-com:office:word' 
@@ -1121,31 +1121,37 @@
                                 margin: 80px 60px; 
                                 line-height: 1.4;
                             }
-                            /* ШАПКА — правый верхний угол, сдвинута до середины листа */
-                            .header { 
-                                text-align: right; 
-                                margin-right: 40%;
-                                margin-bottom: 30px; 
-                                line-height: 1.5;
+                            .header-table {
+                                width: 100%;
+                                margin-bottom: 30px;
+                            }
+                            .header-table td {
+                                text-align: right;
+                                padding: 2px 0;
+                                vertical-align: top;
+                            }
+                            .header-table .label {
+                                font-weight: normal;
                             }
                             /* ДАТА И ПОДПИСЬ В ОДНОЙ СТРОКЕ */
-                            .footer { 
-                                margin-top: 40px; 
-                                display: flex; 
-                                justify-content: space-between; 
-                                align-items: flex-end;
+                            .footer-table {
+                                margin-top: 40px;
                                 width: 100%;
                             }
-                            .footer .date { 
-                                text-align: left; 
-                                flex: 1;
+                            .footer-table td {
+                                vertical-align: bottom;
+                                padding: 0;
                             }
-                            .footer .signature { 
-                                text-align: right; 
-                                flex: 1;
+                            .footer-table .date-cell {
+                                text-align: left;
+                                width: 50%;
                             }
-                            .footer .signature-line { 
-                                margin-top: 5px; 
+                            .footer-table .signature-cell {
+                                text-align: right;
+                                width: 50%;
+                            }
+                            .signature-line {
+                                margin-top: 5px;
                             }
                             .title { 
                                 text-align: center; 
@@ -1164,32 +1170,32 @@
                         </style>
                     </head>
                     <body>
-                        <!-- ШАПКА (единый блок) -->
-                        <div class="header">
-                            Главе муниципального района<br>
-                            «Корткеросский» Республики Коми –<br>
-                            руководителю администрации<br>
-                            К.А. Сажину<br>
-                            от ${fio}<br>
-                            ${position}
-                        </div>
+                        <!-- ШАПКА (таблица с выравниванием вправо) -->
+                        <table class="header-table">
+                            <tr><td>Главе муниципального района</td></tr>
+                            <tr><td>«Корткеросский» Республики Коми –</td></tr>
+                            <tr><td>руководителю администрации</td></tr>
+                            <tr><td>К.А. Сажину</td></tr>
+                            <tr><td style="padding-top: 10px;"><b>от ${fio}</b></td></tr>
+                            <tr><td style="padding-top: 2px;"><b>${position}</b></td></tr>
+                        </table>
                         
                         <!-- ЗАГОЛОВОК -->
                         <div class="title">ЗАЯВЛЕНИЕ</div>
                         
                         <!-- ТЕКСТ -->
-                        <div class="text">
-                            ${text}
-                        </div>
+                        <div class="text">${text}</div>
                         
-                        <!-- ДАТА И ПОДПИСЬ В ОДНОЙ СТРОКЕ -->
-                        <div class="footer">
-                            <div class="date">Дата: ${statementDate}</div>
-                            <div class="signature">
-                                <div class="signature-line">__________________</div>
-                                <div>(подпись)</div>
-                            </div>
-                        </div>
+                        <!-- ДАТА И ПОДПИСЬ В ОДНОЙ СТРОКЕ (таблица) -->
+                        <table class="footer-table">
+                            <tr>
+                                <td class="date-cell">Дата: ${statementDate}</td>
+                                <td class="signature-cell">
+                                    <div>__________________</div>
+                                    <div>(подпись)</div>
+                                </td>
+                            </tr>
+                        </table>
                     </body>
                     </html>
                 `;
