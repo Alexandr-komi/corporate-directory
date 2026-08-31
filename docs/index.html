@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Справочники Корткеросского района</title>
+    <!-- Подключаем библиотеки для PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         /* ===== ОБЩИЕ СТИЛИ ===== */
         * {
@@ -14,13 +17,11 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            background: #f8f9fa;
+            background: #f0f4f8;
             min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             padding: 20px;
-            transition: background 0.3s ease, color 0.3s ease;
+            display: flex;
+            justify-content: center;
         }
 
         .portal-container {
@@ -30,27 +31,25 @@
             border-radius: 12px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
             padding: 40px;
-            text-align: center;
             border: 1px solid #e9ecef;
-            transition: background 0.3s ease, border-color 0.3s ease;
+            margin: 20px 0;
         }
 
         .portal-title {
             font-size: 28px;
             color: #1e3c72;
-            margin-bottom: 8px;
-            font-weight: 700;
-            transition: color 0.3s ease;
+            margin-bottom: 10px;
+            text-align: center;
         }
 
         .portal-subtitle {
-            font-size: 16px;
+            text-align: center;
             color: #6c757d;
             margin-bottom: 30px;
-            transition: color 0.3s ease;
+            font-size: 16px;
         }
 
-        /* ===== ПЕРЕКЛЮЧАТЕЛЬ ТЕМЫ ===== */
+        /* ===== ТЕМНАЯ ТЕМА ===== */
         .theme-toggle-wrapper {
             display: flex;
             justify-content: flex-end;
@@ -83,6 +82,143 @@
         body.dark-theme #themeToggle:hover {
             background: #e0e0e0;
             color: #1a1a2e;
+        }
+
+        body.dark-theme {
+            background: #1a1a2e;
+        }
+
+        body.dark-theme .portal-container {
+            background: #16213e;
+            border-color: #2a3a5e;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        body.dark-theme .portal-title {
+            color: #e0e0e0;
+        }
+
+        body.dark-theme .portal-subtitle {
+            color: #a0a0a0;
+        }
+
+        body.dark-theme .search-box input {
+            background: #1e2a4a;
+            color: #e0e0e0;
+            border-color: #2a3a5e;
+        }
+
+        body.dark-theme .search-box input::placeholder {
+            color: #6a7a8a;
+        }
+
+        body.dark-theme .search-results {
+            background: #1e2a4a;
+            border-color: #2a3a5e;
+        }
+
+        body.dark-theme .search-result-item {
+            color: #e0e0e0;
+            border-color: #2a3a5e;
+        }
+
+        body.dark-theme .search-result-item:hover {
+            background: #2a3a6a;
+        }
+
+        body.dark-theme .portal-card {
+            background: #1e2a4a;
+            border-color: #4dabf7;
+            color: #e0e0e0;
+        }
+
+        body.dark-theme .portal-card:hover {
+            background: #4dabf7;
+            border-color: #4dabf7;
+        }
+
+        body.dark-theme .portal-card .name {
+            color: #e0e0e0;
+        }
+
+        body.dark-theme .portal-card .desc {
+            color: #a0a0a0;
+        }
+
+        body.dark-theme .portal-card:hover .name,
+        body.dark-theme .portal-card:hover .desc {
+            color: #1a1a2e;
+        }
+
+        body.dark-theme .portal-actions a,
+        body.dark-theme .portal-actions button {
+            color: #e0e0e0;
+            border-color: #e0e0e0;
+        }
+
+        body.dark-theme .portal-actions a:hover,
+        body.dark-theme .portal-actions button:hover {
+            background: #e0e0e0;
+            color: #1a1a2e;
+        }
+
+        body.dark-theme .modal-content {
+            background: #16213e;
+            border-color: #2a3a5e;
+        }
+
+        body.dark-theme .modal-title {
+            color: #e0e0e0;
+            border-color: #2a3a5e;
+        }
+
+        body.dark-theme .modal-row .label {
+            color: #a0a0a0;
+        }
+
+        body.dark-theme .modal-row .value {
+            color: #e0e0e0;
+        }
+
+        body.dark-theme .blank-item {
+            background: #1e2a4a;
+            border-color: #2a3a5e;
+        }
+
+        body.dark-theme .blank-item .blank-name {
+            color: #e0e0e0;
+        }
+
+        body.dark-theme .blank-item:hover {
+            background: #2a3a6a;
+        }
+
+        body.dark-theme .fill-form .form-group label {
+            color: #e0e0e0;
+        }
+
+        body.dark-theme .fill-form .form-group input {
+            background: #1e2a4a;
+            color: #e0e0e0;
+            border-color: #2a3a5e;
+        }
+
+        body.dark-theme .fill-form .form-group .hint {
+            color: #a0a0a0;
+        }
+
+        body.dark-theme .portal-thanks a {
+            color: #e0e0e0;
+            border-color: #e0e0e0;
+        }
+
+        body.dark-theme .portal-thanks a:hover {
+            background: #e0e0e0;
+            color: #1a1a2e;
+        }
+
+        body.dark-theme .portal-thanks {
+            border-color: #2a3a5e;
         }
 
         /* ===== ПОИСК ===== */
@@ -316,6 +452,7 @@
             max-height: 90vh;
             overflow-y: auto;
             border: 1px solid #e9ecef;
+            transition: background 0.3s ease, border-color 0.3s ease;
         }
 
         .modal-close {
@@ -398,7 +535,88 @@
             display: block;
         }
 
-        /* ===== БЛАНКИ ЗАЯВЛЕНИЙ ===== */
+        /* ===== МОДАЛЬНОЕ ОКНО ДЛЯ БЛАНКОВ ===== */
+        .fill-form .form-group {
+            margin-bottom: 18px;
+            text-align: left;
+        }
+
+        .fill-form .form-group label {
+            display: block;
+            font-weight: 600;
+            color: #1e3c72;
+            margin-bottom: 5px;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        .fill-form .form-group input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: all 0.2s;
+            background: white;
+            color: #2c3e50;
+        }
+
+        .fill-form .form-group input:focus {
+            outline: none;
+            border-color: #4dabf7;
+            box-shadow: 0 0 0 3px rgba(77, 171, 247, 0.1);
+        }
+
+        .fill-form .form-group .hint {
+            font-size: 12px;
+            color: #6c757d;
+            margin-top: 4px;
+            transition: color 0.3s ease;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .form-actions button {
+            padding: 10px 24px;
+            border: none;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .form-actions .btn-secondary {
+            background: #e9ecef;
+            color: #495057;
+        }
+
+        .form-actions .btn-secondary:hover {
+            background: #dee2e6;
+        }
+
+        .form-actions .btn-primary {
+            background: #4dabf7;
+            color: white;
+        }
+
+        .form-actions .btn-primary:hover {
+            background: #1e3c72;
+        }
+
+        /* ===== БЛАНКИ (список) ===== */
         .blank-item {
             display: flex;
             justify-content: space-between;
@@ -460,77 +678,122 @@
             background: #1e7e34;
         }
 
-        /* ===== ФОРМА ЗАПОЛНЕНИЯ БЛАНКА ===== */
-        .fill-form .form-group {
-            margin-bottom: 18px;
-            text-align: left;
-        }
-
-        .fill-form .form-group label {
-            display: block;
-            font-weight: 600;
-            color: #1e3c72;
-            margin-bottom: 5px;
-            font-size: 14px;
-        }
-
-        .fill-form .form-group input {
-            width: 100%;
-            padding: 10px 14px;
-            border: 2px solid #e9ecef;
-            border-radius: 8px;
-            font-size: 15px;
-            transition: all 0.2s;
-            background: white;
-            color: #2c3e50;
-        }
-
-        .fill-form .form-group input:focus {
-            outline: none;
-            border-color: #4dabf7;
-            box-shadow: 0 0 0 3px rgba(77, 171, 247, 0.1);
-        }
-
-        .fill-form .form-group .hint {
-            font-size: 12px;
-            color: #6c757d;
-            margin-top: 4px;
-        }
-
-        .form-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 12px;
+        /* ===== ПРЕДПРОСМОТР PDF ===== */
+        .pdf-preview {
+            display: none;
             margin-top: 20px;
-            flex-wrap: wrap;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            border: 1px solid #e9ecef;
+            font-family: 'Times New Roman', serif;
         }
 
-        .form-actions button {
-            padding: 10px 24px;
-            border: none;
-            border-radius: 30px;
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s;
+        .pdf-preview.active {
+            display: block;
         }
 
-        .form-actions .btn-secondary {
-            background: #e9ecef;
-            color: #495057;
+        .pdf-preview .preview-header {
+            text-align: right;
+            margin-left: 55%;
+            margin-bottom: 20px;
+            line-height: 1.6;
+            font-size: 14pt;
         }
 
-        .form-actions .btn-secondary:hover {
-            background: #dee2e6;
+        .pdf-preview .preview-title {
+            text-align: center;
+            font-weight: bold;
+            font-size: 18px;
+            margin: 30px 0 20px 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        .form-actions .btn-primary {
-            background: #4dabf7;
-            color: white;
+        .pdf-preview .preview-text {
+            margin-bottom: 20px;
+            line-height: 1.6;
+            font-size: 14pt;
+            text-indent: 1.5em;
         }
 
-        .form-actions .btn-primary:hover {
-            background: #1e3c72;
+        .pdf-preview .preview-footer {
+            margin-top: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14pt;
+        }
+
+        .pdf-preview .preview-footer .signature-wrapper {
+            text-align: center;
+            flex: 1;
+        }
+
+        .pdf-preview .preview-footer .signature-line {
+            margin-bottom: 2px;
+        }
+
+        .pdf-preview .preview-footer .signature-label {
+            font-size: 12pt;
+            margin-top: 2px;
+        }
+
+        /* ===== СКРЫТЫЙ БЛОК ДЛЯ PDF ===== */
+        .pdf-wrapper {
+            position: absolute;
+            left: -9999px;
+            top: 0;
+            width: 800px;
+            background: white;
+            padding: 60px 90px 60px 110px;
+            font-family: 'Times New Roman', serif;
+        }
+
+        .pdf-wrapper .pdf-header {
+            text-align: left;
+            margin-left: 55%;
+            margin-bottom: 30px;
+            line-height: 1.6;
+            font-size: 14pt;
+        }
+
+        .pdf-wrapper .pdf-title {
+            text-align: center;
+            font-weight: bold;
+            font-size: 18px;
+            margin: 60px 0 30px 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .pdf-wrapper .pdf-text {
+            margin-bottom: 20px;
+            line-height: 1.6;
+            font-size: 14pt;
+            text-indent: 1.5em;
+        }
+
+        .pdf-wrapper .pdf-footer {
+            margin-top: 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14pt;
+        }
+
+        .pdf-wrapper .pdf-footer .signature-wrapper {
+            text-align: center;
+            flex: 1;
+        }
+
+        .pdf-wrapper .pdf-footer .signature-line {
+            margin-bottom: 2px;
+        }
+
+        .pdf-wrapper .pdf-footer .signature-label {
+            font-size: 12pt;
+            margin-top: 2px;
         }
 
         /* ===== КНОПКА "СПАСИБО" ===== */
@@ -538,6 +801,7 @@
             margin-top: 32px;
             padding-top: 28px;
             border-top: 1px solid #e9ecef;
+            transition: border-color 0.3s ease;
         }
 
         .portal-thanks a {
@@ -558,118 +822,35 @@
             color: white;
         }
 
-        /* ===== ТЁМНАЯ ТЕМА ===== */
-        body.dark-theme {
-            background: #1a1a2e;
+        /* ===== УВЕДОМЛЕНИЕ ===== */
+        .notification {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #1e3c72;
+            color: white;
+            padding: 14px 28px;
+            border-radius: 50px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            font-size: 15px;
+            font-weight: 500;
+            z-index: 1000;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
         }
 
-        body.dark-theme .portal-container {
-            background: #16213e;
-            border-color: #2a3a5e;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-        }
-
-        body.dark-theme .portal-title {
-            color: #e0e0e0;
-        }
-
-        body.dark-theme .portal-subtitle {
-            color: #a0a0a0;
-        }
-
-        body.dark-theme .search-box input {
-            background: #1e2a4a;
-            color: #e0e0e0;
-            border-color: #2a3a5e;
-        }
-
-        body.dark-theme .search-box input::placeholder {
-            color: #6a7a8a;
-        }
-
-        body.dark-theme .search-results {
-            background: #1e2a4a;
-            border-color: #2a3a5e;
-        }
-
-        body.dark-theme .search-result-item {
-            color: #e0e0e0;
-            border-color: #2a3a5e;
-        }
-
-        body.dark-theme .search-result-item:hover {
-            background: #2a3a6a;
-        }
-
-        body.dark-theme .portal-card {
-            background: #1e2a4a;
-            border-color: #4dabf7;
-            color: #e0e0e0;
-        }
-
-        body.dark-theme .portal-card:hover {
-            background: #4dabf7;
-            border-color: #4dabf7;
-        }
-
-        body.dark-theme .portal-card .name {
-            color: #e0e0e0;
-        }
-
-        body.dark-theme .portal-card .desc {
-            color: #a0a0a0;
-        }
-
-        body.dark-theme .portal-card:hover .name,
-        body.dark-theme .portal-card:hover .desc {
-            color: #1a1a2e;
-        }
-
-        body.dark-theme .portal-actions a,
-        body.dark-theme .portal-actions button {
-            color: #e0e0e0;
-            border-color: #e0e0e0;
-        }
-
-        body.dark-theme .portal-actions a:hover,
-        body.dark-theme .portal-actions button:hover {
-            background: #e0e0e0;
-            color: #1a1a2e;
-        }
-
-        body.dark-theme .modal-content {
-            background: #16213e;
-            border-color: #2a3a5e;
-        }
-
-        body.dark-theme .modal-title {
-            color: #e0e0e0;
-            border-color: #2a3a5e;
-        }
-
-        body.dark-theme .modal-row .label {
-            color: #a0a0a0;
-        }
-
-        body.dark-theme .modal-row .value {
-            color: #e0e0e0;
-        }
-
-        body.dark-theme .blank-item {
-            background: #1e2a4a;
-            border-color: #2a3a5e;
-        }
-
-        body.dark-theme .blank-item .blank-name {
-            color: #e0e0e0;
-        }
-
-        body.dark-theme .blank-item:hover {
-            background: #2a3a6a;
+        .notification.show {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         /* ===== АДАПТИВНОСТЬ ===== */
         @media (max-width: 600px) {
+            .portal-container {
+                padding: 24px;
+            }
+
             .portal-grid {
                 grid-template-columns: 1fr;
             }
@@ -678,13 +859,28 @@
                 font-size: 24px;
             }
 
-            .portal-container {
-                padding: 24px;
-            }
-
             .search-box input {
                 font-size: 14px;
                 padding: 12px 18px;
+            }
+
+            .search-result-item {
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+
+            .search-result-item .text .phone {
+                white-space: normal;
+            }
+
+            .modal-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 4px;
+            }
+
+            .modal-row .value {
+                text-align: left;
             }
 
             .blank-item {
@@ -700,11 +896,40 @@
             .blank-item .blank-actions {
                 justify-content: center;
             }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .pdf-preview .preview-header {
+                margin-left: 0;
+            }
+
+            .pdf-wrapper .pdf-header {
+                margin-left: 0;
+            }
+
+            .pdf-wrapper {
+                padding: 30px;
+            }
+
+            .pdf-preview .preview-footer {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+            }
+
+            .pdf-wrapper .pdf-footer {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="portal-container">
+        <!-- Переключатель темы -->
         <div class="theme-toggle-wrapper">
             <button id="themeToggle">🌙 Тёмная тема</button>
         </div>
@@ -712,12 +937,15 @@
         <h1 class="portal-title">📂 Справочники</h1>
         <p class="portal-subtitle">Муниципальный район Корткеросский</p>
 
+        <!-- Поиск -->
         <div class="search-box">
             <input type="text" id="portalSearch" placeholder="🔍 Поиск по всем справочникам...">
         </div>
 
+        <!-- Результаты поиска -->
         <div id="searchResults" class="search-results"></div>
 
+        <!-- Кнопки-плитки -->
         <div class="portal-grid">
             <a href="administration-directory/" class="portal-card">
                 <span class="icon">🏢</span>
@@ -733,12 +961,14 @@
             </a>
         </div>
 
+        <!-- Кнопки действий -->
         <div class="portal-actions">
             <button onclick="openRequisites()">📄 Реквизиты администрации</button>
             <button onclick="openBlanks()">📋 Бланки заявлений</button>
             <a href="https://kortkeros.gosuslugi.ru/" target="_blank">🌐 Сайт администрации</a>
         </div>
 
+        <!-- Кнопка "Спасибо разработчику" -->
         <div class="portal-thanks">
             <a href="https://e.armgs.team/compose/?mailto=mailto%3Aa.v.butikov%40kortkeros.rkomi.ru%3Fsubject%3D%D0%A1%D0%BF%D0%B0%D1%81%D0%B8%D0%B1%D0%BE%20%D0%B7%D0%B0%20%D1%81%D0%BF%D1%80%D0%B0%D0%B2%D0%BE%D1%87%D0%BD%D0%B8%D0%BA%21%26body%3D%D0%91%D0%BB%D0%B0%D0%B3%D0%BE%D0%B4%D0%B0%D1%80%D1%8E%20%D0%B7%D0%B0%20%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D1%83%20%D0%BD%D0%B0%D0%B4%20%D1%81%D0%BF%D1%80%D0%B0%D0%B2%D0%BE%D1%87%D0%BD%D0%B8%D0%BA%D0%BE%D0%BC"
                target="_blank">
@@ -767,25 +997,108 @@
         </div>
     </div>
 
-    <!-- Модальное окно для заполнения -->
+    <!-- Модальное окно для заполнения бланка -->
     <div id="fillModal" class="modal-overlay">
         <div class="modal-content">
             <button class="modal-close" onclick="closeFillModal()">✕</button>
             <div class="modal-title" id="fillModalTitle">📝 Заполнение бланка</div>
             <form class="fill-form" id="fillForm">
-                <div id="dynamicFields">
-                    <!-- Поля будут генерироваться динамически -->
+                <div class="form-group">
+                    <label for="fio">👤 ФИО (в родительном падеже, с предлогом "от")</label>
+                    <input type="text" id="fio" placeholder="Например: от Сажина Константина Анатольевича" value="от Сажина Константина Анатольевича">
+                    <div class="hint">Введите ФИО с предлогом "от"</div>
                 </div>
-                <div style="background: #f8f9fa; padding: 12px; border-radius: 8px; margin-top: 10px; text-align: left; font-size: 14px; color: #6c757d;">
-                    💡 Все поля можно редактировать вручную. Незаполненные поля останутся пустыми.
+
+                <div class="form-group">
+                    <label for="position">📋 Должность</label>
+                    <input type="text" id="position" placeholder="Например: Глава муниципального района" value="Глава муниципального района">
+                    <div class="hint">Введите должность</div>
                 </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="start_date">📅 Дата начала</label>
+                        <input type="date" id="start_date" value="2026-09-01">
+                    </div>
+                    <div class="form-group">
+                        <label for="end_date">📅 Дата окончания</label>
+                        <input type="date" id="end_date" value="2026-09-05">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="days_count">🔢 Количество дней</label>
+                        <input type="number" id="days_count" placeholder="Например: 5" value="5">
+                        <div class="hint">Рассчитывается автоматически, можно изменить вручную</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="statement_date">📅 Дата заявления</label>
+                        <input type="date" id="statement_date">
+                    </div>
+                </div>
+
+                <!-- Предпросмотр -->
+                <div id="pdfPreview" class="pdf-preview">
+                    <div class="preview-header">
+                        <div>Главе муниципального района</div>
+                        <div>«Корткеросский» Республики Коми –</div>
+                        <div>руководителю администрации</div>
+                        <div>К.А. Сажину</div>
+                        <div style="margin-top: 10px;"><b id="previewFio">от _____________</b></div>
+                        <div><b id="previewPosition">_____________</b></div>
+                    </div>
+
+                    <div class="preview-title">ЗАЯВЛЕНИЕ</div>
+
+                    <div class="preview-text" id="previewText">
+                        Прошу предоставить отпуск без сохранения заработной платы в количестве ___ дней с _____________ по _____________.
+                    </div>
+
+                    <div class="preview-footer">
+                        <div>Дата: <span id="previewDate">_____________</span></div>
+                        <div class="signature-wrapper">
+                            <div class="signature-line">__________________</div>
+                            <div class="signature-label">(подпись)</div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="form-actions">
-                    <button type="button" class="btn-secondary" onclick="closeFillModal()">Отмена</button>
-                    <button type="button" class="btn-primary" id="downloadFilledBtn">📥 Скачать заполненный бланк</button>
+                    <button type="button" class="btn-secondary" onclick="previewPDF()">👁️ Предпросмотр</button>
+                    <button type="button" class="btn-primary" onclick="downloadPDF()">📥 Скачать PDF</button>
                 </div>
             </form>
         </div>
     </div>
+
+    <!-- Скрытый блок для генерации PDF -->
+    <div id="pdfContent" class="pdf-wrapper">
+        <div class="pdf-header" id="pdfHeader">
+            <div>Главе муниципального района</div>
+            <div>«Корткеросский» Республики Коми –</div>
+            <div>руководителю администрации</div>
+            <div>К.А. Сажину</div>
+            <div style="margin-top: 10px;"><b id="pdfFio">от _____________</b></div>
+            <div><b id="pdfPosition">_____________</b></div>
+        </div>
+
+        <div class="pdf-title">ЗАЯВЛЕНИЕ</div>
+
+        <div class="pdf-text" id="pdfText">
+            Прошу предоставить отпуск без сохранения заработной платы в количестве ___ дней с _____________ по _____________.
+        </div>
+
+        <div class="pdf-footer">
+            <div class="date">Дата: <span id="pdfDate">_____________</span></div>
+            <div class="signature-wrapper">
+                <div class="signature-line">__________________</div>
+                <div class="signature-label">(подпись)</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="notification" class="notification">✅ Готово!</div>
 
     <script>
         // ===== ТЁМНАЯ ТЕМА =====
@@ -812,413 +1125,6 @@
                 }
             });
         });
-
-        // ===== КОНФИГУРАЦИЯ ПОЛЕЙ ДЛЯ БЛАНКОВ =====
-        const blankConfigs = {
-            'Заявление на отпуск за свой счет': {
-                fields: [
-                    { id: 'fio', label: '👤 ФИО (в родительном падеже, с предлогом "от")', type: 'text', placeholder: 'Например: от Сажина Константина Анатольевича', hint: 'Введите ФИО с предлогом "от"' },
-                    { id: 'position', label: '📋 Должность', type: 'text', placeholder: 'Например: Глава муниципального района', hint: 'Введите должность' },
-                    { id: 'start_date', label: '📅 Дата начала', type: 'date', hint: 'Выберите дату начала' },
-                    { id: 'end_date', label: '📅 Дата окончания', type: 'date', hint: 'Выберите дату окончания' },
-                    { id: 'days_count', label: '🔢 Количество дней', type: 'number', placeholder: 'Например: 5', hint: 'Рассчитывается автоматически, можно изменить вручную' },
-                    { id: 'statement_date', label: '📅 Дата заявления', type: 'date', hint: 'Дата подачи заявления' }
-                ],
-                documentText: (data) => {
-                    const start = data.start_date || '_____________';
-                    const end = data.end_date || '_____________';
-                    const days = data.days_count || '___';
-                    return `Прошу предоставить отпуск без сохранения заработной платы в количестве ${days} дней с ${start} по ${end}.`;
-                }
-            },
-            'Заявление на привлечение к работе в выходные дни (2026)': {
-                fields: [
-                    { id: 'fio', label: '👤 ФИО (в родительном падеже, с предлогом "от")', type: 'text', placeholder: 'Например: от Сажина Константина Анатольевича', hint: 'Введите ФИО с предлогом "от"' },
-                    { id: 'position', label: '📋 Должность', type: 'text', placeholder: 'Например: Глава муниципального района', hint: 'Введите должность' },
-                    { id: 'work_date', label: '📅 Дата работы', type: 'date', hint: 'Выберите дату, когда планируется работа' },
-                    { id: 'statement_date', label: '📅 Дата заявления', type: 'date', hint: 'Дата подачи заявления' }
-                ],
-                documentText: (data) => {
-                    const date = data.work_date || '_____________';
-                    return `Прошу привлечь меня к работе в выходной день ${date}.`;
-                }
-            },
-            'Заявление на материальную помощь': {
-                fields: [
-                    { id: 'fio', label: '👤 ФИО (в родительном падеже, с предлогом "от")', type: 'text', placeholder: 'Например: от Сажина Константина Анатольевича', hint: 'Введите ФИО с предлогом "от"' },
-                    { id: 'position', label: '📋 Должность', type: 'text', placeholder: 'Например: Глава муниципального района', hint: 'Введите должность' },
-                    { id: 'help_reason', label: '📝 Основание для помощи', type: 'text', placeholder: 'Например: в связи с тяжёлым материальным положением', hint: 'Укажите причину' },
-                    { id: 'statement_date', label: '📅 Дата заявления', type: 'date', hint: 'Дата подачи заявления' }
-                ],
-                documentText: (data) => {
-                    const reason = data.help_reason || '___________________________';
-                    return `Прошу оказать мне материальную помощь в связи с ${reason}.`;
-                }
-            },
-            'Заявление на отгулы': {
-                fields: [
-                    { id: 'fio', label: '👤 ФИО (в родительном падеже, с предлогом "от")', type: 'text', placeholder: 'Например: от Сажина Константина Анатольевича', hint: 'Введите ФИО с предлогом "от"' },
-                    { id: 'position', label: '📋 Должность', type: 'text', placeholder: 'Например: Глава муниципального района', hint: 'Введите должность' },
-                    { id: 'otgul_date', label: '📅 Дата отгула', type: 'date', hint: 'Выберите дату отгула' },
-                    { id: 'statement_date', label: '📅 Дата заявления', type: 'date', hint: 'Дата подачи заявления' }
-                ],
-                documentText: (data) => {
-                    const date = data.otgul_date || '_____________';
-                    return `Прошу предоставить мне отгул за ранее отработанное время ${date}.`;
-                }
-            },
-            'Заявление на часть отпуска': {
-                fields: [
-                    { id: 'fio', label: '👤 ФИО (в родительном падеже, с предлогом "от")', type: 'text', placeholder: 'Например: от Сажина Константина Анатольевича', hint: 'Введите ФИО с предлогом "от"' },
-                    { id: 'position', label: '📋 Должность', type: 'text', placeholder: 'Например: Глава муниципального района', hint: 'Введите должность' },
-                    { id: 'start_date', label: '📅 Дата начала', type: 'date', hint: 'Выберите дату начала' },
-                    { id: 'end_date', label: '📅 Дата окончания', type: 'date', hint: 'Выберите дату окончания' },
-                    { id: 'days_count', label: '🔢 Количество дней', type: 'number', placeholder: 'Например: 5', hint: 'Рассчитывается автоматически, можно изменить вручную' },
-                    { id: 'statement_date', label: '📅 Дата заявления', type: 'date', hint: 'Дата подачи заявления' }
-                ],
-                documentText: (data) => {
-                    const start = data.start_date || '_____________';
-                    const end = data.end_date || '_____________';
-                    const days = data.days_count || '___';
-                    return `Прошу предоставить мне часть ежегодного оплачиваемого отпуска в количестве ${days} дней с ${start} по ${end}.`;
-                }
-            },
-            'Заявление на донорские дни': {
-                fields: [
-                    { id: 'fio', label: '👤 ФИО (в родительном падеже, с предлогом "от")', type: 'text', placeholder: 'Например: от Сажина Константина Анатольевича', hint: 'Введите ФИО с предлогом "от"' },
-                    { id: 'position', label: '📋 Должность', type: 'text', placeholder: 'Например: Глава муниципального района', hint: 'Введите должность' },
-                    { id: 'donation_date', label: '📅 Дата сдачи крови', type: 'date', hint: 'Выберите дату сдачи крови' },
-                    { id: 'rest_days', label: '🔢 Количество дней отдыха', type: 'number', placeholder: 'Например: 1', hint: 'Укажите количество дней' },
-                    { id: 'statement_date', label: '📅 Дата заявления', type: 'date', hint: 'Дата подачи заявления' }
-                ],
-                documentText: (data) => {
-                    const date = data.donation_date || '_____________';
-                    const days = data.rest_days || '___';
-                    return `Прошу предоставить мне ${days} дней отдыха в связи со сдачей крови ${date}.`;
-                }
-            }
-        };
-
-        // ===== БЛАНКИ =====
-        const blanks = [
-            { name: 'Заявление на отпуск за свой счет', file: 'blanki/zayavlenie_za_svoy_schet.docx' },
-            { name: 'Заявление на привлечение к работе в выходные дни (2026)', file: 'blanki/zayavlenie_vyhodnye_2026.docx' },
-            { name: 'Заявление на материальную помощь', file: 'blanki/zayavlenie_matpomosh.docx' },
-            { name: 'Заявление на отгулы', file: 'blanki/zayavlenie_otguly.docx' },
-            { name: 'Заявление на часть отпуска', file: 'blanki/zayavlenie_chast_otpuska.docx' },
-            { name: 'Заявление на донорские дни', file: 'blanki/zayavlenie_donorskie_dni.docx' }
-        ];
-
-        let currentBlankName = '';
-        let currentConfig = null;
-
-        // ===== ОТКРЫТИЕ БЛАНКОВ =====
-        function openBlanks() {
-            const modal = document.getElementById('blanksModal');
-            const body = document.getElementById('blanksBody');
-            body.innerHTML = '';
-
-            blanks.forEach(blank => {
-                const item = document.createElement('div');
-                item.className = 'blank-item';
-                item.innerHTML = `
-                    <span class="blank-name">📄 ${blank.name}</span>
-                    <div class="blank-actions">
-                        <a href="${blank.file}" download>⬇ Скачать</a>
-                        <button class="fill-btn" onclick="openFillModal('${blank.name}')">📝 Заполнить</button>
-                    </div>
-                `;
-                body.appendChild(item);
-            });
-
-            modal.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeBlanks() {
-            document.getElementById('blanksModal').classList.remove('active');
-            document.body.style.overflow = 'auto';
-        }
-
-        document.getElementById('blanksModal').addEventListener('click', function(e) {
-            if (e.target === this) closeBlanks();
-        });
-
-        // ===== ЗАПОЛНЕНИЕ =====
-        function openFillModal(blankName) {
-            currentBlankName = blankName;
-            currentConfig = blankConfigs[blankName];
-            
-            if (!currentConfig) {
-                alert('Конфигурация для этого бланка не найдена');
-                return;
-            }
-            
-            const container = document.getElementById('dynamicFields');
-            container.innerHTML = '';
-            
-            // Генерируем поля
-            currentConfig.fields.forEach(field => {
-                const group = document.createElement('div');
-                group.className = 'form-group';
-                
-                const label = document.createElement('label');
-                label.textContent = field.label;
-                label.htmlFor = field.id;
-                group.appendChild(label);
-                
-                const input = document.createElement('input');
-                input.type = field.type || 'text';
-                input.id = field.id;
-                input.placeholder = field.placeholder || '';
-                input.className = 'fill-input';
-                
-                // Автоматический расчёт дней для полей с датами
-                if (field.id === 'days_count') {
-                    input.readOnly = false;
-                    input.dataset.auto = 'true';
-                    
-                    // Подписываемся на изменения дат
-                    setTimeout(() => {
-                        const startInput = document.getElementById('start_date');
-                        const endInput = document.getElementById('end_date');
-                        const daysInput = document.getElementById('days_count');
-                        
-                        if (startInput && endInput && daysInput) {
-                            const calcDays = () => {
-                                if (startInput.value && endInput.value) {
-                                    const start = new Date(startInput.value);
-                                    const end = new Date(endInput.value);
-                                    const diff = Math.ceil((end - start) / (1000 * 60 * 60 * 24)) + 1;
-                                    if (diff > 0 && !daysInput.dataset.manual) {
-                                        daysInput.value = diff;
-                                    }
-                                }
-                            };
-                            
-                            startInput.addEventListener('change', () => { daysInput.dataset.manual = false; calcDays(); });
-                            endInput.addEventListener('change', () => { daysInput.dataset.manual = false; calcDays(); });
-                            daysInput.addEventListener('input', () => { daysInput.dataset.manual = 'true'; });
-                        }
-                    }, 100);
-                }
-                
-                group.appendChild(input);
-                
-                // Подсказка
-                if (field.hint) {
-                    const hint = document.createElement('div');
-                    hint.className = 'hint';
-                    hint.textContent = field.hint;
-                    group.appendChild(hint);
-                }
-                
-                container.appendChild(group);
-            });
-            
-            // Устанавливаем дату заявления по умолчанию
-            const today = new Date().toISOString().split('T')[0];
-            const statementDateInput = document.getElementById('statement_date');
-            if (statementDateInput) {
-                statementDateInput.value = today;
-            }
-            
-            document.getElementById('fillModalTitle').textContent = `📝 Заполнение: ${blankName}`;
-            document.getElementById('fillModal').classList.add('active');
-            document.body.style.overflow = 'hidden';
-            
-            // Фокусируемся на первом поле
-            const firstInput = container.querySelector('input');
-            if (firstInput) firstInput.focus();
-        }
-
-        function closeFillModal() {
-            document.getElementById('fillModal').classList.remove('active');
-            document.body.style.overflow = 'auto';
-        }
-
-        document.getElementById('fillModal').addEventListener('click', function(e) {
-            if (e.target === this) closeFillModal();
-        });
-
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeFillModal();
-            }
-        });
-
-        // ===== ГЕНЕРАЦИЯ ДОКУМЕНТА =====
-        document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('downloadFilledBtn').addEventListener('click', function() {
-                if (!currentConfig) {
-                    alert('Ошибка: не выбран бланк');
-                    return;
-                }
-                
-                // Собираем данные из формы
-                const data = {};
-                let hasData = false;
-                
-                currentConfig.fields.forEach(field => {
-                    const input = document.getElementById(field.id);
-                    if (input) {
-                        const value = input.value.trim();
-                        data[field.id] = value;
-                        if (value) hasData = true;
-                    }
-                });
-                
-                if (!data.fio || !data.fio.trim()) {
-                    alert('Пожалуйста, укажите ФИО.');
-                    return;
-                }
-                
-                generateFilledDoc(data, currentBlankName);
-            });
-        });
-
-        function generateFilledDoc(data, blankName) {
-            try {
-                const config = blankConfigs[blankName];
-                if (!config) {
-                    alert('Конфигурация для этого бланка не найдена');
-                    return;
-                }
-                
-                // Форматируем даты
-                const formatDate = (dateStr) => {
-                    if (!dateStr) return '_____________';
-                    const parts = dateStr.split('-');
-                    return `${parts[2]}.${parts[1]}.${parts[0]}`;
-                };
-                
-                // Подготавливаем данные
-                const docData = { ...data };
-                const dateFields = ['start_date', 'end_date', 'statement_date', 'work_date', 'otgul_date', 'donation_date'];
-                dateFields.forEach(field => {
-                    if (docData[field]) docData[field] = formatDate(docData[field]);
-                });
-                if (!docData.days_count) docData.days_count = '___';
-                if (!docData.rest_days) docData.rest_days = '___';
-                
-                const text = config.documentText(docData);
-                const fio = docData.fio || '_________________';
-                const position = docData.position || '_________________';
-                const statementDate = docData.statement_date || '_____________';
-                
-                // Собираем HTML с таблицами для точного позиционирования
-                const htmlContent = `
-                    <html xmlns:o='urn:schemas-microsoft-com:office:office' 
-                          xmlns:w='urn:schemas-microsoft-com:office:word' 
-                          xmlns='http://www.w3.org/TR/REC-html40'>
-                    <head>
-                        <meta charset="utf-8">
-                        <title>Заявление</title>
-                        <style>
-                            body { 
-                                font-family: 'Times New Roman', serif; 
-                                font-size: 14pt; 
-                                margin: 80px 60px; 
-                                line-height: 1.4;
-                            }
-                            .header-table {
-                                width: 100%;
-                                margin-bottom: 30px;
-                            }
-                            .header-table td {
-                                text-align: right;
-                                padding: 2px 0;
-                                vertical-align: top;
-                            }
-                            .header-table .label {
-                                font-weight: normal;
-                            }
-                            /* ДАТА И ПОДПИСЬ В ОДНОЙ СТРОКЕ */
-                            .footer-table {
-                                margin-top: 40px;
-                                width: 100%;
-                            }
-                            .footer-table td {
-                                vertical-align: bottom;
-                                padding: 0;
-                            }
-                            .footer-table .date-cell {
-                                text-align: left;
-                                width: 50%;
-                            }
-                            .footer-table .signature-cell {
-                                text-align: right;
-                                width: 50%;
-                            }
-                            .signature-line {
-                                margin-top: 5px;
-                            }
-                            .title { 
-                                text-align: center; 
-                                font-weight: bold; 
-                                font-size: 16pt; 
-                                margin: 40px 0 30px 0; 
-                                text-transform: uppercase; 
-                                letter-spacing: 1px;
-                            }
-                            .text { 
-                                margin-bottom: 20px; 
-                                line-height: 1.6; 
-                                text-indent: 0px; 
-                                text-align: left;
-                            }
-                        </style>
-                    </head>
-                    <body>
-                        <!-- ШАПКА (таблица с выравниванием вправо) -->
-                        <table class="header-table">
-                            <tr><td>Главе муниципального района</td></tr>
-                            <tr><td>«Корткеросский» Республики Коми –</td></tr>
-                            <tr><td>руководителю администрации</td></tr>
-                            <tr><td>К.А. Сажину</td></tr>
-                            <tr><td style="padding-top: 10px;"><b>от ${fio}</b></td></tr>
-                            <tr><td style="padding-top: 2px;"><b>${position}</b></td></tr>
-                        </table>
-                        
-                        <!-- ЗАГОЛОВОК -->
-                        <div class="title">ЗАЯВЛЕНИЕ</div>
-                        
-                        <!-- ТЕКСТ -->
-                        <div class="text">${text}</div>
-                        
-                        <!-- ДАТА И ПОДПИСЬ В ОДНОЙ СТРОКЕ (таблица) -->
-                        <table class="footer-table">
-                            <tr>
-                                <td class="date-cell">Дата: ${statementDate}</td>
-                                <td class="signature-cell">
-                                    <div>__________________</div>
-                                    <div>(подпись)</div>
-                                </td>
-                            </tr>
-                        </table>
-                    </body>
-                    </html>
-                `;
-                
-                const blob = new Blob([htmlContent], { type: 'application/msword;charset=utf-8' });
-                const link = document.createElement('a');
-                link.href = URL.createObjectURL(blob);
-                const fioFile = fio.replace(/\s+/g, '_') || 'заявление';
-                const dateFile = docData.statement_date || new Date().toISOString().split('T')[0];
-                link.download = `Заявление_${fioFile}_${dateFile}.doc`;
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                setTimeout(() => URL.revokeObjectURL(link.href), 1000);
-                
-                showNotification('✅ Заполненный бланк скачан!');
-                closeFillModal();
-                
-            } catch (error) {
-                console.error('Ошибка генерации документа:', error);
-                alert('❌ Ошибка при создании документа. Попробуйте ещё раз.\n\n' + error.message);
-            }
-        }
 
         // ===== РЕКВИЗИТЫ =====
         const requisites = [
@@ -1276,6 +1182,206 @@
                 document.getElementById('copyNotification').classList.add('show');
                 setTimeout(() => document.getElementById('copyNotification').classList.remove('show'), 3000);
             }).catch(() => alert('Не удалось скопировать. Скопируйте вручную.'));
+        }
+
+        // ===== БЛАНКИ =====
+        const blanks = [
+            { name: 'Заявление на отпуск за свой счет', file: 'blanki/zayavlenie_za_svoy_schet.docx' },
+            { name: 'Заявление на привлечение к работе в выходные дни (2026)', file: 'blanki/zayavlenie_vyhodnye_2026.docx' },
+            { name: 'Заявление на материальную помощь', file: 'blanki/zayavlenie_matpomosh.docx' },
+            { name: 'Заявление на отгулы', file: 'blanki/zayavlenie_otguly.docx' },
+            { name: 'Заявление на часть отпуска', file: 'blanki/zayavlenie_chast_otpuska.docx' },
+            { name: 'Заявление на донорские дни', file: 'blanki/zayavlenie_donorskie_dni.docx' }
+        ];
+
+        let currentBlankName = '';
+
+        function openBlanks() {
+            const modal = document.getElementById('blanksModal');
+            const body = document.getElementById('blanksBody');
+            body.innerHTML = '';
+
+            blanks.forEach(blank => {
+                const item = document.createElement('div');
+                item.className = 'blank-item';
+                item.innerHTML = `
+                    <span class="blank-name">📄 ${blank.name}</span>
+                    <div class="blank-actions">
+                        <a href="${blank.file}" download>⬇ Скачать</a>
+                        <button class="fill-btn" onclick="openFillModal('${blank.name}')">📝 Заполнить</button>
+                    </div>
+                `;
+                body.appendChild(item);
+            });
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeBlanks() {
+            document.getElementById('blanksModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        document.getElementById('blanksModal').addEventListener('click', function(e) {
+            if (e.target === this) closeBlanks();
+        });
+
+        // ===== ФУНКЦИЯ ДЛЯ ПРОПИСИ =====
+        function numberToWords(num) {
+            const words = ['', 'один', 'два', 'три', 'четыре', 'пять', 'шесть', 'семь', 'восемь', 'девять', 'десять',
+                'одиннадцать', 'двенадцать', 'тринадцать', 'четырнадцать', 'пятнадцать', 'шестнадцать', 'семнадцать', 'восемнадцать', 'девятнадцать'];
+            const tens = ['', '', 'двадцать', 'тридцать', 'сорок', 'пятьдесят', 'шестьдесят', 'семьдесят', 'восемьдесят', 'девяносто'];
+            
+            if (num <= 19) return words[num];
+            if (num <= 99) {
+                const ten = Math.floor(num / 10);
+                const one = num % 10;
+                return tens[ten] + (one > 0 ? ' ' + words[one] : '');
+            }
+            return num.toString();
+        }
+
+        // ===== ЗАПОЛНЕНИЕ БЛАНКА =====
+        function openFillModal(blankName) {
+            currentBlankName = blankName;
+            
+            // Устанавливаем дату заявления по умолчанию
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('statement_date').value = today;
+            
+            // Автоматический расчёт дней
+            const startInput = document.getElementById('start_date');
+            const endInput = document.getElementById('end_date');
+            const daysInput = document.getElementById('days_count');
+            
+            function calcDays() {
+                if (startInput.value && endInput.value) {
+                    const start = new Date(startInput.value);
+                    const end = new Date(endInput.value);
+                    const diff = Math.ceil((end - start) / (1000 * 60 * 60 * 24)) + 1;
+                    if (diff > 0) daysInput.value = diff;
+                }
+            }
+            
+            startInput.addEventListener('change', calcDays);
+            endInput.addEventListener('change', calcDays);
+            daysInput.addEventListener('input', function() { this.dataset.manual = 'true'; });
+            calcDays();
+            
+            document.getElementById('fillModalTitle').textContent = `📝 Заполнение: ${blankName}`;
+            document.getElementById('fillModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+            
+            // Очищаем предпросмотр
+            document.getElementById('pdfPreview').classList.remove('active');
+        }
+
+        function closeFillModal() {
+            document.getElementById('fillModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        document.getElementById('fillModal').addEventListener('click', function(e) {
+            if (e.target === this) closeFillModal();
+        });
+
+        // ===== ПРЕДПРОСМОТР =====
+        function previewPDF() {
+            const fio = document.getElementById('fio').value.trim() || '_________________';
+            const position = document.getElementById('position').value.trim() || '_________________';
+            const startDate = document.getElementById('start_date').value;
+            const endDate = document.getElementById('end_date').value;
+            const days = parseInt(document.getElementById('days_count').value) || 0;
+            const statementDate = document.getElementById('statement_date').value;
+            
+            const formatDate = (dateStr) => {
+                if (!dateStr) return '_____________';
+                const parts = dateStr.split('-');
+                return `${parts[2]}.${parts[1]}.${parts[0]}`;
+            };
+            
+            const start = formatDate(startDate);
+            const end = formatDate(endDate);
+            const stmtDate = formatDate(statementDate);
+            const daysWords = numberToWords(days);
+            
+            document.getElementById('previewFio').textContent = fio + ',';
+            document.getElementById('previewPosition').textContent = position;
+            document.getElementById('previewText').textContent = 
+                `Прошу предоставить отпуск без сохранения заработной платы в количестве ${days} (${daysWords}) дней с ${start} по ${end} включительно.`;
+            document.getElementById('previewDate').textContent = stmtDate;
+            
+            document.getElementById('pdfPreview').classList.add('active');
+        }
+
+        // ===== ОБНОВЛЕНИЕ СКРЫТОГО БЛОКА =====
+        function updatePDFContent() {
+            const fio = document.getElementById('fio').value.trim() || '_________________';
+            const position = document.getElementById('position').value.trim() || '_________________';
+            const startDate = document.getElementById('start_date').value;
+            const endDate = document.getElementById('end_date').value;
+            const days = parseInt(document.getElementById('days_count').value) || 0;
+            const statementDate = document.getElementById('statement_date').value;
+            
+            const formatDate = (dateStr) => {
+                if (!dateStr) return '_____________';
+                const parts = dateStr.split('-');
+                return `${parts[2]}.${parts[1]}.${parts[0]}`;
+            };
+            
+            const start = formatDate(startDate);
+            const end = formatDate(endDate);
+            const stmtDate = formatDate(statementDate);
+            const daysWords = numberToWords(days);
+            
+            document.getElementById('pdfFio').textContent = fio + ',';
+            document.getElementById('pdfPosition').textContent = position;
+            document.getElementById('pdfText').textContent = 
+                `Прошу предоставить отпуск без сохранения заработной платы в количестве ${days} (${daysWords}) дней с ${start} по ${end} включительно.`;
+            document.getElementById('pdfDate').textContent = stmtDate;
+        }
+
+        // ===== СКАЧИВАНИЕ PDF =====
+        function downloadPDF() {
+            updatePDFContent();
+            
+            showNotification('⏳ Создание PDF...');
+            
+            const element = document.getElementById('pdfContent');
+            
+            html2canvas(element, {
+                scale: 2,
+                useCORS: true,
+                logging: false,
+                backgroundColor: '#ffffff'
+            }).then(canvas => {
+                const imgData = canvas.toDataURL('image/png');
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                const pdfWidth = pdf.internal.pageSize.getWidth();
+                const pdfHeight = pdf.internal.pageSize.getHeight();
+                const imgWidth = canvas.width;
+                const imgHeight = canvas.height;
+                const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
+                const imgX = (pdfWidth - imgWidth * ratio) / 2;
+                const imgY = 0;
+                
+                pdf.addImage(imgData, 'PNG', imgX, imgY, imgWidth * ratio, imgHeight * ratio);
+                pdf.save('Заявление.pdf');
+                showNotification('✅ PDF скачан!');
+            }).catch(error => {
+                console.error('Ошибка:', error);
+                showNotification('❌ Ошибка при создании PDF');
+            });
+        }
+
+        // ===== УВЕДОМЛЕНИЕ =====
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.classList.add('show');
+            setTimeout(() => notification.classList.remove('show'), 3000);
         }
 
         // ===== ПОИСК НА ПОРТАЛЕ =====
@@ -1399,44 +1505,6 @@
                 }, 300);
             });
         });
-
-        // ===== УВЕДОМЛЕНИЕ =====
-        function showNotification(message) {
-            let notification = document.querySelector('.copy-notification');
-            if (notification) notification.remove();
-            
-            notification = document.createElement('div');
-            notification.className = 'copy-notification';
-            notification.textContent = message;
-            notification.style.cssText = `
-                position: fixed;
-                bottom: 30px;
-                right: 30px;
-                background: #1e3c72;
-                color: white;
-                padding: 14px 28px;
-                border-radius: 50px;
-                box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-                font-size: 15px;
-                font-weight: 500;
-                z-index: 1000;
-                opacity: 0;
-                transform: translateY(20px);
-                transition: all 0.3s ease;
-            `;
-            document.body.appendChild(notification);
-            
-            setTimeout(() => {
-                notification.style.opacity = '1';
-                notification.style.transform = 'translateY(0)';
-            }, 100);
-            
-            setTimeout(() => {
-                notification.style.opacity = '0';
-                notification.style.transform = 'translateY(20px)';
-                setTimeout(() => notification.remove(), 300);
-            }, 3000);
-        }
     </script>
 </body>
 </html>
