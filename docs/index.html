@@ -4,11 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Справочники Корткеросского района</title>
-    <!-- Подключаем библиотеки для PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
-        /* ===== ОБЩИЕ СТИЛИ ===== */
         * {
             margin: 0;
             padding: 0;
@@ -49,7 +47,6 @@
             font-size: 16px;
         }
 
-        /* ===== ТЕМНАЯ ТЕМА ===== */
         .theme-toggle-wrapper {
             display: flex;
             justify-content: flex-end;
@@ -221,7 +218,6 @@
             border-color: #2a3a5e;
         }
 
-        /* ===== ПОИСК ===== */
         .search-box {
             width: 100%;
             max-width: 600px;
@@ -326,7 +322,6 @@
             text-align: center;
         }
 
-        /* ===== КНОПКИ-ПЛИТКИ ===== */
         .portal-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -393,7 +388,6 @@
             color: white;
         }
 
-        /* ===== КНОПКИ ДЕЙСТВИЙ ===== */
         .portal-actions {
             margin-top: 28px;
             display: flex;
@@ -423,7 +417,6 @@
             color: white;
         }
 
-        /* ===== МОДАЛЬНОЕ ОКНО (реквизиты) ===== */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -535,7 +528,6 @@
             display: block;
         }
 
-        /* ===== МОДАЛЬНОЕ ОКНО ДЛЯ БЛАНКОВ ===== */
         .fill-form .form-group {
             margin-bottom: 18px;
             text-align: left;
@@ -616,7 +608,6 @@
             background: #1e3c72;
         }
 
-        /* ===== БЛАНКИ (список) ===== */
         .blank-item {
             display: flex;
             justify-content: space-between;
@@ -678,7 +669,6 @@
             background: #1e7e34;
         }
 
-        /* ===== ПРЕДПРОСМОТР PDF ===== */
         .pdf-preview {
             display: none;
             margin-top: 20px;
@@ -739,7 +729,6 @@
             margin-top: 2px;
         }
 
-        /* ===== СКРЫТЫЙ БЛОК ДЛЯ PDF ===== */
         .pdf-wrapper {
             position: absolute;
             left: -9999px;
@@ -796,7 +785,6 @@
             margin-top: 2px;
         }
 
-        /* ===== КНОПКА "СПАСИБО" ===== */
         .portal-thanks {
             margin-top: 32px;
             padding-top: 28px;
@@ -822,7 +810,6 @@
             color: white;
         }
 
-        /* ===== УВЕДОМЛЕНИЕ ===== */
         .notification {
             position: fixed;
             bottom: 30px;
@@ -845,7 +832,6 @@
             transform: translateY(0);
         }
 
-        /* ===== АДАПТИВНОСТЬ ===== */
         @media (max-width: 600px) {
             .portal-container {
                 padding: 24px;
@@ -929,7 +915,6 @@
 </head>
 <body>
     <div class="portal-container">
-        <!-- Переключатель темы -->
         <div class="theme-toggle-wrapper">
             <button id="themeToggle">🌙 Тёмная тема</button>
         </div>
@@ -937,15 +922,12 @@
         <h1 class="portal-title">📂 Справочники</h1>
         <p class="portal-subtitle">Муниципальный район Корткеросский</p>
 
-        <!-- Поиск -->
         <div class="search-box">
             <input type="text" id="portalSearch" placeholder="🔍 Поиск по всем справочникам...">
         </div>
 
-        <!-- Результаты поиска -->
         <div id="searchResults" class="search-results"></div>
 
-        <!-- Кнопки-плитки -->
         <div class="portal-grid">
             <a href="administration-directory/" class="portal-card">
                 <span class="icon">🏢</span>
@@ -961,14 +943,12 @@
             </a>
         </div>
 
-        <!-- Кнопки действий -->
         <div class="portal-actions">
             <button onclick="openRequisites()">📄 Реквизиты администрации</button>
             <button onclick="openBlanks()">📋 Бланки заявлений</button>
             <a href="https://kortkeros.gosuslugi.ru/" target="_blank">🌐 Сайт администрации</a>
         </div>
 
-        <!-- Кнопка "Спасибо разработчику" -->
         <div class="portal-thanks">
             <a href="https://e.armgs.team/compose/?mailto=mailto%3Aa.v.butikov%40kortkeros.rkomi.ru%3Fsubject%3D%D0%A1%D0%BF%D0%B0%D1%81%D0%B8%D0%B1%D0%BE%20%D0%B7%D0%B0%20%D1%81%D0%BF%D1%80%D0%B0%D0%B2%D0%BE%D1%87%D0%BD%D0%B8%D0%BA%21%26body%3D%D0%91%D0%BB%D0%B0%D0%B3%D0%BE%D0%B4%D0%B0%D1%80%D1%8E%20%D0%B7%D0%B0%20%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D1%83%20%D0%BD%D0%B0%D0%B4%20%D1%81%D0%BF%D1%80%D0%B0%D0%B2%D0%BE%D1%87%D0%BD%D0%B8%D0%BA%D0%BE%D0%BC"
                target="_blank">
@@ -977,7 +957,6 @@
         </div>
     </div>
 
-    <!-- Модальное окно с реквизитами -->
     <div id="requisitesModal" class="modal-overlay">
         <div class="modal-content">
             <button class="modal-close" onclick="closeRequisites()">✕</button>
@@ -988,7 +967,6 @@
         </div>
     </div>
 
-    <!-- Модальное окно с бланками -->
     <div id="blanksModal" class="modal-overlay">
         <div class="modal-content">
             <button class="modal-close" onclick="closeBlanks()">✕</button>
@@ -997,48 +975,15 @@
         </div>
     </div>
 
-    <!-- Модальное окно для заполнения бланка -->
     <div id="fillModal" class="modal-overlay">
         <div class="modal-content">
             <button class="modal-close" onclick="closeFillModal()">✕</button>
             <div class="modal-title" id="fillModalTitle">📝 Заполнение бланка</div>
             <form class="fill-form" id="fillForm">
-                <div class="form-group">
-                    <label for="fio">👤 ФИО (в родительном падеже, с предлогом "от")</label>
-                    <input type="text" id="fio" placeholder="Например: от Бутикова Александра Васильевича" value="от ">
-                    <div class="hint">Введите ФИО с предлогом "от"</div>
+                <div id="dynamicFields">
+                    <!-- Поля генерируются динамически -->
                 </div>
 
-                <div class="form-group">
-                    <label for="position">📋 Должность (в родительном падеже)</label>
-                    <input type="text" id="position" placeholder="Например: Главного эксперта" value="">
-                    <div class="hint">Введите должность в родительном падеже (кого?)</div>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="start_date">📅 Дата начала</label>
-                        <input type="date" id="start_date" value="2026-09-01">
-                    </div>
-                    <div class="form-group">
-                        <label for="end_date">📅 Дата окончания</label>
-                        <input type="date" id="end_date" value="2026-09-05">
-                    </div>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="days_count">🔢 Количество дней</label>
-                        <input type="number" id="days_count" placeholder="Например: 5" value="5">
-                        <div class="hint">Рассчитывается автоматически, можно изменить вручную</div>
-                    </div>
-                    <div class="form-group">
-                        <label for="statement_date">📅 Дата заявления</label>
-                        <input type="date" id="statement_date">
-                    </div>
-                </div>
-
-                <!-- Предпросмотр -->
                 <div id="pdfPreview" class="pdf-preview">
                     <div class="preview-header">
                         <div>Главе муниципального района</div>
@@ -1072,7 +1017,6 @@
         </div>
     </div>
 
-    <!-- Скрытый блок для генерации PDF -->
     <div id="pdfContent" class="pdf-wrapper">
         <div class="pdf-header" id="pdfHeader">
             <div>Главе муниципального района</div>
@@ -1101,7 +1045,6 @@
     <div id="notification" class="notification">✅ Готово!</div>
 
     <script>
-        // ===== ТЁМНАЯ ТЕМА =====
         document.addEventListener('DOMContentLoaded', function() {
             const themeToggle = document.getElementById('themeToggle');
             if (!themeToggle) return;
@@ -1126,7 +1069,6 @@
             });
         });
 
-        // ===== РЕКВИЗИТЫ =====
         const requisites = [
             { label: 'Получатель', value: 'УФК по Республике Коми (Администрация муниципального района «Корткеросский», л/сч 04073001810)' },
             { label: 'ИНН', value: '1113001350' },
@@ -1184,17 +1126,102 @@
             }).catch(() => alert('Не удалось скопировать. Скопируйте вручную.'));
         }
 
-        // ===== БЛАНКИ =====
         const blanks = [
-            { name: 'Заявление на отпуск за свой счет', file: 'blanki/zayavlenie_za_svoy_schet.docx' },
-            { name: 'Заявление на привлечение к работе в выходные дни (2026)', file: 'blanki/zayavlenie_vyhodnye_2026.docx' },
-            { name: 'Заявление на материальную помощь', file: 'blanki/zayavlenie_matpomosh.docx' },
-            { name: 'Заявление на отгулы', file: 'blanki/zayavlenie_otguly.docx' },
-            { name: 'Заявление на часть отпуска', file: 'blanki/zayavlenie_chast_otpuska.docx' },
-            { name: 'Заявление на донорские дни', file: 'blanki/zayavlenie_donorskie_dni.docx' }
+            { name: 'Заявление на отпуск за свой счет' },
+            { name: 'Заявление на привлечение к работе в выходные дни (2026)' },
+            { name: 'Заявление на материальную помощь' },
+            { name: 'Заявление на отгулы' },
+            { name: 'Заявление на часть отпуска' },
+            { name: 'Заявление на донорские дни' }
         ];
 
+        const blankConfigs = {
+            'Заявление на отпуск за свой счет': {
+                fields: [
+                    { id: 'fio', label: '👤 ФИО (в родительном падеже, с предлогом "от")', type: 'text', placeholder: 'Например: от Иванова Сергея Ивановича', hint: 'Введите ФИО с предлогом "от", например: от Иванова Сергея Ивановича' },
+                    { id: 'position', label: '📋 Должность и отдел (в родительном падеже)', type: 'text', placeholder: 'Например: главного эксперта отдела жилищной политики', hint: 'Например: главного эксперта отдела жилищной политики' },
+                    { id: 'start_date', label: '📅 Дата начала', type: 'date', hint: 'Выберите дату начала' },
+                    { id: 'end_date', label: '📅 Дата окончания', type: 'date', hint: 'Выберите дату окончания' },
+                    { id: 'days_count', label: '🔢 Количество дней', type: 'number', placeholder: 'Например: 5', hint: 'Рассчитывается автоматически, можно изменить вручную' },
+                    { id: 'statement_date', label: '📅 Дата заявления', type: 'date', hint: 'Дата подачи заявления' }
+                ],
+                documentText: (data) => {
+                    const start = data.start_date || '_____________';
+                    const end = data.end_date || '_____________';
+                    const days = data.days_count || '___';
+                    return `Прошу предоставить отпуск без сохранения заработной платы в количестве ${days} (${numberToWords(days)}) дней с ${start} по ${end} включительно.`;
+                }
+            },
+            'Заявление на привлечение к работе в выходные дни (2026)': {
+                fields: [
+                    { id: 'fio', label: '👤 ФИО (в родительном падеже, с предлогом "от")', type: 'text', placeholder: 'Например: от Иванова Сергея Ивановича', hint: 'Введите ФИО с предлогом "от", например: от Иванова Сергея Ивановича' },
+                    { id: 'position', label: '📋 Должность и отдел (в родительном падеже)', type: 'text', placeholder: 'Например: главного эксперта отдела жилищной политики', hint: 'Например: главного эксперта отдела жилищной политики' },
+                    { id: 'work_date', label: '📅 Дата работы', type: 'date', hint: 'Выберите дату, когда планируется работа' },
+                    { id: 'statement_date', label: '📅 Дата заявления', type: 'date', hint: 'Дата подачи заявления' }
+                ],
+                documentText: (data) => {
+                    const date = data.work_date || '_____________';
+                    return `Прошу привлечь меня к работе в выходной день ${date}.`;
+                }
+            },
+            'Заявление на материальную помощь': {
+                fields: [
+                    { id: 'fio', label: '👤 ФИО (в родительном падеже, с предлогом "от")', type: 'text', placeholder: 'Например: от Иванова Сергея Ивановича', hint: 'Введите ФИО с предлогом "от", например: от Иванова Сергея Ивановича' },
+                    { id: 'position', label: '📋 Должность и отдел (в родительном падеже)', type: 'text', placeholder: 'Например: главного эксперта отдела жилищной политики', hint: 'Например: главного эксперта отдела жилищной политики' },
+                    { id: 'help_reason', label: '📝 Основание для помощи', type: 'text', placeholder: 'Например: в связи с тяжёлым материальным положением', hint: 'Укажите причину' },
+                    { id: 'statement_date', label: '📅 Дата заявления', type: 'date', hint: 'Дата подачи заявления' }
+                ],
+                documentText: (data) => {
+                    const reason = data.help_reason || '___________________________';
+                    return `Прошу оказать мне материальную помощь в связи с ${reason}.`;
+                }
+            },
+            'Заявление на отгулы': {
+                fields: [
+                    { id: 'fio', label: '👤 ФИО (в родительном падеже, с предлогом "от")', type: 'text', placeholder: 'Например: от Иванова Сергея Ивановича', hint: 'Введите ФИО с предлогом "от", например: от Иванова Сергея Ивановича' },
+                    { id: 'position', label: '📋 Должность и отдел (в родительном падеже)', type: 'text', placeholder: 'Например: главного эксперта отдела жилищной политики', hint: 'Например: главного эксперта отдела жилищной политики' },
+                    { id: 'otgul_date', label: '📅 Дата отгула', type: 'date', hint: 'Выберите дату отгула' },
+                    { id: 'statement_date', label: '📅 Дата заявления', type: 'date', hint: 'Дата подачи заявления' }
+                ],
+                documentText: (data) => {
+                    const date = data.otgul_date || '_____________';
+                    return `Прошу предоставить мне отгул за ранее отработанное время ${date}.`;
+                }
+            },
+            'Заявление на часть отпуска': {
+                fields: [
+                    { id: 'fio', label: '👤 ФИО (в родительном падеже, с предлогом "от")', type: 'text', placeholder: 'Например: от Иванова Сергея Ивановича', hint: 'Введите ФИО с предлогом "от", например: от Иванова Сергея Ивановича' },
+                    { id: 'position', label: '📋 Должность и отдел (в родительном падеже)', type: 'text', placeholder: 'Например: главного эксперта отдела жилищной политики', hint: 'Например: главного эксперта отдела жилищной политики' },
+                    { id: 'start_date', label: '📅 Дата начала', type: 'date', hint: 'Выберите дату начала' },
+                    { id: 'end_date', label: '📅 Дата окончания', type: 'date', hint: 'Выберите дату окончания' },
+                    { id: 'days_count', label: '🔢 Количество дней', type: 'number', placeholder: 'Например: 5', hint: 'Рассчитывается автоматически, можно изменить вручную' },
+                    { id: 'statement_date', label: '📅 Дата заявления', type: 'date', hint: 'Дата подачи заявления' }
+                ],
+                documentText: (data) => {
+                    const start = data.start_date || '_____________';
+                    const end = data.end_date || '_____________';
+                    const days = data.days_count || '___';
+                    return `Прошу предоставить мне часть ежегодного оплачиваемого отпуска в количестве ${days} (${numberToWords(days)}) дней с ${start} по ${end} включительно.`;
+                }
+            },
+            'Заявление на донорские дни': {
+                fields: [
+                    { id: 'fio', label: '👤 ФИО (в родительном падеже, с предлогом "от")', type: 'text', placeholder: 'Например: от Иванова Сергея Ивановича', hint: 'Введите ФИО с предлогом "от", например: от Иванова Сергея Ивановича' },
+                    { id: 'position', label: '📋 Должность и отдел (в родительном падеже)', type: 'text', placeholder: 'Например: главного эксперта отдела жилищной политики', hint: 'Например: главного эксперта отдела жилищной политики' },
+                    { id: 'donation_date', label: '📅 Дата сдачи крови', type: 'date', hint: 'Выберите дату сдачи крови' },
+                    { id: 'rest_days', label: '🔢 Количество дней отдыха', type: 'number', placeholder: 'Например: 1', hint: 'Укажите количество дней' },
+                    { id: 'statement_date', label: '📅 Дата заявления', type: 'date', hint: 'Дата подачи заявления' }
+                ],
+                documentText: (data) => {
+                    const date = data.donation_date || '_____________';
+                    const days = data.rest_days || '___';
+                    return `Прошу предоставить мне ${days} (${numberToWords(days)}) дней отдыха в связи со сдачей крови ${date}.`;
+                }
+            }
+        };
+
         let currentBlankName = '';
+        let currentConfig = null;
 
         function openBlanks() {
             const modal = document.getElementById('blanksModal');
@@ -1207,7 +1234,6 @@
                 item.innerHTML = `
                     <span class="blank-name">📄 ${blank.name}</span>
                     <div class="blank-actions">
-                        <a href="${blank.file}" download>⬇ Скачать</a>
                         <button class="fill-btn" onclick="openFillModal('${blank.name}')">📝 Заполнить</button>
                     </div>
                 `;
@@ -1227,10 +1253,10 @@
             if (e.target === this) closeBlanks();
         });
 
-        // ===== ФУНКЦИЯ ДЛЯ ПРОПИСИ =====
         function numberToWords(num) {
             const words = ['', 'один', 'два', 'три', 'четыре', 'пять', 'шесть', 'семь', 'восемь', 'девять', 'десять',
-                'одиннадцать', 'двенадцать', 'тринадцать', 'четырнадцать', 'пятнадцать', 'шестнадцать', 'семнадцать', 'восемнадцать', 'девятнадцать'];
+                'одиннадцать', 'двенадцать', 'тринадцать', 'четырнадцать', 'пятнадцать', 'шестнадцать', 'семнадцать', 'восемнадцать', 'девятнадцать'
+            ];
             const tens = ['', '', 'двадцать', 'тридцать', 'сорок', 'пятьдесят', 'шестьдесят', 'семьдесят', 'восемьдесят', 'девяносто'];
             
             if (num <= 19) return words[num];
@@ -1242,39 +1268,88 @@
             return num.toString();
         }
 
-        // ===== ЗАПОЛНЕНИЕ БЛАНКА =====
         function openFillModal(blankName) {
             currentBlankName = blankName;
+            currentConfig = blankConfigs[blankName];
             
-            // Устанавливаем дату заявления по умолчанию
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('statement_date').value = today;
-            
-            // Автоматический расчёт дней
-            const startInput = document.getElementById('start_date');
-            const endInput = document.getElementById('end_date');
-            const daysInput = document.getElementById('days_count');
-            
-            function calcDays() {
-                if (startInput.value && endInput.value) {
-                    const start = new Date(startInput.value);
-                    const end = new Date(endInput.value);
-                    const diff = Math.ceil((end - start) / (1000 * 60 * 60 * 24)) + 1;
-                    if (diff > 0) daysInput.value = diff;
-                }
+            if (!currentConfig) {
+                alert('Конфигурация для этого бланка не найдена');
+                return;
             }
             
-            startInput.addEventListener('change', calcDays);
-            endInput.addEventListener('change', calcDays);
-            daysInput.addEventListener('input', function() { this.dataset.manual = 'true'; });
-            calcDays();
+            const container = document.getElementById('dynamicFields');
+            container.innerHTML = '';
+            
+            currentConfig.fields.forEach(field => {
+                const group = document.createElement('div');
+                group.className = 'form-group';
+                
+                const label = document.createElement('label');
+                label.textContent = field.label;
+                label.htmlFor = field.id;
+                group.appendChild(label);
+                
+                const input = document.createElement('input');
+                input.type = field.type || 'text';
+                input.id = field.id;
+                input.placeholder = field.placeholder || '';
+                input.className = 'fill-input';
+                
+                // Автоматический расчёт дней для полей с датами
+                if (field.id === 'days_count') {
+                    input.readOnly = false;
+                    input.dataset.auto = 'true';
+                    
+                    setTimeout(() => {
+                        const startInput = document.getElementById('start_date');
+                        const endInput = document.getElementById('end_date');
+                        const daysInput = document.getElementById('days_count');
+                        
+                        if (startInput && endInput && daysInput) {
+                            const calcDays = () => {
+                                if (startInput.value && endInput.value) {
+                                    const start = new Date(startInput.value);
+                                    const end = new Date(endInput.value);
+                                    const diff = Math.ceil((end - start) / (1000 * 60 * 60 * 24)) + 1;
+                                    if (diff > 0 && !daysInput.dataset.manual) {
+                                        daysInput.value = diff;
+                                    }
+                                }
+                            };
+                            
+                            startInput.addEventListener('change', () => { daysInput.dataset.manual = false; calcDays(); });
+                            endInput.addEventListener('change', () => { daysInput.dataset.manual = false; calcDays(); });
+                            daysInput.addEventListener('input', () => { daysInput.dataset.manual = 'true'; });
+                        }
+                    }, 100);
+                }
+                
+                group.appendChild(input);
+                
+                if (field.hint) {
+                    const hint = document.createElement('div');
+                    hint.className = 'hint';
+                    hint.textContent = field.hint;
+                    group.appendChild(hint);
+                }
+                
+                container.appendChild(group);
+            });
+            
+            const today = new Date().toISOString().split('T')[0];
+            const statementDateInput = document.getElementById('statement_date');
+            if (statementDateInput) {
+                statementDateInput.value = today;
+            }
             
             document.getElementById('fillModalTitle').textContent = `📝 Заполнение: ${blankName}`;
             document.getElementById('fillModal').classList.add('active');
             document.body.style.overflow = 'hidden';
             
-            // Очищаем предпросмотр
             document.getElementById('pdfPreview').classList.remove('active');
+            
+            const firstInput = container.querySelector('input');
+            if (firstInput) firstInput.focus();
         }
 
         function closeFillModal() {
@@ -1286,14 +1361,20 @@
             if (e.target === this) closeFillModal();
         });
 
-        // ===== ПРЕДПРОСМОТР =====
         function previewPDF() {
-            const fio = document.getElementById('fio').value.trim() || '_________________';
-            const position = document.getElementById('position').value.trim() || '_________________';
-            const startDate = document.getElementById('start_date').value;
-            const endDate = document.getElementById('end_date').value;
-            const days = parseInt(document.getElementById('days_count').value) || 0;
-            const statementDate = document.getElementById('statement_date').value;
+            if (!currentConfig) return;
+            
+            const data = {};
+            currentConfig.fields.forEach(field => {
+                const input = document.getElementById(field.id);
+                if (input) {
+                    data[field.id] = input.value.trim();
+                }
+            });
+            
+            const fio = data.fio || '_________________';
+            const position = data.position || '_________________';
+            const statementDate = data.statement_date || '';
             
             const formatDate = (dateStr) => {
                 if (!dateStr) return '_____________';
@@ -1301,28 +1382,41 @@
                 return `${parts[2]}.${parts[1]}.${parts[0]}`;
             };
             
-            const start = formatDate(startDate);
-            const end = formatDate(endDate);
             const stmtDate = formatDate(statementDate);
-            const daysWords = numberToWords(days);
+            
+            // Подготавливаем данные для текста заявления
+            const docData = { ...data };
+            const dateFields = ['start_date', 'end_date', 'work_date', 'otgul_date', 'donation_date'];
+            dateFields.forEach(field => {
+                if (docData[field]) {
+                    docData[field] = formatDate(docData[field]);
+                }
+            });
+            
+            const text = currentConfig.documentText(docData);
             
             document.getElementById('previewFio').textContent = fio + ',';
             document.getElementById('previewPosition').textContent = position;
-            document.getElementById('previewText').textContent = 
-                `Прошу предоставить отпуск без сохранения заработной платы в количестве ${days} (${daysWords}) дней с ${start} по ${end} включительно.`;
+            document.getElementById('previewText').textContent = text;
             document.getElementById('previewDate').textContent = stmtDate;
             
             document.getElementById('pdfPreview').classList.add('active');
         }
 
-        // ===== ОБНОВЛЕНИЕ СКРЫТОГО БЛОКА =====
         function updatePDFContent() {
-            const fio = document.getElementById('fio').value.trim() || '_________________';
-            const position = document.getElementById('position').value.trim() || '_________________';
-            const startDate = document.getElementById('start_date').value;
-            const endDate = document.getElementById('end_date').value;
-            const days = parseInt(document.getElementById('days_count').value) || 0;
-            const statementDate = document.getElementById('statement_date').value;
+            if (!currentConfig) return;
+            
+            const data = {};
+            currentConfig.fields.forEach(field => {
+                const input = document.getElementById(field.id);
+                if (input) {
+                    data[field.id] = input.value.trim();
+                }
+            });
+            
+            const fio = data.fio || '_________________';
+            const position = data.position || '_________________';
+            const statementDate = data.statement_date || '';
             
             const formatDate = (dateStr) => {
                 if (!dateStr) return '_____________';
@@ -1330,20 +1424,30 @@
                 return `${parts[2]}.${parts[1]}.${parts[0]}`;
             };
             
-            const start = formatDate(startDate);
-            const end = formatDate(endDate);
             const stmtDate = formatDate(statementDate);
-            const daysWords = numberToWords(days);
+            
+            const docData = { ...data };
+            const dateFields = ['start_date', 'end_date', 'work_date', 'otgul_date', 'donation_date'];
+            dateFields.forEach(field => {
+                if (docData[field]) {
+                    docData[field] = formatDate(docData[field]);
+                }
+            });
+            
+            const text = currentConfig.documentText(docData);
             
             document.getElementById('pdfFio').textContent = fio + ',';
             document.getElementById('pdfPosition').textContent = position;
-            document.getElementById('pdfText').textContent = 
-                `Прошу предоставить отпуск без сохранения заработной платы в количестве ${days} (${daysWords}) дней с ${start} по ${end} включительно.`;
+            document.getElementById('pdfText').textContent = text;
             document.getElementById('pdfDate').textContent = stmtDate;
         }
 
-        // ===== СКАЧИВАНИЕ PDF =====
         function downloadPDF() {
+            if (!currentConfig) {
+                alert('Ошибка: не выбран бланк');
+                return;
+            }
+            
             updatePDFContent();
             
             showNotification('⏳ Создание PDF...');
@@ -1370,13 +1474,13 @@
                 pdf.addImage(imgData, 'PNG', imgX, imgY, imgWidth * ratio, imgHeight * ratio);
                 pdf.save('Заявление.pdf');
                 showNotification('✅ PDF скачан!');
+                closeFillModal();
             }).catch(error => {
                 console.error('Ошибка:', error);
                 showNotification('❌ Ошибка при создании PDF');
             });
         }
 
-        // ===== УВЕДОМЛЕНИЕ =====
         function showNotification(message) {
             const notification = document.getElementById('notification');
             notification.textContent = message;
@@ -1384,7 +1488,6 @@
             setTimeout(() => notification.classList.remove('show'), 3000);
         }
 
-        // ===== ПОИСК НА ПОРТАЛЕ =====
         let allData = null;
         let searchTimeout = null;
 
