@@ -9,6 +9,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js">
     </script>
     <style>
+        /* --- Все ваши стили (без изменений) --- */
         * {
             margin: 0;
             padding: 0;
@@ -1337,9 +1338,11 @@
             document.body.style.overflow = 'hidden';
         }
 
+        // ИСПРАВЛЕННАЯ ФУНКЦИЯ СКАЧИВАНИЯ
         function downloadBlank(fileName) {
             const link = document.createElement('a');
-            link.href = `docs/blanki/${fileName}`;
+            // Правильный путь относительно корня сайта на GitHub Pages
+            link.href = `/corporate-directory/docs/blanki/${fileName}`;
             link.download = fileName;
             document.body.appendChild(link);
             link.click();
