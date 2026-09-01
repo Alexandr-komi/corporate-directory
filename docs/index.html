@@ -9,7 +9,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js">
     </script>
     <style>
-        /* --- Все ваши стили (без изменений) --- */
         * {
             margin: 0;
             padding: 0;
@@ -1341,8 +1340,8 @@
         // ИСПРАВЛЕННАЯ ФУНКЦИЯ СКАЧИВАНИЯ
         function downloadBlank(fileName) {
             const link = document.createElement('a');
-            // Правильный путь относительно корня сайта на GitHub Pages
-            link.href = `/corporate-directory/docs/blanki/${fileName}`;
+            // Прямая ссылка на файл через raw.githubusercontent.com
+            link.href = `https://raw.githubusercontent.com/Alexandr-komi/corporate-directory/master/docs/blanki/${fileName}`;
             link.download = fileName;
             document.body.appendChild(link);
             link.click();
