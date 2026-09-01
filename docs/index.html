@@ -251,6 +251,15 @@
             background: #6c757d;
         }
 
+        body.dark-theme .form-actions .btn-print {
+            background: #5a32a3;
+            color: #e0e0e0;
+        }
+
+        body.dark-theme .form-actions .btn-print:hover {
+            background: #7a4bc4;
+        }
+
         .search-box {
             width: 100%;
             max-width: 600px;
@@ -641,6 +650,15 @@
             background: #1e3c72;
         }
 
+        .form-actions .btn-print {
+            background: #6f42c1;
+            color: white;
+        }
+
+        .form-actions .btn-print:hover {
+            background: #5a32a3;
+        }
+
         .blank-item {
             display: flex;
             justify-content: space-between;
@@ -953,6 +971,15 @@
                 align-items: flex-start;
                 gap: 20px;
             }
+
+            .form-actions {
+                justify-content: center;
+            }
+
+            .form-actions button {
+                width: 100%;
+                justify-content: center;
+            }
         }
     </style>
 </head>
@@ -1055,6 +1082,7 @@
                 <div class="form-actions">
                     <button type="button" class="btn-secondary" onclick="previewPDF()">👁️ Предпросмотр</button>
                     <button type="button" class="btn-primary" onclick="downloadPDF()">📥 Скачать PDF</button>
+                    <button type="button" class="btn-print" onclick="printPDF()">🖨️ Распечатать PDF</button>
                 </div>
             </form>
         </div>
@@ -1337,10 +1365,8 @@
             document.body.style.overflow = 'hidden';
         }
 
-        // ИСПРАВЛЕННАЯ ФУНКЦИЯ СКАЧИВАНИЯ
         function downloadBlank(fileName) {
             const link = document.createElement('a');
-            // Прямая ссылка на файл через raw.githubusercontent.com
             link.href = `https://raw.githubusercontent.com/Alexandr-komi/corporate-directory/master/docs/blanki/${fileName}`;
             link.download = fileName;
             document.body.appendChild(link);
@@ -1400,7 +1426,6 @@
                 input.placeholder = field.placeholder || '';
                 input.className = 'fill-input';
 
-                // Автоматический расчёт дней для полей с датами
                 if (field.id === 'days_count') {
                     input.readOnly = false;
                     input.dataset.auto = 'true';
@@ -1584,6 +1609,60 @@
             }).catch(error => {
                 console.error('Ошибка:', error);
                 showNotification('❌ Ошибка при создании PDF');
+            });
+        }
+
+        function printPDF() {
+            if (!currentConfig) {
+                alert('Ошибка: не выбран бланк');
+                return;
+            }
+
+            updatePDFContent();
+
+            showNotification('⏳ Подготовка к печати...');
+
+            const element = document.getElementById('pdfContent');
+
+            html2canvas(element, {
+                scale: 2,
+                useCORS: true,
+                logging: false,
+                backgroundColor: '#ffffff'
+            }).then(canvas => {
+                const imgData = canvas.toDataURL('image/png');
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                const pdfWidth = pdf.internal.pageSize.getWidth();
+                const pdfHeight = pdf.internal.pageSize.getHeight();
+                const imgWidth = canvas.width;
+                const imgHeight = canvas.height;
+                const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
+                const imgX = (pdfWidth - imgWidth * ratio) / 2;
+                const imgY = 0;
+
+                pdf.addImage(imgData, 'PNG', imgX, imgY, imgWidth * ratio, imgHeight * ratio);
+
+                // Открыть PDF в новом окне для печати
+                const pdfBlob = pdf.output('blob');
+                const pdfUrl = URL.createObjectURL(pdfBlob);
+                const printWindow = window.open(pdfUrl, '_blank');
+
+                if (printWindow) {
+                    printWindow.onload = function() {
+                        printWindow.print();
+                    };
+                } else {
+                    // Если окно заблокировано, скачиваем и предлагаем напечатать
+                    pdf.save('Заявление.pdf');
+                    showNotification('✅ PDF скачан! Откройте и нажмите печать');
+                }
+
+                URL.revokeObjectURL(pdfUrl);
+                closeFillModal();
+            }).catch(error => {
+                console.error('Ошибка:', error);
+                showNotification('❌ Ошибка при подготовке к печати');
             });
         }
 
