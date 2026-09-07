@@ -859,14 +859,28 @@
             document.body.style.overflow = 'hidden';
         }
 
-        function downloadBlank(fileName) {
-            const link = document.createElement('a');
-            link.href = `https://raw.githubusercontent.com/Alexandr-komi/corporate-directory/master/docs/blanki/${fileName}`;
-            link.download = fileName;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            showNotification('📥 Скачивание начато...');
+        async function downloadBlank(fileName) {
+            try {
+                showNotification('⏳ Загрузка...');
+                const response = await fetch(`https://raw.githubusercontent.com/Alexandr-komi/corporate-directory/master/docs/blanki/${fileName}`);
+                
+                if (!response.ok) {
+                    throw new Error('Файл не найден');
+                }
+                
+                const blob = await response.blob();
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = fileName;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(link.href);
+                showNotification('📥 Скачивание начато...');
+            } catch (error) {
+                console.error('Ошибка:', error);
+                showNotification('❌ Ошибка при скачивании');
+            }
         }
 
         function closeBlanks() {
