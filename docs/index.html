@@ -4,10 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Справочники Корткеросского района</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js">
-    </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js">
-    </script>
     <style>
         * {
             margin: 0;
@@ -192,20 +188,6 @@
             background: #2a3a6a;
         }
 
-        body.dark-theme .fill-form .form-group label {
-            color: #e0e0e0;
-        }
-
-        body.dark-theme .fill-form .form-group input {
-            background: #1e2a4a;
-            color: #e0e0e0;
-            border-color: #2a3a5e;
-        }
-
-        body.dark-theme .fill-form .form-group .hint {
-            color: #a0a0a0;
-        }
-
         body.dark-theme .portal-thanks a {
             color: #e0e0e0;
             border-color: #e0e0e0;
@@ -220,28 +202,6 @@
             border-color: #2a3a5e;
         }
 
-        body.dark-theme .pdf-preview {
-            background: #1e2a4a;
-            border-color: #2a3a5e;
-            color: #e0e0e0;
-        }
-
-        body.dark-theme .pdf-preview .preview-header {
-            color: #e0e0e0;
-        }
-
-        body.dark-theme .pdf-preview .preview-title {
-            color: #e0e0e0;
-        }
-
-        body.dark-theme .pdf-preview .preview-text {
-            color: #e0e0e0;
-        }
-
-        body.dark-theme .pdf-preview .preview-footer {
-            color: #e0e0e0;
-        }
-
         body.dark-theme .blank-item .blank-actions .download-btn {
             background: #495057;
             color: #e0e0e0;
@@ -249,15 +209,6 @@
 
         body.dark-theme .blank-item .blank-actions .download-btn:hover {
             background: #6c757d;
-        }
-
-        body.dark-theme .form-actions .btn-print {
-            background: #5a32a3;
-            color: #e0e0e0;
-        }
-
-        body.dark-theme .form-actions .btn-print:hover {
-            background: #7a4bc4;
         }
 
         .search-box {
@@ -570,95 +521,6 @@
             display: block;
         }
 
-        .fill-form .form-group {
-            margin-bottom: 18px;
-            text-align: left;
-        }
-
-        .fill-form .form-group label {
-            display: block;
-            font-weight: 600;
-            color: #1e3c72;
-            margin-bottom: 5px;
-            font-size: 14px;
-            transition: color 0.3s ease;
-        }
-
-        .fill-form .form-group input {
-            width: 100%;
-            padding: 10px 14px;
-            border: 2px solid #e9ecef;
-            border-radius: 8px;
-            font-size: 15px;
-            transition: all 0.2s;
-            background: white;
-            color: #2c3e50;
-        }
-
-        .fill-form .form-group input:focus {
-            outline: none;
-            border-color: #4dabf7;
-            box-shadow: 0 0 0 3px rgba(77, 171, 247, 0.1);
-        }
-
-        .fill-form .form-group .hint {
-            font-size: 12px;
-            color: #6c757d;
-            margin-top: 4px;
-            transition: color 0.3s ease;
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-
-        .form-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 12px;
-            margin-top: 20px;
-            flex-wrap: wrap;
-        }
-
-        .form-actions button {
-            padding: 10px 24px;
-            border: none;
-            border-radius: 30px;
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .form-actions .btn-secondary {
-            background: #e9ecef;
-            color: #495057;
-        }
-
-        .form-actions .btn-secondary:hover {
-            background: #dee2e6;
-        }
-
-        .form-actions .btn-primary {
-            background: #4dabf7;
-            color: white;
-        }
-
-        .form-actions .btn-primary:hover {
-            background: #1e3c72;
-        }
-
-        .form-actions .btn-print {
-            background: #6f42c1;
-            color: white;
-        }
-
-        .form-actions .btn-print:hover {
-            background: #5a32a3;
-        }
-
         .blank-item {
             display: flex;
             justify-content: space-between;
@@ -712,138 +574,12 @@
             background: #1e3c72;
         }
 
-        .blank-item .blank-actions .fill-btn {
-            background: #28a745;
-        }
-
-        .blank-item .blank-actions .fill-btn:hover {
-            background: #1e7e34;
-        }
-
         .blank-item .blank-actions .download-btn {
             background: #6c757d;
         }
 
         .blank-item .blank-actions .download-btn:hover {
             background: #495057;
-        }
-
-        .pdf-preview {
-            display: none;
-            margin-top: 20px;
-            padding: 20px;
-            background: #f8f9fa;
-            border-radius: 12px;
-            border: 1px solid #e9ecef;
-            font-family: 'Times New Roman', serif;
-        }
-
-        .pdf-preview.active {
-            display: block;
-        }
-
-        .pdf-preview .preview-header {
-            text-align: right;
-            margin-left: 55%;
-            margin-bottom: 20px;
-            line-height: 1.6;
-            font-size: 14pt;
-        }
-
-        .pdf-preview .preview-title {
-            text-align: center;
-            font-weight: bold;
-            font-size: 18px;
-            margin: 30px 0 20px 0;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .pdf-preview .preview-text {
-            margin-bottom: 20px;
-            line-height: 1.6;
-            font-size: 14pt;
-            text-indent: 1.5em;
-            white-space: pre-wrap;
-        }
-
-        .pdf-preview .preview-footer {
-            margin-top: 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 14pt;
-        }
-
-        .pdf-preview .preview-footer .signature-wrapper {
-            text-align: center;
-            flex: 1;
-        }
-
-        .pdf-preview .preview-footer .signature-line {
-            margin-bottom: 2px;
-        }
-
-        .pdf-preview .preview-footer .signature-label {
-            font-size: 12pt;
-            margin-top: 2px;
-        }
-
-        .pdf-wrapper {
-            position: absolute;
-            left: -9999px;
-            top: 0;
-            width: 800px;
-            background: white;
-            padding: 60px 90px 60px 110px;
-            font-family: 'Times New Roman', serif;
-        }
-
-        .pdf-wrapper .pdf-header {
-            text-align: left;
-            margin-left: 55%;
-            margin-bottom: 30px;
-            line-height: 1.6;
-            font-size: 14pt;
-        }
-
-        .pdf-wrapper .pdf-title {
-            text-align: center;
-            font-weight: bold;
-            font-size: 18px;
-            margin: 60px 0 30px 0;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .pdf-wrapper .pdf-text {
-            margin-bottom: 20px;
-            line-height: 1.6;
-            font-size: 14pt;
-            text-indent: 1.5em;
-            white-space: pre-wrap;
-        }
-
-        .pdf-wrapper .pdf-footer {
-            margin-top: 60px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 14pt;
-        }
-
-        .pdf-wrapper .pdf-footer .signature-wrapper {
-            text-align: center;
-            flex: 1;
-        }
-
-        .pdf-wrapper .pdf-footer .signature-line {
-            margin-bottom: 2px;
-        }
-
-        .pdf-wrapper .pdf-footer .signature-label {
-            font-size: 12pt;
-            margin-top: 2px;
         }
 
         .portal-thanks {
@@ -943,43 +679,6 @@
             .blank-item .blank-actions {
                 justify-content: center;
             }
-
-            .form-row {
-                grid-template-columns: 1fr;
-            }
-
-            .pdf-preview .preview-header {
-                margin-left: 0;
-            }
-
-            .pdf-wrapper .pdf-header {
-                margin-left: 0;
-            }
-
-            .pdf-wrapper {
-                padding: 30px;
-            }
-
-            .pdf-preview .preview-footer {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 20px;
-            }
-
-            .pdf-wrapper .pdf-footer {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 20px;
-            }
-
-            .form-actions {
-                justify-content: center;
-            }
-
-            .form-actions button {
-                width: 100%;
-                justify-content: center;
-            }
         }
     </style>
 </head>
@@ -1042,74 +741,6 @@
             <button class="modal-close" onclick="closeBlanks()">✕</button>
             <div class="modal-title">📋 Бланки заявлений</div>
             <div id="blanksBody"></div>
-        </div>
-    </div>
-
-    <div id="fillModal" class="modal-overlay">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeFillModal()">✕</button>
-            <div class="modal-title" id="fillModalTitle">📝 Заполнение бланка</div>
-            <form class="fill-form" id="fillForm">
-                <div id="dynamicFields">
-                    <!-- Поля генерируются динамически -->
-                </div>
-
-                <div id="pdfPreview" class="pdf-preview">
-                    <div class="preview-header">
-                        <div>Главе муниципального</div>
-                        <div>района «Корткеросский» Республики Коми –</div>
-                        <div>руководителю администрации</div>
-                        <div>К.А. Сажину</div>
-                        <div style="margin-top: 10px;"><b id="previewFio">от _____________</b></div>
-                        <div><b id="previewPosition">_____________</b></div>
-                    </div>
-
-                    <div class="preview-title">ЗАЯВЛЕНИЕ</div>
-
-                    <div class="preview-text" id="previewText">
-                        Прошу предоставить отпуск без сохранения заработной платы в количестве ___ дней с _____________ по _____________.
-                    </div>
-
-                    <div class="preview-footer">
-                        <div>Дата: <span id="previewDate">_____________</span></div>
-                        <div class="signature-wrapper">
-                            <div class="signature-line">__________________</div>
-                            <div class="signature-label">(подпись)</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-actions">
-                    <button type="button" class="btn-secondary" onclick="previewPDF()">👁️ Предпросмотр</button>
-                    <button type="button" class="btn-primary" onclick="downloadPDF()">📥 Скачать PDF</button>
-                    <button type="button" class="btn-print" onclick="printPDF()">🖨️ Распечатать PDF</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <div id="pdfContent" class="pdf-wrapper">
-        <div class="pdf-header" id="pdfHeader">
-            <div>Главе муниципального</div>
-            <div>района «Корткеросский» Республики Коми –</div>
-            <div>руководителю администрации</div>
-            <div>К.А. Сажину</div>
-            <div style="margin-top: 10px;"><b id="pdfFio">от _____________</b></div>
-            <div><b id="pdfPosition">_____________</b></div>
-        </div>
-
-        <div class="pdf-title">ЗАЯВЛЕНИЕ</div>
-
-        <div class="pdf-text" id="pdfText">
-            Прошу предоставить отпуск без сохранения заработной платы в количестве ___ дней с _____________ по _____________.
-        </div>
-
-        <div class="pdf-footer">
-            <div class="date">Дата: <span id="pdfDate">_____________</span></div>
-            <div class="signature-wrapper">
-                <div class="signature-line">__________________</div>
-                <div class="signature-label">(подпись)</div>
-            </div>
         </div>
     </div>
 
@@ -1182,7 +813,6 @@
             if (e.key === 'Escape') {
                 closeRequisites();
                 closeBlanks();
-                closeFillModal();
             }
         });
 
@@ -1204,144 +834,9 @@
             { name: 'Заявление на отгулы', file: 'zayavlenie_otguly.docx' },
             { name: 'Заявление на часть отпуска', file: 'zayavlenie_chast_otpuska.docx' },
             { name: 'Заявление на донорские дни', file: 'zayavlenie_donorskie_dni.docx' },
-            { name: 'Заявление на учебный отпуск', file: 'zayavlenie_uchebn_otpusk.docx' }
+            { name: 'Заявление на учебный отпуск', file: 'zayavlenie_uchebn_otpusk.docx' },
+            { name: 'Заявление на перенос отпуска из-за больничного', file: 'zayavlenie_perenos_otpuska.rtf' }
         ];
-
-        const blankConfigs = {
-            'Заявление на отпуск за свой счет': {
-                fields: [
-                    { id: 'fio', label: '👤 ФИО (в родительном падеже, с предлогом "от")', type: 'text', placeholder: 'Например: от Иванова Сергея Ивановича', hint: 'Введите ФИО с предлогом "от", например: от Иванова Сергея Ивановича' },
-                    { id: 'position', label: '📋 Должность и отдел (в родительном падеже)', type: 'text', placeholder: 'Например: главного эксперта отдела жилищной политики', hint: 'Например: главного эксперта отдела жилищной политики' },
-                    { id: 'start_date', label: '📅 Дата начала', type: 'date', hint: 'Выберите дату начала' },
-                    { id: 'end_date', label: '📅 Дата окончания', type: 'date', hint: 'Выберите дату окончания' },
-                    { id: 'days_count', label: '🔢 Количество дней', type: 'number', placeholder: 'Например: 5', hint: 'Рассчитывается автоматически, можно изменить вручную' },
-                    { id: 'statement_date', label: '📅 Дата заявления', type: 'date', hint: 'Дата подачи заявления' }
-                ],
-                documentText: (data) => {
-                    const start = data.start_date || '_____________';
-                    const end = data.end_date || '_____________';
-                    const days = data.days_count || '___';
-                    return `Прошу предоставить отпуск без сохранения заработной платы в количестве ${days} дней с ${start} года по ${end} года.`;
-                }
-            },
-
-            'Заявление на привлечение к работе в выходные дни (2026)': {
-                fields: [
-                    { id: 'fio', label: '👤 ФИО (в родительном падеже)', type: 'text', placeholder: 'Иванова Сергея Ивановича', hint: 'Введите ФИО в родительном падеже' },
-                    { id: 'position', label: '📋 Должность (в именительном падеже)', type: 'text', placeholder: 'главный эксперт', hint: 'Например: главный эксперт' },
-                    { id: 'work_date', label: '📅 Дата работы', type: 'date', hint: 'Выберите дату' },
-                    { id: 'start_time', label: '⏰ Время начала', type: 'text', placeholder: '8:00', hint: 'Например: 8:00' },
-                    { id: 'end_time', label: '⏰ Время окончания', type: 'text', placeholder: '17:00', hint: 'Например: 17:00' },
-                    { id: 'lunch_start', label: '🍽 Начало обеда', type: 'text', placeholder: '12:00', hint: 'Например: 12:00' },
-                    { id: 'lunch_end', label: '🍽 Окончание обеда', type: 'text', placeholder: '13:00', hint: 'Например: 13:00' },
-                    { id: 'purpose', label: '📝 Цель работы', type: 'text', placeholder: 'например, для выполнения срочного задания', hint: 'Укажите причину/цель' },
-                    { id: 'statement_date', label: '📅 Дата заявления', type: 'date', hint: 'Дата подачи заявления' }
-                ],
-                documentText: (data) => {
-                    const date = data.work_date || '_____________';
-                    const start = data.start_time || '___';
-                    const end = data.end_time || '___';
-                    const lunchStart = data.lunch_start || '___';
-                    const lunchEnd = data.lunch_end || '___';
-                    const purpose = data.purpose || '_________________________________';
-                    return `Даю согласие на привлечение меня к работе в выходной день ${date} года с ${start} час. ${end} мин. до ${start} час. ${end} мин. с перерывом на обед с ${lunchStart} час. ${lunchEnd} мин. до ${lunchStart} час. ${lunchEnd} мин. для ${purpose}.
-
-С правом отказаться от работы в выходной день (сверхурочной работы) ознакомлен, медицинских противопоказаний и других запретов на работу в выходной день (сверхурочную работу) не имею.
-
-За работу в выходной день прошу предоставить другой день отдыха по моему заявлению.`;
-                }
-            },
-
-            'Заявление на материальную помощь': {
-                fields: [
-                    { id: 'fio', label: '👤 ФИО (в родительном падеже, с предлогом "от")', type: 'text', placeholder: 'Например: от Иванова Сергея Ивановича', hint: 'Введите ФИО с предлогом "от"' },
-                    { id: 'position', label: '📋 Должность и отдел (в родительном падеже)', type: 'text', placeholder: 'Например: главного эксперта отдела жилищной политики', hint: 'Например: главного эксперта отдела жилищной политики' },
-                    { id: 'help_year', label: '📅 Год', type: 'text', placeholder: '2026', hint: 'Укажите год' },
-                    { id: 'statement_date', label: '📅 Дата заявления', type: 'date', hint: 'Дата подачи заявления' }
-                ],
-                documentText: (data) => {
-                    const year = data.help_year || '_____________';
-                    return `Прошу выплатить материальную помощь за ${year} года.`;
-                }
-            },
-
-            'Заявление на отгулы': {
-                fields: [
-                    { id: 'fio', label: '👤 ФИО (в родительном падеже, с предлогом "от")', type: 'text', placeholder: 'Например: от Иванова Сергея Ивановича', hint: 'Введите ФИО с предлогом "от"' },
-                    { id: 'position', label: '📋 Должность и отдел (в родительном падеже)', type: 'text', placeholder: 'Например: главного эксперта отдела жилищной политики', hint: 'Например: главного эксперта отдела жилищной политики' },
-                    { id: 'days_count', label: '🔢 Количество дней', type: 'number', placeholder: 'Например: 2', hint: 'Укажите количество дней' },
-                    { id: 'start_date', label: '📅 Дата начала отдыха', type: 'date', hint: 'Выберите дату начала' },
-                    { id: 'end_date', label: '📅 Дата окончания отдыха', type: 'date', hint: 'Выберите дату окончания' },
-                    { id: 'worked_date', label: '📅 Отработанные выходные дни', type: 'date', hint: 'Дата, когда работали в выходной' },
-                    { id: 'statement_date', label: '📅 Дата заявления', type: 'date', hint: 'Дата подачи заявления' }
-                ],
-                documentText: (data) => {
-                    const days = data.days_count || '_____';
-                    const start = data.start_date || '_____________';
-                    const end = data.end_date || '_____________';
-                    const worked = data.worked_date || '_____________';
-                    return `Прошу предоставить день (дни) отдыха в количестве ${days} дней с ${start} г. по ${end} г. за ранее отработанные выходные дни ${worked} г.`;
-                }
-            },
-
-            'Заявление на часть отпуска': {
-                fields: [
-                    { id: 'fio', label: '👤 ФИО (в родительном падеже, с предлогом "от")', type: 'text', placeholder: 'Например: от Иванова Сергея Ивановича', hint: 'Введите ФИО с предлогом "от"' },
-                    { id: 'position', label: '📋 Должность и отдел (в родительном падеже)', type: 'text', placeholder: 'Например: главного эксперта отдела жилищной политики', hint: 'Например: главного эксперта отдела жилищной политики' },
-                    { id: 'days_count', label: '🔢 Количество дней', type: 'number', placeholder: 'Например: 14', hint: 'Укажите количество дней' },
-                    { id: 'start_date', label: '📅 Дата начала', type: 'date', hint: 'Выберите дату начала' },
-                    { id: 'end_date', label: '📅 Дата окончания', type: 'date', hint: 'Выберите дату окончания' },
-                    { id: 'statement_date', label: '📅 Дата заявления', type: 'date', hint: 'Дата подачи заявления' }
-                ],
-                documentText: (data) => {
-                    const days = data.days_count || '___';
-                    const start = data.start_date || '_____________';
-                    const end = data.end_date || '_____________';
-                    return `Прошу предоставить часть ежегодного оплачиваемого отпуска в количестве ${days} дней с ${start} года по ${end} года.`;
-                }
-            },
-
-            'Заявление на донорские дни': {
-                fields: [
-                    { id: 'fio', label: '👤 ФИО (в родительном падеже, с предлогом "от")', type: 'text', placeholder: 'Например: от Иванова Сергея Ивановича', hint: 'Введите ФИО с предлогом "от"' },
-                    { id: 'position', label: '📋 Должность и отдел (в родительном падеже)', type: 'text', placeholder: 'Например: главного эксперта отдела жилищной политики', hint: 'Например: главного эксперта отдела жилищной политики' },
-                    { id: 'rest_date', label: '📅 День отдыха', type: 'text', placeholder: '05.05.2026', hint: 'Укажите дату, когда хотите отдохнуть' },
-                    { id: 'donation_date', label: '📅 Дата сдачи крови', type: 'text', placeholder: '05.05.2026', hint: 'Укажите дату сдачи крови' },
-                    { id: 'cert_number', label: '📄 Номер справки', type: 'text', placeholder: '123', hint: 'Укажите номер медицинской справки' },
-                    { id: 'statement_date', label: '📅 Дата заявления', type: 'date', hint: 'Дата подачи заявления' }
-                ],
-                documentText: (data) => {
-                    const restDate = data.rest_date || '_____________';
-                    const donationDate = data.donation_date || '_____________';
-                    const certNumber = data.cert_number || '_____________';
-                    return `Прошу на основании ч. 4, 5 ст. 186 ТК РФ предоставить мне ${restDate} г. дополнительный день отдыха с сохранением среднего заработка в связи со сдачей крови ${donationDate}. Медицинская справка от ${donationDate} г. N ${certNumber} была представлена в отдел организационной и кадровой работы.`;
-                }
-            },
-
-            'Заявление на учебный отпуск': {
-                fields: [
-                    { id: 'fio', label: '👤 ФИО (в родительном падеже, с предлогом "от")', type: 'text', placeholder: 'Например: от Иванова Сергея Ивановича', hint: 'Введите ФИО с предлогом "от"' },
-                    { id: 'position', label: '📋 Должность и отдел (в родительном падеже)', type: 'text', placeholder: 'Например: главного эксперта отдела жилищной политики', hint: 'Например: главного эксперта отдела жилищной политики' },
-                    { id: 'university', label: '🏫 Название учебного заведения', type: 'text', placeholder: 'Например: Сыктывкарский государственный университет', hint: 'Полное название учебного заведения' },
-                    { id: 'study_form', label: '📜 Форма обучения', type: 'text', placeholder: 'заочная / очная / очно-заочная', hint: 'Укажите форму обучения' },
-                    { id: 'start_date', label: '📅 Дата начала', type: 'date', hint: 'Выберите дату начала отпуска' },
-                    { id: 'end_date', label: '📅 Дата окончания', type: 'date', hint: 'Выберите дату окончания отпуска' },
-                    { id: 'days_count', label: '🔢 Количество календарных дней', type: 'number', placeholder: 'Например: 20', hint: 'Рассчитывается автоматически, можно изменить вручную' },
-                    { id: 'statement_date', label: '📅 Дата заявления', type: 'date', hint: 'Дата подачи заявления' }
-                ],
-                documentText: (data) => {
-                    const start = data.start_date || '_____________';
-                    const end = data.end_date || '_____________';
-                    const days = data.days_count || '___';
-                    const university = data.university || '_____________________________';
-                    const studyForm = data.study_form || '_____________';
-                    return `Прошу предоставить учебный отпуск с сохранением среднего заработка для прохождения промежуточной аттестации в ${university} (форма обучения: ${studyForm}) в количестве ${days} календарных дней с ${start} по ${end}. Справка-вызов прилагается.`;
-                }
-            }
-        };
-
-        let currentBlankName = '';
-        let currentConfig = null;
 
         function openBlanks() {
             const modal = document.getElementById('blanksModal');
@@ -1355,7 +850,6 @@
                     <span class="blank-name">📄 ${blank.name}</span>
                     <div class="blank-actions">
                         <button class="download-btn" onclick="downloadBlank('${blank.file}')">📥 Скачать</button>
-                        <button class="fill-btn" onclick="openFillModal('${blank.name}')">📝 Заполнить</button>
                     </div>
                 `;
                 body.appendChild(item);
@@ -1383,289 +877,6 @@
         document.getElementById('blanksModal').addEventListener('click', function(e) {
             if (e.target === this) closeBlanks();
         });
-
-        function numberToWords(num) {
-            const words = ['', 'один', 'два', 'три', 'четыре', 'пять', 'шесть', 'семь', 'восемь', 'девять', 'десять',
-                'одиннадцать', 'двенадцать', 'тринадцать', 'четырнадцать', 'пятнадцать', 'шестнадцать', 'семнадцать', 'восемнадцать', 'девятнадцать'
-            ];
-            const tens = ['', '', 'двадцать', 'тридцать', 'сорок', 'пятьдесят', 'шестьдесят', 'семьдесят', 'восемьдесят', 'девяносто'];
-
-            if (num <= 19) return words[num];
-            if (num <= 99) {
-                const ten = Math.floor(num / 10);
-                const one = num % 10;
-                return tens[ten] + (one > 0 ? ' ' + words[one] : '');
-            }
-            return num.toString();
-        }
-
-        function openFillModal(blankName) {
-            currentBlankName = blankName;
-            currentConfig = blankConfigs[blankName];
-
-            if (!currentConfig) {
-                alert('Конфигурация для этого бланка не найдена');
-                return;
-            }
-
-            const container = document.getElementById('dynamicFields');
-            container.innerHTML = '';
-
-            currentConfig.fields.forEach(field => {
-                const group = document.createElement('div');
-                group.className = 'form-group';
-
-                const label = document.createElement('label');
-                label.textContent = field.label;
-                label.htmlFor = field.id;
-                group.appendChild(label);
-
-                const input = document.createElement('input');
-                input.type = field.type || 'text';
-                input.id = field.id;
-                input.placeholder = field.placeholder || '';
-                input.className = 'fill-input';
-
-                // Автоматический расчёт дней для полей с датами
-                if (field.id === 'days_count') {
-                    input.readOnly = false;
-                    input.dataset.auto = 'true';
-
-                    setTimeout(() => {
-                        const startInput = document.getElementById('start_date');
-                        const endInput = document.getElementById('end_date');
-                        const daysInput = document.getElementById('days_count');
-
-                        if (startInput && endInput && daysInput) {
-                            const calcDays = () => {
-                                if (startInput.value && endInput.value) {
-                                    const start = new Date(startInput.value);
-                                    const end = new Date(endInput.value);
-                                    const diff = Math.ceil((end - start) / (1000 * 60 * 60 * 24)) + 1;
-                                    if (diff > 0 && !daysInput.dataset.manual) {
-                                        daysInput.value = diff;
-                                    }
-                                }
-                            };
-
-                            startInput.addEventListener('change', () => { daysInput.dataset.manual = false;
-                                calcDays(); });
-                            endInput.addEventListener('change', () => { daysInput.dataset.manual = false;
-                                calcDays(); });
-                            daysInput.addEventListener('input', () => { daysInput.dataset.manual = 'true'; });
-                        }
-                    }, 100);
-                }
-
-                group.appendChild(input);
-
-                if (field.hint) {
-                    const hint = document.createElement('div');
-                    hint.className = 'hint';
-                    hint.textContent = field.hint;
-                    group.appendChild(hint);
-                }
-
-                container.appendChild(group);
-            });
-
-            const today = new Date().toISOString().split('T')[0];
-            const statementDateInput = document.getElementById('statement_date');
-            if (statementDateInput) {
-                statementDateInput.value = today;
-            }
-
-            document.getElementById('fillModalTitle').textContent = `📝 Заполнение: ${blankName}`;
-            document.getElementById('fillModal').classList.add('active');
-            document.body.style.overflow = 'hidden';
-
-            document.getElementById('pdfPreview').classList.remove('active');
-
-            const firstInput = container.querySelector('input');
-            if (firstInput) firstInput.focus();
-        }
-
-        function closeFillModal() {
-            document.getElementById('fillModal').classList.remove('active');
-            document.body.style.overflow = 'auto';
-        }
-
-        document.getElementById('fillModal').addEventListener('click', function(e) {
-            if (e.target === this) closeFillModal();
-        });
-
-        function previewPDF() {
-            if (!currentConfig) return;
-
-            const data = {};
-            currentConfig.fields.forEach(field => {
-                const input = document.getElementById(field.id);
-                if (input) {
-                    data[field.id] = input.value.trim();
-                }
-            });
-
-            const fio = data.fio || '_________________';
-            const position = data.position || '_________________';
-            const statementDate = data.statement_date || '';
-
-            const formatDate = (dateStr) => {
-                if (!dateStr) return '_____________';
-                const parts = dateStr.split('-');
-                return `${parts[2]}.${parts[1]}.${parts[0]}`;
-            };
-
-            const stmtDate = formatDate(statementDate);
-
-            const docData = { ...data };
-            const dateFields = ['start_date', 'end_date', 'work_date', 'otgul_date', 'donation_date'];
-            dateFields.forEach(field => {
-                if (docData[field]) {
-                    docData[field] = formatDate(docData[field]);
-                }
-            });
-
-            const text = currentConfig.documentText(docData);
-
-            document.getElementById('previewFio').textContent = fio + ',';
-            document.getElementById('previewPosition').textContent = position;
-            document.getElementById('previewText').textContent = text;
-            document.getElementById('previewDate').textContent = stmtDate;
-
-            document.getElementById('pdfPreview').classList.add('active');
-        }
-
-        function updatePDFContent() {
-            if (!currentConfig) return;
-
-            const data = {};
-            currentConfig.fields.forEach(field => {
-                const input = document.getElementById(field.id);
-                if (input) {
-                    data[field.id] = input.value.trim();
-                }
-            });
-
-            const fio = data.fio || '_________________';
-            const position = data.position || '_________________';
-            const statementDate = data.statement_date || '';
-
-            const formatDate = (dateStr) => {
-                if (!dateStr) return '_____________';
-                const parts = dateStr.split('-');
-                return `${parts[2]}.${parts[1]}.${parts[0]}`;
-            };
-
-            const stmtDate = formatDate(statementDate);
-
-            const docData = { ...data };
-            const dateFields = ['start_date', 'end_date', 'work_date', 'otgul_date', 'donation_date'];
-            dateFields.forEach(field => {
-                if (docData[field]) {
-                    docData[field] = formatDate(docData[field]);
-                }
-            });
-
-            const text = currentConfig.documentText(docData);
-
-            document.getElementById('pdfFio').textContent = fio + ',';
-            document.getElementById('pdfPosition').textContent = position;
-            document.getElementById('pdfText').textContent = text;
-            document.getElementById('pdfDate').textContent = stmtDate;
-        }
-
-        function downloadPDF() {
-            if (!currentConfig) {
-                alert('Ошибка: не выбран бланк');
-                return;
-            }
-
-            updatePDFContent();
-
-            showNotification('⏳ Создание PDF...');
-
-            const element = document.getElementById('pdfContent');
-
-            html2canvas(element, {
-                scale: 2,
-                useCORS: true,
-                logging: false,
-                backgroundColor: '#ffffff'
-            }).then(canvas => {
-                const imgData = canvas.toDataURL('image/png');
-                const { jsPDF } = window.jspdf;
-                const pdf = new jsPDF('p', 'mm', 'a4');
-                const pdfWidth = pdf.internal.pageSize.getWidth();
-                const pdfHeight = pdf.internal.pageSize.getHeight();
-                const imgWidth = canvas.width;
-                const imgHeight = canvas.height;
-                const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
-                const imgX = (pdfWidth - imgWidth * ratio) / 2;
-                const imgY = 0;
-
-                pdf.addImage(imgData, 'PNG', imgX, imgY, imgWidth * ratio, imgHeight * ratio);
-                pdf.save('Заявление.pdf');
-                showNotification('✅ PDF скачан!');
-                closeFillModal();
-            }).catch(error => {
-                console.error('Ошибка:', error);
-                showNotification('❌ Ошибка при создании PDF');
-            });
-        }
-
-        function printPDF() {
-            if (!currentConfig) {
-                alert('Ошибка: не выбран бланк');
-                return;
-            }
-
-            updatePDFContent();
-
-            showNotification('⏳ Подготовка к печати...');
-
-            const element = document.getElementById('pdfContent');
-
-            html2canvas(element, {
-                scale: 2,
-                useCORS: true,
-                logging: false,
-                backgroundColor: '#ffffff'
-            }).then(canvas => {
-                const imgData = canvas.toDataURL('image/png');
-                const { jsPDF } = window.jspdf;
-                const pdf = new jsPDF('p', 'mm', 'a4');
-                const pdfWidth = pdf.internal.pageSize.getWidth();
-                const pdfHeight = pdf.internal.pageSize.getHeight();
-                const imgWidth = canvas.width;
-                const imgHeight = canvas.height;
-                const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
-                const imgX = (pdfWidth - imgWidth * ratio) / 2;
-                const imgY = 0;
-
-                pdf.addImage(imgData, 'PNG', imgX, imgY, imgWidth * ratio, imgHeight * ratio);
-
-                // Открыть PDF в новом окне для печати
-                const pdfBlob = pdf.output('blob');
-                const pdfUrl = URL.createObjectURL(pdfBlob);
-                const printWindow = window.open(pdfUrl, '_blank');
-
-                if (printWindow) {
-                    printWindow.onload = function() {
-                        printWindow.print();
-                    };
-                } else {
-                    // Если окно заблокировано, скачиваем и предлагаем напечатать
-                    pdf.save('Заявление.pdf');
-                    showNotification('✅ PDF скачан! Откройте и нажмите печать');
-                }
-
-                URL.revokeObjectURL(pdfUrl);
-                closeFillModal();
-            }).catch(error => {
-                console.error('Ошибка:', error);
-                showNotification('❌ Ошибка при подготовке к печати');
-            });
-        }
 
         function showNotification(message) {
             const notification = document.getElementById('notification');
