@@ -547,7 +547,7 @@
             display: block;
         }
 
-        /* ===== КАРУСЕЛЬ С ПОДГОНКОЙ ПО БАННЕРУ ===== */
+        /* ===== КАРУСЕЛЬ ===== */
         .carousel-section {
             margin-top: 40px;
             padding-top: 30px;
@@ -561,7 +561,7 @@
             border-radius: 12px;
             overflow: hidden;
             box-shadow: 0 4px 16px rgba(21, 101, 192, 0.1);
-            /* Фиксированные пропорции — как у главного баннера (16:9) */
+            /* Фиксированные пропорции — не дают карусели "прыгать" */
             aspect-ratio: 16 / 9;
             background: white;
             transition: background 0.3s ease;
@@ -577,9 +577,6 @@
             /* Очень плавное затухание 4 секунды с мягкой кривой */
             transition: opacity 4s cubic-bezier(0.45, 0, 0.55, 1);
             pointer-events: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
 
         .carousel-slide.active {
@@ -588,13 +585,12 @@
         }
 
         .carousel-slide img {
-            max-width: 100%;
-            max-height: 100%;
-            width: auto;
-            height: auto;
+            width: 100%;
+            height: 100%;
             display: block;
-            /* Вписываем целиком, без обрезки */
-            object-fit: contain;
+            /* Заполняет всю область, обрезая лишнее */
+            object-fit: cover;
+            object-position: center;
         }
 
         .notification {
