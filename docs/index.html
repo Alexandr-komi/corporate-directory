@@ -547,7 +547,7 @@
             display: block;
         }
 
-        /* ===== КАРУСЕЛЬ ===== */
+        /* ===== КАРУСЕЛЬ С ПЛАВНОЙ СМЕНОЙ В ОБЕ СТОРОНЫ ===== */
         .carousel-section {
             margin-top: 20px;
             padding-top: 0;
@@ -560,32 +560,36 @@
             border-radius: 12px;
             overflow: hidden;
             box-shadow: 0 4px 16px rgba(21, 101, 192, 0.1);
+            /* Фиксированные пропорции — как у главного баннера (примерно 16:9) */
+            aspect-ratio: 16 / 9;
+            background: white;
+            transition: background 0.3s ease;
         }
 
         .carousel-slide {
-            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
-            animation: fadeIn 4s cubic-bezier(0.45, 0, 0.55, 1);
+            height: 100%;
+            opacity: 0;
+            /* Очень плавное затухание 4 секунды в ОБЕ стороны */
+            transition: opacity 4s cubic-bezier(0.45, 0, 0.55, 1);
+            pointer-events: none;
         }
 
         .carousel-slide.active {
-            display: block;
+            opacity: 1;
+            pointer-events: auto;
         }
 
         .carousel-slide img {
             width: 100%;
-            height: auto;
+            height: 100%;
             display: block;
-            border-radius: 12px;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
+            /* Заполняет всю область, обрезая лишнее */
+            object-fit: cover;
+            object-position: center;
         }
 
         .notification {
@@ -707,7 +711,7 @@
                 <div class="carousel-slide active" data-duration="10000">
                     <img src="images/banery.jpg" alt="Баннер">
                 </div>
-                <div class="carousel-slide" data-duration="20000">
+                <div class="carousel-slide" data-duration="10000">
                     <img src="images/ekskavator.jpg" alt="Объявление - услуги мини-экскаватора">
                 </div>
             </div>
@@ -753,7 +757,7 @@
             });
         });
 
-        // ===== КАРУСЕЛЬ =====
+        // ===== КАРУСЕЛЬ С ПЛАВНОЙ СМЕНОЙ В ОБЕ СТОРОНЫ =====
         (function() {
             const slides = document.querySelectorAll('.carousel-slide');
             if (slides.length === 0) return;
