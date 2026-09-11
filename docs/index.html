@@ -543,7 +543,7 @@
             display: block;
         }
 
-        /* ===== КАРУСЕЛЬ ===== */
+        /* ===== КАРУСЕЛЬ С ПЛАВНОЙ СМЕНОЙ ===== */
         .carousel-section {
             margin-top: 40px;
             padding-top: 30px;
@@ -559,14 +559,21 @@
             box-shadow: 0 4px 16px rgba(21, 101, 192, 0.1);
         }
 
+        /* Обёртка для точного позиционирования */
         .carousel-slide {
-            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
-            animation: fadeIn 1s ease-in-out;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+            pointer-events: none;
         }
 
         .carousel-slide.active {
-            display: block;
+            opacity: 1;
+            pointer-events: auto;
+            position: relative;
         }
 
         .carousel-slide img {
@@ -574,15 +581,6 @@
             height: auto;
             display: block;
             border-radius: 12px;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
         }
 
         .notification {
@@ -750,7 +748,7 @@
             });
         });
 
-        // ===== КАРУСЕЛЬ =====
+        // ===== КАРУСЕЛЬ С ПЛАВНОЙ СМЕНОЙ =====
         (function() {
             const slides = document.querySelectorAll('.carousel-slide');
             if (slides.length === 0) return;
@@ -767,11 +765,11 @@
                 currentIndex = (currentIndex + 1) % slides.length;
                 showSlide(currentIndex);
 
-                const duration = parseInt(slides[currentIndex].dataset.duration, 10) || 5000;
+                const duration = parseInt(slides[currentIndex].dataset.duration, 10) || 10000;
                 setTimeout(nextSlide, duration);
             }
 
-            const firstDuration = parseInt(slides[0].dataset.duration, 10) || 5000;
+            const firstDuration = parseInt(slides[0].dataset.duration, 10) || 10000;
             setTimeout(nextSlide, firstDuration);
         })();
 
