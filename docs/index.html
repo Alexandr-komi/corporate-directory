@@ -214,6 +214,10 @@
             border-color: rgba(144, 202, 249, 0.15);
         }
 
+        body.dark-theme .carousel {
+            background: #1e3a4f;
+        }
+
         .search-box {
             width: 100%;
             max-width: 600px;
@@ -543,12 +547,11 @@
             display: block;
         }
 
-        /* ===== КАРУСЕЛЬ С ОЧЕНЬ ПЛАВНОЙ СМЕНОЙ ===== */
+        /* ===== КАРУСЕЛЬ ===== */
         .carousel-section {
-            margin-top: 40px;
-            padding-top: 30px;
-            border-top: 1px solid rgba(21, 101, 192, 0.1);
-            transition: border-color 0.3s ease;
+            margin-top: 20px;
+            padding-top: 0;
+            border-top: none;
         }
 
         .carousel {
@@ -560,20 +563,13 @@
         }
 
         .carousel-slide {
-            position: absolute;
-            top: 0;
-            left: 0;
+            display: none;
             width: 100%;
-            opacity: 0;
-            /* Очень плавное затухание 4 секунды с мягкой кривой */
-            transition: opacity 4s cubic-bezier(0.45, 0, 0.55, 1);
-            pointer-events: none;
+            animation: fadeIn 4s cubic-bezier(0.45, 0, 0.55, 1);
         }
 
         .carousel-slide.active {
-            opacity: 1;
-            pointer-events: auto;
-            position: relative;
+            display: block;
         }
 
         .carousel-slide img {
@@ -581,6 +577,15 @@
             height: auto;
             display: block;
             border-radius: 12px;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
         }
 
         .notification {
@@ -748,7 +753,7 @@
             });
         });
 
-        // ===== КАРУСЕЛЬ С ПЛАВНОЙ СМЕНОЙ =====
+        // ===== КАРУСЕЛЬ =====
         (function() {
             const slides = document.querySelectorAll('.carousel-slide');
             if (slides.length === 0) return;
