@@ -210,14 +210,6 @@
             border-color: rgba(144, 202, 249, 0.08);
         }
 
-        body.dark-theme .carousel-section {
-            border-color: rgba(144, 202, 249, 0.15);
-        }
-
-        body.dark-theme .carousel {
-            background: #1e3a4f;
-        }
-
         .search-box {
             width: 100%;
             max-width: 600px;
@@ -547,7 +539,7 @@
             display: block;
         }
 
-        /* ===== КАРУСЕЛЬ С ПЛАВНОЙ СМЕНОЙ В ОБЕ СТОРОНЫ ===== */
+        /* ===== КАРУСЕЛЬ — БЕЗ ОБРЕЗКИ, ПЛАВНО В ОБЕ СТОРОНЫ ===== */
         .carousel-section {
             margin-top: 20px;
             padding-top: 0;
@@ -560,10 +552,6 @@
             border-radius: 12px;
             overflow: hidden;
             box-shadow: 0 4px 16px rgba(21, 101, 192, 0.1);
-            /* Фиксированные пропорции — как у главного баннера (примерно 16:9) */
-            aspect-ratio: 16 / 9;
-            background: white;
-            transition: background 0.3s ease;
         }
 
         .carousel-slide {
@@ -571,9 +559,8 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 100%;
             opacity: 0;
-            /* Очень плавное затухание 4 секунды в ОБЕ стороны */
+            /* Очень плавный переход в ОБЕ стороны — 4 секунды */
             transition: opacity 4s cubic-bezier(0.45, 0, 0.55, 1);
             pointer-events: none;
         }
@@ -581,15 +568,14 @@
         .carousel-slide.active {
             opacity: 1;
             pointer-events: auto;
+            position: relative;
         }
 
         .carousel-slide img {
             width: 100%;
-            height: 100%;
+            height: auto;
             display: block;
-            /* Заполняет всю область, обрезая лишнее */
-            object-fit: cover;
-            object-position: center;
+            border-radius: 12px;
         }
 
         .notification {
