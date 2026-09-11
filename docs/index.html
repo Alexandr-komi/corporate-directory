@@ -543,7 +543,7 @@
             display: block;
         }
 
-        /* ===== КАРУСЕЛЬ С ПЛАВНОЙ СМЕНОЙ ===== */
+        /* ===== КАРУСЕЛЬ С ОЧЕНЬ ПЛАВНОЙ СМЕНОЙ ===== */
         .carousel-section {
             margin-top: 40px;
             padding-top: 30px;
@@ -559,14 +559,14 @@
             box-shadow: 0 4px 16px rgba(21, 101, 192, 0.1);
         }
 
-        /* Обёртка для точного позиционирования */
         .carousel-slide {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             opacity: 0;
-            transition: opacity 1.5s ease-in-out;
+            /* Очень плавное затухание 4 секунды с мягкой кривой */
+            transition: opacity 4s cubic-bezier(0.45, 0, 0.55, 1);
             pointer-events: none;
         }
 
