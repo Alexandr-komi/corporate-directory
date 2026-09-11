@@ -15,7 +15,6 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
             background-color: #e8f4f8;
             background-image:
-                /* Орнамент в стиле коми - лёгкий узор */
                 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='none' stroke='%231565C0' stroke-width='1' opacity='0.07'%3E%3Cpath d='M40 10 L50 20 L40 30 L30 20 Z'/%3E%3Cpath d='M40 50 L50 60 L40 70 L30 60 Z'/%3E%3Cpath d='M10 40 L20 50 L10 60 L0 50 Z'/%3E%3Cpath d='M70 40 L80 50 L70 60 L60 50 Z'/%3E%3Cpath d='M20 0 L30 10 L20 20'/%3E%3Cpath d='M60 0 L70 10 L60 20'/%3E%3Cpath d='M20 60 L30 70 L20 80'/%3E%3Cpath d='M60 60 L70 70 L60 80'/%3E%3Cpath d='M0 20 L10 30 L0 40'/%3E%3Cpath d='M0 60 L10 70 L0 80'/%3E%3Cpath d='M80 20 L70 30 L80 40'/%3E%3Cpath d='M80 60 L70 70 L80 80'/%3E%3C/g%3E%3C/svg%3E"),
                 linear-gradient(135deg, #e8f4f8 0%, #e6f3e8 50%, #e0f2f7 100%);
             background-attachment: fixed;
@@ -36,28 +35,16 @@
             margin: 20px 0;
         }
 
-        .portal-title {
-            font-size: 28px;
-            background: linear-gradient(135deg, #1565C0 0%, #2E7D32 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 10px;
-            text-align: center;
-            font-weight: 800;
-        }
-
-        .portal-subtitle {
-            text-align: center;
-            color: #607d8b;
+        /* Шапка: кнопка темы и заголовок */
+        .portal-header {
+            position: relative;
             margin-bottom: 30px;
-            font-size: 16px;
         }
 
         .theme-toggle-wrapper {
-            display: flex;
-            justify-content: flex-end;
-            margin-bottom: 20px;
+            position: absolute;
+            top: 0;
+            right: 0;
         }
 
         #themeToggle {
@@ -79,6 +66,24 @@
             color: white;
         }
 
+        .portal-title {
+            font-size: 28px;
+            background: linear-gradient(135deg, #1565C0 0%, #2E7D32 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-align: center;
+            font-weight: 800;
+            padding-top: 10px;
+        }
+
+        .portal-subtitle {
+            text-align: center;
+            color: #607d8b;
+            margin-top: 6px;
+            font-size: 16px;
+        }
+
         body.dark-theme #themeToggle {
             color: #90caf9;
             border-color: #90caf9;
@@ -92,7 +97,6 @@
         body.dark-theme {
             background-color: #0d1b2a;
             background-image:
-                /* Орнамент для тёмной темы */
                 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='none' stroke='%2364b5f6' stroke-width='1' opacity='0.05'%3E%3Cpath d='M40 10 L50 20 L40 30 L30 20 Z'/%3E%3Cpath d='M40 50 L50 60 L40 70 L30 60 Z'/%3E%3Cpath d='M10 40 L20 50 L10 60 L0 50 Z'/%3E%3Cpath d='M70 40 L80 50 L70 60 L60 50 Z'/%3E%3Cpath d='M20 0 L30 10 L20 20'/%3E%3Cpath d='M60 0 L70 10 L60 20'/%3E%3Cpath d='M20 60 L30 70 L20 80'/%3E%3Cpath d='M60 60 L70 70 L60 80'/%3E%3Cpath d='M0 20 L10 30 L0 40'/%3E%3Cpath d='M0 60 L10 70 L0 80'/%3E%3Cpath d='M80 20 L70 30 L80 40'/%3E%3Cpath d='M80 60 L70 70 L80 80'/%3E%3C/g%3E%3C/svg%3E"),
                 linear-gradient(135deg, #0d1b2a 0%, #0f2a1f 50%, #0a1f2a 100%);
             background-attachment: fixed;
@@ -380,7 +384,6 @@
             transition: color 0.3s;
         }
 
-        /* Кнопки - одинаковые и растянуты */
         .portal-actions {
             margin-top: 28px;
             display: grid;
@@ -550,7 +553,6 @@
             display: block;
         }
 
-        /* Баннер внизу */
         .banner-section {
             margin-top: 40px;
             padding-top: 30px;
@@ -600,7 +602,20 @@
             }
 
             .portal-title {
-                font-size: 24px;
+                font-size: 22px;
+            }
+
+            .portal-header {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 12px;
+            }
+
+            .theme-toggle-wrapper {
+                position: static;
+                order: -1;
+                align-self: flex-end;
             }
 
             .search-box input {
@@ -635,12 +650,13 @@
 </head>
 <body>
     <div class="portal-container">
-        <div class="theme-toggle-wrapper">
-            <button id="themeToggle">🌙 Тёмная тема</button>
+        <div class="portal-header">
+            <div class="theme-toggle-wrapper">
+                <button id="themeToggle">🌙 Тёмная тема</button>
+            </div>
+            <h1 class="portal-title">📂 Справочники</h1>
+            <p class="portal-subtitle">Муниципальный район Корткеросский</p>
         </div>
-
-        <h1 class="portal-title">📂 Справочники</h1>
-        <p class="portal-subtitle">Муниципальный район Корткеросский</p>
 
         <div class="search-box">
             <input type="text" id="portalSearch" placeholder="🔍 Поиск по всем справочникам...">
