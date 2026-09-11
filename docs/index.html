@@ -369,18 +369,20 @@
             color: white;
         }
 
+        /* Кнопки - одинаковые и растянуты */
         .portal-actions {
             margin-top: 28px;
-            display: flex;
-            justify-content: center;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
             gap: 14px;
-            flex-wrap: wrap;
         }
 
         .portal-actions a,
         .portal-actions button {
-            display: inline-block;
-            padding: 10px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 14px 20px;
             font-size: 14px;
             font-weight: 500;
             color: #1e3c72;
@@ -390,6 +392,8 @@
             text-decoration: none;
             cursor: pointer;
             transition: all 0.2s ease;
+            width: 100%;
+            text-align: center;
         }
 
         .portal-actions a:hover,
@@ -399,8 +403,10 @@
         }
 
         .portal-actions .cloud-link {
-            display: inline-block;
-            padding: 10px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 14px 20px;
             font-size: 14px;
             font-weight: 500;
             color: #1e3c72;
@@ -409,6 +415,8 @@
             border-radius: 30px;
             text-decoration: none;
             transition: all 0.2s ease;
+            width: 100%;
+            text-align: center;
         }
 
         .portal-actions .cloud-link:hover {
@@ -552,6 +560,27 @@
             color: white;
         }
 
+        /* Баннер внизу */
+        .banner-section {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid #e9ecef;
+            display: flex;
+            justify-content: center;
+            transition: border-color 0.3s ease;
+        }
+
+        .banner-section img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 8px;
+        }
+
+        body.dark-theme .banner-section {
+            border-color: #2a3a5e;
+        }
+
         .notification {
             position: fixed;
             bottom: 30px;
@@ -610,6 +639,10 @@
             .modal-row .value {
                 text-align: left;
             }
+
+            .portal-actions {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -655,6 +688,13 @@
                 ❤️ Сказать спасибо разработчику
             </a>
         </div>
+
+        <!-- БАННЕР -->
+        <div class="banner-section">
+            <img src="images/banery.jpg" alt="Баннер">
+        </div>
+        <!-- КОНЕЦ БАННЕРА -->
+
     </div>
 
     <div id="requisitesModal" class="modal-overlay">
