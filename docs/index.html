@@ -539,7 +539,7 @@
             display: block;
         }
 
-        /* ===== КАРУСЕЛЬ — БЕЗ ОБРЕЗКИ, ПЛАВНО В ОБЕ СТОРОНЫ ===== */
+        /* ===== КАРУСЕЛЬ ===== */
         .carousel-section {
             margin-top: 20px;
             padding-top: 0;
@@ -560,7 +560,7 @@
             left: 0;
             width: 100%;
             opacity: 0;
-            /* Очень плавный переход в ОБЕ стороны — 4 секунды */
+            /* Плавный переход в обе стороны */
             transition: opacity 4s cubic-bezier(0.45, 0, 0.55, 1);
             pointer-events: none;
         }
@@ -694,12 +694,7 @@
         <!-- КАРУСЕЛЬ -->
         <div class="carousel-section">
             <div class="carousel" id="carousel">
-                <div class="carousel-slide active" data-duration="10000">
-                    <img src="images/banery.jpg" alt="Баннер">
-                </div>
-                <div class="carousel-slide" data-duration="10000">
-                    <img src="images/ekskavator.jpg" alt="Объявление - услуги мини-экскаватора">
-                </div>
+                <!-- Слайды генерируются автоматически из images/1.jpg, images/2.jpg, ... -->
             </div>
         </div>
         <!-- КОНЕЦ КАРУСЕЛИ -->
@@ -743,8 +738,32 @@
             });
         });
 
-        // ===== КАРУСЕЛЬ С ПЛАВНОЙ СМЕНОЙ В ОБЕ СТОРОНЫ =====
+        // ===== КАРУСЕЛЬ С АВТОПЕРЕБОРОМ ФАЙЛОВ 1.jpg, 2.jpg, 3.jpg =====
         (function() {
+            const carousel = document.getElementById('carousel');
+            if (!carousel) return;
+
+            // ===== НАСТРОЙКИ =====
+            const TOTAL_IMAGES = 3;               // ← сколько всего картинок
+            const FOLDER = 'images/';             // ← папка с картинками
+            const EXTENSION = '.jpg';             // ← расширение файлов
+            const DURATION = 10000;               // ← 10 секунд на показ
+
+            // ===== ГЕНЕРАЦИЯ СЛАЙДОВ =====
+            for (let i = 1; i <= TOTAL_IMAGES; i++) {
+                const slide = document.createElement('div');
+                slide.className = 'carousel-slide' + (i === 1 ? ' active' : '');
+                slide.dataset.duration = DURATION;
+
+                const img = document.createElement('img');
+                img.src = `${FOLDER}${i}${EXTENSION}`;
+                img.alt = `Слайд ${i}`;
+
+                slide.appendChild(img);
+                carousel.appendChild(slide);
+            }
+
+            // ===== ЛОГИКА КАРУСЕЛИ =====
             const slides = document.querySelectorAll('.carousel-slide');
             if (slides.length === 0) return;
 
@@ -760,11 +779,11 @@
                 currentIndex = (currentIndex + 1) % slides.length;
                 showSlide(currentIndex);
 
-                const duration = parseInt(slides[currentIndex].dataset.duration, 10) || 10000;
+                const duration = parseInt(slides[currentIndex].dataset.duration, 10) || DURATION;
                 setTimeout(nextSlide, duration);
             }
 
-            const firstDuration = parseInt(slides[0].dataset.duration, 10) || 10000;
+            const firstDuration = parseInt(slides[0].dataset.duration, 10) || DURATION;
             setTimeout(nextSlide, firstDuration);
         })();
 
