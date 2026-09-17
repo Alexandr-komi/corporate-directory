@@ -254,6 +254,33 @@
       ]
     },
     {
+      "name": "ЕДДС",
+      "email": "edds@kortkeros.rkomi.ru",
+      "site": "https://kortkeros.gosuslugi.ru/glavnoe/administratsiya/struktura/go-chs/",
+      "employees": [
+        {
+          "position": "Руководитель службы",
+          "name": "Юранев Андрей Васильевич",
+          "phone": "8(82136)9-95-61"
+        },
+        {
+          "position": "Оперативный дежурный",
+          "name": "Кирушев Сергей Иванович",
+          "phone": "8(82136)9-26-39"
+        },
+        {
+          "position": "Оперативный дежурный",
+          "name": "Тараканов Владислав Васильевич",
+          "phone": "8(82136)9-26-39"
+        },
+        {
+          "position": "Оперативный дежурный",
+          "name": "Гасматулин Константин Юрьевич",
+          "phone": "8(82136)9-26-39"
+        }
+      ]
+    },
+    {
       "name": "Сектор по мобилизационной работе",
       "email": "mob@kortkeros.rkomi.ru",
       "site": "https://kortkeros.gosuslugi.ru/glavnoe/administratsiya/struktura/sektor-po-mobilizatsionnoy-rabote/",
