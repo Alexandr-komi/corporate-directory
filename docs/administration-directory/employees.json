@@ -291,6 +291,33 @@
       ]
     },
     {
+      "name": "Служба контроля",
+      "email": "sk@kortkeros.rkomi.ru",
+      "site": "https://kortkeros.gosuslugi.ru/glavnoe/administratsiya/struktura/go-chs/",
+      "employees": [
+                {
+          "position": "Оперативный дежурный",
+          "name": "Лушков Владимир Иванович",
+          "phone": "8(82136)9-23-38"
+        },
+        {
+          "position": "Оперативный дежурный",
+          "name": "Стахиев Сергей Алексеевич",
+          "phone": "8(82136)9-23-38"
+        },
+        {
+          "position": "Оперативный дежурный",
+          "name": "Подоров Алексей Александрович",
+          "phone": "8(82136)9-23-38"
+        },
+        {
+          "position": "Оперативный дежурный",
+          "name": "Забоев Василий Васильевич",
+          "phone": "8(82136)9-23-38"
+        }
+      ]
+    },
+    {
       "name": "Сектор по мобилизационной работе",
       "email": "mob@kortkeros.rkomi.ru",
       "site": "https://kortkeros.gosuslugi.ru/glavnoe/administratsiya/struktura/sektor-po-mobilizatsionnoy-rabote/",
